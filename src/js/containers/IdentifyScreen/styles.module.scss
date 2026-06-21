@@ -1,0 +1,40 @@
+.cameraStage {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #10180f;
+  aspect-ratio: 3 / 4;
+  position: relative;
+  box-shadow: var(--shadow);
+
+  video, img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cfe0cb;
+  gap: 10px;
+  text-align: center;
+  padding: 24px;
+  font-size: 14px;
+
+  .big { font-size: 48px; }
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}

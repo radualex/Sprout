@@ -1,0 +1,46 @@
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.info { flex: 1; min-width: 0; }
+
+.title { font-weight: 650; font-size: 14px; }
+
+.when {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 1px;
+
+  &.overdue { color: var(--red); font-weight: 600; }
+  &.due { color: var(--amber); font-weight: 600; }
+}
+
+.doneBtn {
+  border: none;
+  background: var(--green-100);
+  color: var(--green-900);
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-weight: 650;
+  font-size: 13px;
+  flex-shrink: 0;
+}
