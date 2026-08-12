@@ -20,7 +20,13 @@ export function EditSchedule({ plant, onSave, onCancel }: Props) {
         <>
             <div className={shared.field}>
                 <label htmlFor="es-nickname">Nickname</label>
-                <input id="es-nickname" value={nickname} onChange={(e) => { setNickname(e.target.value); }} />
+                <input
+                    id="es-nickname"
+                    value={nickname}
+                    onChange={(event_) => {
+                        setNickname(event_.target.value);
+                    }}
+                />
             </div>
             <div className={shared.fieldRow}>
                 <div className={shared.field}>
@@ -28,9 +34,9 @@ export function EditSchedule({ plant, onSave, onCancel }: Props) {
                     <select
                         id="es-water"
                         value={care.waterEveryDays}
-                        onChange={(e) => {
+                        onChange={(event_) => {
                             setCare({ ...care,
-                                waterEveryDays: +e.target.value });
+                                waterEveryDays: +event_.target.value });
                         }}
                     >
                         {[2, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 18, 21, 28].map((d) => {

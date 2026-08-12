@@ -1,33 +1,52 @@
-import styles from './styles.module.scss';
 import { useCallback, useEffect, useState } from 'react';
-import { dueTasks } from '../../helpers/care';
-import { useClock } from '../../hooks';
-import { deletePlant, getAllPlants, savePlant } from '../../services/db';
-import type { Plant } from '../../types';
+
+// Constants
+import { TABS } from './constants';
+
+// Components
 import { CareScreen } from '../CareScreen';
 import { IdentifyScreen } from '../IdentifyScreen';
 import { PlantDetail } from '../PlantDetail';
 import { PlantsScreen } from '../PlantsScreen';
 import { SettingsScreen } from '../SettingsScreen';
-import { TABS } from './constants';
+
+// Helpers
+import { dueTasks } from '../../helpers/care';
+
+// Hooks
+import { useClock } from '../../hooks';
+
+// Services
+import { deletePlant, getAllPlants, savePlant } from '../../services/db';
+
+// Styles
+import styles from './styles.module.scss';
+
+// Types
+import type { Plant } from '../../types';
 import type { Tab } from './types';
 
 export default function App() {
     const [tab, setTab] = useState<Tab>('plants');
     const [plants, setPlants] = useState<Plant[]>([]);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
     useClock(); // periodic re-render so due counts stay fresh
 
-    const refresh = useCallback(() => {
-        getAllPlants().then((p) => { setPlants(p.sort((a, b) => { return b.acquiredAt - a.acquiredAt; })); });
+    const refresh = useCallback(async () => {
+        const p = await getAllPlants();
+        setPlants(p.toSorted((a, b) => {
+            return b.acquiredAt - a.acquiredAt;
+        }));
     }, []);
 
-    useEffect(refresh, [refresh]);
+    useEffect(() => {
+        void refresh();
+    }, [refresh]);
 
     const upsert = useCallback(
         async (plant: Plant) => {
             await savePlant(plant);
-            refresh();
+            await refresh();
         },
         [refresh]
     );
@@ -35,45 +54,69 @@ export default function App() {
     const remove = useCallback(
         async (id: string) => {
             await deletePlant(id);
-            setSelectedId(null);
-            refresh();
+            setSelectedId(undefined);
+            await refresh();
         },
         [refresh]
     );
 
     const dueCount = dueTasks(plants).length;
-    const selected = plants.find((p) => { return p.id === selectedId; }) ?? null;
+    const selected = plants.find((p) => {
+        return p.id === selectedId;
+    });
 
-    return (
-        <>
-            {selected ? (
+    function renderScreen() {
+        if (selected) {
+            return (
                 <PlantDetail
                     plant={selected}
-                    onBack={() => { setSelectedId(null); }}
+                    onBack={() => {
+                        setSelectedId(undefined);
+                    }}
                     onSave={upsert}
                     onDelete={remove}
                 />
-            ) : tab === 'plants'
-                ? (
-                        <PlantsScreen plants={plants} onSelect={setSelectedId} onAdd={() => { setTab('identify'); }} />
-                    )
-                : tab === 'identify'
-                    ? (
-                            <IdentifyScreen
-                                onSaved={(plant) => {
-                                    upsert(plant);
-                                    setTab('plants');
-                                    setSelectedId(plant.id);
-                                }}
-                            />
-                        )
-                    : tab === 'care'
-                        ? (
-                                <CareScreen plants={plants} onDone={upsert} onSelect={(id) => { setSelectedId(id); }} />
-                            )
-                        : (
-                                <SettingsScreen plants={plants} onSeeded={refresh} />
-                            )}
+            );
+        }
+        if (tab === 'plants') {
+            return (
+                <PlantsScreen
+                    plants={plants}
+                    onSelect={setSelectedId}
+                    onAdd={() => {
+                        setTab('identify');
+                    }}
+                />
+            );
+        }
+        if (tab === 'identify') {
+            return (
+                <IdentifyScreen
+                    onSaved={(plant) => {
+                        void upsert(plant);
+                        setTab('plants');
+                        setSelectedId(plant.id);
+                    }}
+                />
+            );
+        }
+        if (tab === 'care') {
+            return (
+                <CareScreen
+                    plants={plants}
+                    onDone={upsert}
+                    onSelect={(id) => {
+                        setSelectedId(id);
+                    }}
+                />
+            );
+        }
+        return <SettingsScreen plants={plants} onSeeded={refresh} />;
+    }
+
+    return (
+        <>
+            {renderScreen()}
 
             <nav className={styles.bottomNav}>
                 {TABS.map((t) => {
@@ -83,7 +126,7 @@ export default function App() {
                             type="button"
                             className={tab === t.id && !selected ? styles.active : ''}
                             onClick={() => {
-                                setSelectedId(null);
+                                setSelectedId(undefined);
                                 setTab(t.id);
                             }}
                         >

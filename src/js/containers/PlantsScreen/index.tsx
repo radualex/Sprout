@@ -1,10 +1,19 @@
+// Components
+import { PlantPhoto } from '../../components/PlantPhoto';
+
+// Helpers
+import { allTasks, CARE_META, formatDue } from '../../helpers/care';
+import { displayName } from '../../helpers/plant';
+
+// Hooks
+import { useClock } from '../../hooks';
+
+// Styles
 import shared from '../../scss/shared.module.scss';
 import styles from './styles.module.scss';
-import { allTasks, CARE_META, formatDue } from '../../helpers/care';
-import { useClock } from '../../hooks';
-import { displayName } from '../../helpers/plant';
+
+// Types
 import type { Plant } from '../../types';
-import { PlantPhoto } from '../../components/PlantPhoto';
 
 interface Props {
     plants: Plant[];
@@ -47,7 +56,9 @@ export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
                 <div className={styles.plantGrid}>
                     {plants.map((plant) => {
                         const tasks = allTasks([plant]);
-                        const urgent = tasks.filter((t) => { return t.daysUntil <= 0; }).slice(0, 2);
+                        const urgent = tasks.filter((t) => {
+                            return t.daysUntil <= 0;
+                        }).slice(0, 2);
                         const next = tasks.at(0);
                         return (
                             <button key={plant.id} type="button" className={styles.plantCard} onClick={() => { onSelect(plant.id); }}>
@@ -74,7 +85,7 @@ export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
                                                         {formatDue(next.daysUntil)}
                                                     </span>
                                                 )
-                                            : null)}
+                                            : undefined)}
                                     </div>
                                 </div>
                             </button>

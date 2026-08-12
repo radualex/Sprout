@@ -1,12 +1,22 @@
-import shared from '../../scss/shared.module.scss';
-import styles from './styles.module.scss';
 import { useState } from 'react';
+
+// Constants
+import { SAMPLE_PLANTS } from './constants';
+
+// Helpers
 import { DAY_MS, defaultCareFor } from '../../helpers/care';
+
+// Services
 import { newId, savePlant } from '../../services/db';
 import { getPlantNetKey, setPlantNetKey } from '../../services/identify';
 import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '../../services/notifications';
+
+// Styles
+import shared from '../../scss/shared.module.scss';
+import styles from './styles.module.scss';
+
+// Types
 import type { Plant } from '../../types';
-import { SAMPLE_PLANTS } from './constants';
 
 interface Props {
     plants: Plant[];
@@ -22,12 +32,44 @@ async function testNotification() {
 }
 
 export function SettingsScreen({ plants, onSeeded }: Props) {
-    const [perm, setPerm] = useState<NotificationPermission>(
-        isNotificationsSupported() ? Notification.permission : 'denied'
-    );
-    const [key, setKey] = useState(() => { return getPlantNetKey(); });
-    const [isKeySaved, setKeySaved] = useState(false);
-    const [isSeeded, setSeeded] = useState(false);
+    const [perm, setPerm] = useState<NotificationPermission>(() => {
+        return isNotificationsSupported() ? Notification.permission : 'denied';
+    });
+    const [key, setKey] = useState(() => {
+        return getPlantNetKey();
+    });
+    const [isKeySaved, setIsKeySaved] = useState(false);
+    const [isSeeded, setIsSeeded] = useState(false);
+
+    function renderNotificationStatus() {
+        if (!isNotificationsSupported()) {
+            return (
+                <div className={`${shared.notice} ${shared.warn}`}>Notifications aren't supported in this browser.</div>
+            );
+        }
+        if (perm === 'granted') {
+            return (
+                <>
+                    <div className={shared.notice}>✓ Notifications are enabled.</div>
+                    <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={testNotification}>
+                        Send a test notification
+                    </button>
+                </>
+            );
+        }
+        if (perm === 'denied' && Notification.permission === 'denied') {
+            return (
+                <div className={`${shared.notice} ${shared.warn}`}>
+                    Notifications are blocked. Enable them for this site in your browser settings.
+                </div>
+            );
+        }
+        return (
+            <button type="button" className={`${shared.btn} ${shared.block}`} onClick={enableNotifications}>
+                Enable notifications
+            </button>
+        );
+    }
 
     async function enableNotifications() {
         const p = await requestNotificationPermission();
@@ -54,8 +96,10 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                 notes: ''
             };
         });
-        await Promise.all(plants.map(savePlant));
-        setSeeded(true);
+        await Promise.all(plants.map((plant) => {
+            return savePlant(plant);
+        }));
+        setIsSeeded(true);
         onSeeded();
     }
 
@@ -74,28 +118,7 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                     Get a notification when a plant is due for watering, fertilising or repotting. Checks run
                     when the app is open or in the background (installed app on Android/Chrome).
                 </p>
-                {isNotificationsSupported() ? perm === 'granted'
-                    ? (
-                            <>
-                                <div className={shared.notice}>✓ Notifications are enabled.</div>
-                                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={testNotification}>
-                                    Send a test notification
-                                </button>
-                            </>
-                        )
-                    : perm === 'denied' && Notification.permission === 'denied'
-                        ? (
-                                <div className={`${shared.notice} ${shared.warn}`}>
-                                    Notifications are blocked. Enable them for this site in your browser settings.
-                                </div>
-                            )
-                        : (
-                                <button type="button" className={`${shared.btn} ${shared.block}`} onClick={enableNotifications}>
-                                    Enable notifications
-                                </button>
-                            ) : (
-                    <div className={`${shared.notice} ${shared.warn}`}>Notifications aren't supported in this browser.</div>
-                )}
+                {renderNotificationStatus()}
                 <p style={{ marginTop: 12,
                     marginBottom: 0 }}
                 >
@@ -119,9 +142,9 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                     <input
                         id="settings-plantnet-key"
                         value={key}
-                        onChange={(e) => {
-                            setKey(e.target.value);
-                            setKeySaved(false);
+                        onChange={(event_) => {
+                            setKey(event_.target.value);
+                            setIsKeySaved(false);
                         }}
                         placeholder="2b10…"
                         autoCapitalize="off"
@@ -133,7 +156,7 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                     className={`${shared.btn} ${shared.secondary} ${shared.block}`}
                     onClick={() => {
                         setPlantNetKey(key);
-                        setKeySaved(true);
+                        setIsKeySaved(true);
                     }}
                 >
                     {isKeySaved ? '✓ Saved' : 'Save key'}

@@ -1,5 +1,8 @@
-import type { Plant } from '../../types';
+// Hooks
 import { useObjectUrl } from '../../hooks';
+
+// Types
+import type { Plant } from '../../types';
 
 interface Props {
     plant: Plant;

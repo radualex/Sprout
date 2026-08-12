@@ -1,10 +1,20 @@
+import { useEffect, useRef, useState } from 'react';
+
+// Components
+import { AddPlantForm } from '../../components/AddPlantForm';
+
+// Hooks
+import { useObjectUrl } from '../../hooks';
+
+// Services
+import { getPlantNetKey, identifyPlant, type IdentifyResult } from '../../services/identify';
+
+// Styles
 import shared from '../../scss/shared.module.scss';
 import styles from './styles.module.scss';
-import { useEffect, useRef, useState } from 'react';
-import { useObjectUrl } from '../../hooks';
-import { getPlantNetKey, identifyPlant, type IdentifyResult } from '../../services/identify';
+
+// Types
 import type { Plant } from '../../types';
-import { AddPlantForm } from '../../components/AddPlantForm';
 import type { Phase } from './types';
 
 interface Props {
@@ -13,27 +23,32 @@ interface Props {
 
 export function IdentifyScreen({ onSaved }: Props) {
     const [phase, setPhase] = useState<Phase>('capture');
-    const [photo, setPhoto] = useState<Blob | null>(null);
+    const [photo, setPhoto] = useState<Blob | undefined>(undefined);
     const [results, setResults] = useState<IdentifyResult[]>([]);
-    const [picked, setPicked] = useState<IdentifyResult | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [picked, setPicked] = useState<IdentifyResult | undefined>(undefined);
+    const [error, setError] = useState<string | undefined>(undefined);
 
-    const photoUrl = useObjectUrl(photo ?? undefined);
+    const photoUrl = useObjectUrl(photo);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const streamRef = useRef<MediaStream | null>(null);
+    const streamRef = useRef<MediaStream | undefined>(undefined);
     const fileRef = useRef<HTMLInputElement>(null);
-    const [isStreaming, setStreaming] = useState(false);
+    const [isStreaming, setIsStreaming] = useState(false);
 
-    useEffect(() => { return stopCamera; }, []);
+    useEffect(() => {
+        return stopCamera;
+    }, []);
 
     function stopCamera() {
-        streamRef.current?.getTracks().forEach((t) => { t.stop(); });
-        streamRef.current = null;
-        setStreaming(false);
+        const tracks = streamRef.current?.getTracks() ?? [];
+        for (const track of tracks) {
+            track.stop();
+        }
+        streamRef.current = undefined;
+        setIsStreaming(false);
     }
 
     async function startCamera() {
-        setError(null);
+        setError(undefined);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: 'environment',
@@ -41,17 +56,25 @@ export function IdentifyScreen({ onSaved }: Props) {
                 audio: false
             });
             streamRef.current = stream;
-            setStreaming(true);
+            setIsStreaming(true);
             requestAnimationFrame(() => {
                 if (!videoRef.current) {
                     return;
                 }
 
                 videoRef.current.srcObject = stream;
-                videoRef.current.play().catch(() => {});
+                void playVideo(videoRef.current);
             });
         } catch {
             setError('Camera unavailable — you can upload a photo instead.');
+        }
+    }
+
+    async function playVideo(video: HTMLVideoElement) {
+        try {
+            await video.play();
+        } catch {
+            // Autoplay may be blocked by the browser; the stream is still attached to the video element.
         }
     }
 
@@ -61,7 +84,11 @@ export function IdentifyScreen({ onSaved }: Props) {
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        canvas.getContext('2d')!.drawImage(video, 0, 0);
+        const context = canvas.getContext('2d');
+        if (!context) {
+            return;
+        }
+        context.drawImage(video, 0, 0);
         canvas.toBlob(
             (blob) => {
                 if (!blob) {
@@ -76,24 +103,24 @@ export function IdentifyScreen({ onSaved }: Props) {
         );
     }
 
-    function onFile(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.at(0);
+    function onFile(event_: React.ChangeEvent<HTMLInputElement>) {
+        const file = event_.target.files?.item(0) ?? undefined;
         if (file) {
             setPhoto(file);
             stopCamera();
-            setError(null);
+            setError(undefined);
         }
-        e.target.value = '';
+        event_.target.value = '';
     }
 
     async function identify() {
         if (!photo) return;
         setPhase('identifying');
-        setError(null);
+        setError(undefined);
         try {
-            const res = await identifyPlant(photo);
-            setResults(res);
-            setPicked(res.at(0));
+            const result = await identifyPlant(photo);
+            setResults(result);
+            setPicked(result.at(0));
             setPhase('results');
         } catch (error_) {
             setError(error_ instanceof Error ? error_.message : 'Identification failed.');
@@ -102,9 +129,9 @@ export function IdentifyScreen({ onSaved }: Props) {
     }
 
     function reset() {
-        setPhoto(null);
+        setPhoto(undefined);
         setResults([]);
-        setPicked(null);
+        setPicked(undefined);
         setPhase('capture');
     }
 

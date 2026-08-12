@@ -1,3 +1,4 @@
+// Types
 import type { CareKind, Plant } from '../../types';
 
 export interface CareTask {

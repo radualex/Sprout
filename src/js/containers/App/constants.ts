@@ -1,3 +1,4 @@
+// Types
 import type { Tab } from './types';
 
 export const TABS: { id: Tab; label: string; icon: string; }[] = [{ id: 'plants',

@@ -1,5 +1,8 @@
-import type { CareKind, CareSchedule, Plant } from '../../types';
+// Constants
 import { CARE_DEFAULTS, DAY_MS } from './constants';
+
+// Types
+import type { CareKind, CareSchedule, Plant } from '../../types';
 import type { CareTask } from './types';
 
 export { DAY_MS, CARE_META } from './constants';
@@ -12,32 +15,43 @@ function intervalMs(plant: Plant, kind: CareKind): number {
     return c.repotEveryMonths * 30 * DAY_MS;
 }
 
-export function nextDue(plant: Plant, kind: CareKind): number | null {
+export function nextDue(plant: Plant, kind: CareKind): number | undefined {
     const interval = intervalMs(plant, kind);
-    if (interval <= 0) return null;
+    if (interval <= 0) return undefined;
     return plant.lastCare[kind] + interval;
+}
+
+function tasksForPlant(plant: Plant, now: number): CareTask[] {
+    const tasks: CareTask[] = [];
+    for (const kind of ['water', 'fertilize', 'repot'] as CareKind[]) {
+        const dueAt = nextDue(plant, kind);
+        if (dueAt === undefined) {
+            continue;
+        }
+        tasks.push({
+            plant,
+            kind,
+            dueAt,
+            daysUntil: Math.ceil((dueAt - now) / DAY_MS)
+        });
+    }
+    return tasks;
 }
 
 /** All tasks across plants, soonest first. */
 export function allTasks(plants: Plant[], now = Date.now()): CareTask[] {
-    const tasks: CareTask[] = [];
-    for (const plant of plants) {
-        for (const kind of ['water', 'fertilize', 'repot'] as CareKind[]) {
-            const dueAt = nextDue(plant, kind);
-            if (dueAt === null) continue;
-            tasks.push({
-                plant,
-                kind,
-                dueAt,
-                daysUntil: Math.ceil((dueAt - now) / DAY_MS)
-            });
-        }
-    }
-    return tasks.sort((a, b) => { return a.dueAt - b.dueAt; });
+    const tasks = plants.flatMap((plant) => {
+        return tasksForPlant(plant, now);
+    });
+    return tasks.toSorted((a, b) => {
+        return a.dueAt - b.dueAt;
+    });
 }
 
 export function dueTasks(plants: Plant[], now = Date.now()): CareTask[] {
-    return allTasks(plants, now).filter((t) => { return t.dueAt <= now; });
+    return allTasks(plants, now).filter((t) => {
+        return t.dueAt <= now;
+    });
 }
 
 export function formatDue(daysUntil: number): string {
@@ -53,7 +67,9 @@ export function formatDue(daysUntil: number): string {
 /** Care defaults by species keyword. First match wins; fallback is a safe generic. */
 export function defaultCareFor(species: string, commonName = ''): CareSchedule {
     const hay = `${species} ${commonName}`;
-    const hit = CARE_DEFAULTS.find((d) => { return d.match.test(hay); });
+    const hit = CARE_DEFAULTS.find((d) => {
+        return d.match.test(hay);
+    });
     return hit
         ? { ...hit.care }
         : { waterEveryDays: 7,

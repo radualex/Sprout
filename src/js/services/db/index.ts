@@ -1,44 +1,62 @@
-import type { Plant } from '../../types';
+// Constants
 import { DB_NAME, STORE } from './constants';
 
-let databasePromise: Promise<IDBDatabase> | null = null;
+// Types
+import type { Plant } from '../../types';
 
-function openDatabase(): Promise<IDBDatabase> {
-    if (databasePromise) return databasePromise;
-    databasePromise = new Promise((resolve, reject) => {
+function createDatabase(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
-        request.onupgradeneeded = () => {
+        request.addEventListener('upgradeneeded', () => {
             request.result.createObjectStore(STORE, { keyPath: 'id' });
-        };
-        request.onsuccess = () => { resolve(request.result); };
-        request.onerror = () => { reject(request.error); };
+        });
+        request.addEventListener('success', () => {
+            resolve(request.result);
+        });
+        request.addEventListener('error', () => {
+            reject(request.error ?? new Error('Failed to open database'));
+        });
     });
-    return databasePromise;
 }
 
-function tx<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
-    return openDatabase().then(
-        (database) => {
-            return new Promise<T>((resolve, reject) => {
-                const t = database.transaction(STORE, mode);
-                const request = run(t.objectStore(STORE));
-                request.onsuccess = () => { resolve(request.result); };
-                request.onerror = () => { reject(request.error); };
-            });
-        }
-    );
+const openDatabase = (() => {
+    let promise: Promise<IDBDatabase> | undefined;
+    return function open(): Promise<IDBDatabase> {
+        promise ??= createDatabase();
+        return promise;
+    };
+})();
+
+async function tx<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+    const database = await openDatabase();
+    return new Promise<T>((resolve, reject) => {
+        const transaction = database.transaction(STORE, mode);
+        const request = run(transaction.objectStore(STORE));
+        request.addEventListener('success', () => {
+            resolve(request.result);
+        });
+        request.addEventListener('error', () => {
+            reject(request.error ?? new Error('IndexedDB request failed'));
+        });
+    });
 }
 
 export function getAllPlants(): Promise<Plant[]> {
-    return tx('readonly', (s) => { return s.getAll() as IDBRequest<Plant[]>; });
+    return tx('readonly', (store) => {
+        return store.getAll() as IDBRequest<Plant[]>;
+    });
 }
 
 export function savePlant(plant: Plant): Promise<IDBValidKey> {
-    return tx('readwrite', (s) => { return s.put(plant); });
+    return tx('readwrite', (store) => {
+        return store.put(plant);
+    });
 }
 
 export function deletePlant(id: string): Promise<undefined> {
-    return tx('readwrite', (s) => { return s.delete(id); });
+    return tx('readwrite', (store) => {
+        return store.delete(id);
+    });
 }
 
 export function newId(): string {

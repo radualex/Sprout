@@ -4,6 +4,18 @@ import { CARE_META, DAY_MS, dueTasks } from '../../helpers/care';
 // Services
 import { getAllPlants, savePlant } from '../db';
 
+interface PeriodicSyncManager {
+    register: (tag: string, options: { minInterval: number; }) => Promise<void>;
+}
+
+interface ServiceWorkerRegistrationWithPeriodicSync extends ServiceWorkerRegistration {
+    periodicSync?: PeriodicSyncManager;
+}
+
+interface CareCheckMessage {
+    type?: string;
+}
+
 export function isNotificationsSupported(): boolean {
     return 'Notification' in globalThis && 'serviceWorker' in navigator;
 }
@@ -17,9 +29,9 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 
 async function registerPeriodicSync() {
     try {
-        const reg = await navigator.serviceWorker.ready;
+        const reg = await navigator.serviceWorker.ready as ServiceWorkerRegistrationWithPeriodicSync;
         // Only available on installed PWAs in Chromium; fails silently elsewhere.
-        await (reg as any).periodicSync?.register('sprout-care-check', {
+        await reg.periodicSync?.register('sprout-care-check', {
             minInterval: 12 * 60 * 60 * 1000
         });
     } catch {
@@ -71,9 +83,9 @@ export async function startCareWatcher() {
         return checkAndNotify();
     }, 60 * 60 * 1000);
 
-    navigator.serviceWorker.addEventListener('message', async (event) => {
-        if (event.data?.type === 'care-check') {
+    navigator.serviceWorker.addEventListener('message', async (event: MessageEvent<CareCheckMessage>) => {
+        if (event.data.type === 'care-check') {
             await checkAndNotify();
-        };
+        }
     });
 }

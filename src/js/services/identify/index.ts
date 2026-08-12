@@ -6,6 +6,20 @@ import type { IdentifyResult } from './types';
 
 export type { IdentifyResult } from './types';
 
+interface PlantNetSpecies {
+    scientificNameWithoutAuthor?: string;
+    commonNames?: string[];
+}
+
+interface PlantNetMatch {
+    species?: PlantNetSpecies;
+    score?: number;
+}
+
+interface PlantNetResponse {
+    results?: PlantNetMatch[];
+}
+
 export function getPlantNetKey(): string {
     return localStorage.getItem(API_KEY_STORAGE) ?? '';
 }
@@ -42,13 +56,12 @@ export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
         throw new Error(`PlantNet error (HTTP ${response.status}). Try again.`);
     }
 
-    const data = await response.json();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const results: IdentifyResult[] = (data.results ?? []).slice(0, 5).map((r: any) => {
+    const data = await response.json() as PlantNetResponse;
+    const results: IdentifyResult[] = (data.results ?? []).slice(0, 5).map((match) => {
         return {
-            species: r.species?.scientificNameWithoutAuthor ?? 'Unknown species',
-            commonName: r.species?.commonNames?.at(0) ?? '',
-            confidence: r.score ?? 0,
+            species: match.species?.scientificNameWithoutAuthor ?? 'Unknown species',
+            commonName: match.species?.commonNames?.at(0) ?? '',
+            confidence: match.score ?? 0,
             source: 'plantnet' as const
         };
     });

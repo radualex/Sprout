@@ -1,8 +1,17 @@
-import shared from '../../scss/shared.module.scss';
-import { allTasks, type CareTask } from '../../helpers/care';
-import { useClock } from '../../hooks';
-import type { Plant } from '../../types';
+// Components
 import { TaskRow } from '../../components/TaskRow';
+
+// Helpers
+import { allTasks, type CareTask } from '../../helpers/care';
+
+// Hooks
+import { useClock } from '../../hooks';
+
+// Styles
+import shared from '../../scss/shared.module.scss';
+
+// Types
+import type { Plant } from '../../types';
 
 interface Props {
     plants: Plant[];
@@ -13,8 +22,12 @@ interface Props {
 export function CareScreen({ plants, onDone, onSelect }: Props) {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
     const tasks = allTasks(plants);
-    const due = tasks.filter((t) => { return t.daysUntil <= 0; });
-    const upcoming = tasks.filter((t) => { return t.daysUntil > 0 && t.daysUntil <= 14; });
+    const due = tasks.filter((t) => {
+        return t.daysUntil <= 0;
+    });
+    const upcoming = tasks.filter((t) => {
+        return t.daysUntil > 0 && t.daysUntil <= 14;
+    });
 
     function markDone(task: CareTask) {
         const updated: Plant = {

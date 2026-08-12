@@ -1,9 +1,19 @@
-import shared from '../../scss/shared.module.scss';
 import { useState } from 'react';
+
+// Helpers
 import { defaultCareFor } from '../../helpers/care';
+
+// Hooks
 import { useObjectUrl } from '../../hooks';
+
+// Services
 import { newId } from '../../services/db';
 import type { IdentifyResult } from '../../services/identify';
+
+// Styles
+import shared from '../../scss/shared.module.scss';
+
+// Types
 import type { CareSchedule, Plant } from '../../types';
 
 interface Props {
@@ -15,7 +25,9 @@ interface Props {
 
 export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
     const [nickname, setNickname] = useState(result.commonName || result.species);
-    const [care, setCare] = useState<CareSchedule>(() => { return defaultCareFor(result.species, result.commonName); });
+    const [care, setCare] = useState<CareSchedule>(() => {
+        return defaultCareFor(result.species, result.commonName);
+    });
     const photoUrl = useObjectUrl(photo);
 
     function save() {
@@ -57,7 +69,7 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
 
             <div className={shared.field}>
                 <label htmlFor="apf-nickname">Nickname</label>
-                <input id="apf-nickname" value={nickname} onChange={(e) => { setNickname(e.target.value); }} placeholder="e.g. Kitchen monstera" />
+                <input id="apf-nickname" value={nickname} onChange={(event_) => { setNickname(event_.target.value); }} placeholder="e.g. Kitchen monstera" />
             </div>
 
             <div className={shared.sectionTitle}>Care schedule</div>
@@ -67,9 +79,9 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
                     <select
                         id="apf-water"
                         value={care.waterEveryDays}
-                        onChange={(e) => {
+                        onChange={(event_) => {
                             setCare({ ...care,
-                                waterEveryDays: +e.target.value });
+                                waterEveryDays: +event_.target.value });
                         }}
                     >
                         {[2, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 18, 21, 28].map((d) => {
@@ -84,9 +96,9 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
                     <select
                         id="apf-fertilize"
                         value={care.fertilizeEveryDays}
-                        onChange={(e) => {
+                        onChange={(event_) => {
                             setCare({ ...care,
-                                fertilizeEveryDays: +e.target.value });
+                                fertilizeEveryDays: +event_.target.value });
                         }}
                     >
                         <option value={0}>never</option>
@@ -103,9 +115,9 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
                 <select
                     id="apf-repot"
                     value={care.repotEveryMonths}
-                    onChange={(e) => {
+                    onChange={(event_) => {
                         setCare({ ...care,
-                            repotEveryMonths: +e.target.value });
+                            repotEveryMonths: +event_.target.value });
                     }}
                 >
                     <option value={0}>never</option>

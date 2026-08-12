@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 // Components
 import App from './js/containers/App';
@@ -10,10 +10,16 @@ import { startCareWatcher } from './js/services/notifications';
 // Styles
 import './js/scss/globals.scss';
 
-ReactDOM.createRoot(document.querySelector('#root')!).render(
-    <React.StrictMode>
+const root = document.querySelector('#root');
+
+if (!root) {
+    throw new Error('Root element not found');
+}
+
+createRoot(root).render(
+    <StrictMode>
         <App />
-    </React.StrictMode>
+    </StrictMode>
 );
 
 if ('serviceWorker' in navigator) {
