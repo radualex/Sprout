@@ -1,13 +1,6 @@
-import { useState } from 'react';
-
-// Constants
-import { SAMPLE_PLANTS } from './constants';
-
-// Helpers
-import { DAY_MS, defaultCareFor } from '../../helpers/care';
+import React, { useState } from 'react';
 
 // Services
-import { newId, savePlant } from '../../services/db';
 import { getPlantNetKey, setPlantNetKey } from '../../services/identify';
 import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '../../services/notifications';
 
@@ -18,9 +11,8 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '../../types';
 
-interface Props {
+interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
-    onSeeded: () => void;
 }
 
 async function testNotification() {
@@ -31,7 +23,7 @@ async function testNotification() {
     });
 }
 
-export function SettingsScreen({ plants, onSeeded }: Props) {
+export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     const [perm, setPerm] = useState<NotificationPermission>(() => {
         return isNotificationsSupported() ? Notification.permission : 'denied';
     });
@@ -39,7 +31,6 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
         return getPlantNetKey();
     });
     const [isKeySaved, setIsKeySaved] = useState(false);
-    const [isSeeded, setIsSeeded] = useState(false);
 
     function renderNotificationStatus() {
         if (!isNotificationsSupported()) {
@@ -49,12 +40,12 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
         }
         if (perm === 'granted') {
             return (
-                <>
+                <React.Fragment>
                     <div className={shared.notice}>✓ Notifications are enabled.</div>
                     <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={testNotification}>
                         Send a test notification
                     </button>
-                </>
+                </React.Fragment>
             );
         }
         if (perm === 'denied' && Notification.permission === 'denied') {
@@ -77,34 +68,18 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
         if (p === 'granted') await checkAndNotify();
     }
 
-    async function seedSampleData() {
-        const now = Date.now();
-        const plants = SAMPLE_PLANTS.map(([nickname, species, commonName, daysAgo]) => {
-            return {
-                id: newId(),
-                nickname,
-                species,
-                commonName,
-                acquiredAt: now - 90 * DAY_MS,
-                care: defaultCareFor(species, commonName),
-                lastCare: {
-                    water: now - daysAgo * DAY_MS,
-                    fertilize: now - 20 * DAY_MS,
-                    repot: now - 200 * DAY_MS
-                },
-                lastNotified: {},
-                notes: ''
-            };
-        });
-        await Promise.all(plants.map((plant) => {
-            return savePlant(plant);
-        }));
-        setIsSeeded(true);
-        onSeeded();
+    function updateKey(event_: React.ChangeEvent<HTMLInputElement>) {
+        setKey(event_.target.value);
+        setIsKeySaved(false);
+    }
+
+    function saveKey() {
+        setPlantNetKey(key);
+        setIsKeySaved(true);
     }
 
     return (
-        <div className={shared.screen}>
+        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Settings</h1>
@@ -119,9 +94,7 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                     when the app is open or in the background (installed app on Android/Chrome).
                 </p>
                 {renderNotificationStatus()}
-                <p style={{ marginTop: 12,
-                    marginBottom: 0 }}
-                >
+                <p style={{ marginTop: 12, marginBottom: 0 }}>
                     💡 On iPhone, open this app in Safari, tap Share → <strong>Add to Home Screen</strong>,
                     then enable notifications from the installed app (iOS 16.4+).
                 </p>
@@ -134,40 +107,14 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
                     <a href="https://my.plantnet.org" target="_blank" rel="noreferrer">
                         PlantNet API
                     </a>
-                    . Create an account, copy your API key, and paste it here. Without a key the app runs in
-                    demo mode with sample matches.
+                    . Create an account, copy your API key, and paste it here to enable recognition.
                 </p>
                 <div className={shared.field}>
                     <label htmlFor="settings-plantnet-key">PlantNet API key</label>
-                    <input
-                        id="settings-plantnet-key"
-                        value={key}
-                        onChange={(event_) => {
-                            setKey(event_.target.value);
-                            setIsKeySaved(false);
-                        }}
-                        placeholder="2b10…"
-                        autoCapitalize="off"
-                        autoCorrect="off"
-                    />
+                    <input id="settings-plantnet-key" value={key} onChange={updateKey} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" />
                 </div>
-                <button
-                    type="button"
-                    className={`${shared.btn} ${shared.secondary} ${shared.block}`}
-                    onClick={() => {
-                        setPlantNetKey(key);
-                        setIsKeySaved(true);
-                    }}
-                >
+                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={saveKey}>
                     {isKeySaved ? '✓ Saved' : 'Save key'}
-                </button>
-            </div>
-
-            <div className={styles.settingsCard}>
-                <h3>🧪 Sample data</h3>
-                <p>Add three example plants with realistic care schedules to explore the app.</p>
-                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={seedSampleData} disabled={isSeeded}>
-                    {isSeeded ? '✓ Sample plants added' : 'Add sample plants'}
                 </button>
             </div>
 
@@ -181,4 +128,4 @@ export function SettingsScreen({ plants, onSeeded }: Props) {
             </div>
         </div>
     );
-}
+};

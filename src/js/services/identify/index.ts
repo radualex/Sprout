@@ -1,5 +1,5 @@
 // Constants
-import { API_KEY_STORAGE, DEMO_POOL } from './constants';
+import { API_KEY_STORAGE } from './constants';
 
 // Types
 import type { IdentifyResult } from './types';
@@ -30,13 +30,12 @@ export function setPlantNetKey(key: string) {
 }
 
 /**
- * Identify a plant photo. Uses the PlantNet API when a key is configured
- * (free at https://my.plantnet.org), otherwise returns demo suggestions so
- * the flow is usable without setup.
+ * Identify a plant photo via the PlantNet API. Requires an API key configured
+ * in Settings (free at https://my.plantnet.org).
  */
 export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
     const key = getPlantNetKey();
-    if (!key) return demoResults();
+    if (!key) throw new Error('Add a PlantNet API key in Settings to identify plants.');
 
     const form = new FormData();
     form.append('images', photo, 'plant.jpg');
@@ -61,8 +60,7 @@ export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
         return {
             species: match.species?.scientificNameWithoutAuthor ?? 'Unknown species',
             commonName: match.species?.commonNames?.at(0) ?? '',
-            confidence: match.score ?? 0,
-            source: 'plantnet' as const
+            confidence: match.score ?? 0
         };
     });
 
@@ -71,24 +69,4 @@ export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
     }
 
     return results;
-}
-
-function demoResults(): Promise<IdentifyResult[]> {
-    const picks = [...DEMO_POOL].toSorted(() => {
-        return Math.random() - 0.5;
-    }).slice(0, 3);
-    const results = picks.map(([species, commonName], i) => {
-        return {
-            species,
-            commonName,
-            confidence: [0.86, 0.41, 0.18][i],
-            source: 'demo' as const
-        };
-    });
-
-    return new Promise((resolve) => {
-        return setTimeout(() => {
-            resolve(results);
-        }, 900);
-    });
 }

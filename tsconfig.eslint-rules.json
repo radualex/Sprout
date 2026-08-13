@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "strict": true,
+    "noEmit": false,
+    "outDir": "./eslint-rules",
+    "rootDir": "./eslint-rules"
+  },
+  "include": ["eslint-rules/**/*.ts"],
+  "exclude": ["**/*.js"]
+}

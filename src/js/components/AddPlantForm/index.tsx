@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+// Components
+import { CareScheduleFields } from '../CareScheduleFields';
 
 // Helpers
 import { defaultCareFor } from '../../helpers/care';
@@ -16,14 +19,14 @@ import shared from '../../scss/shared.module.scss';
 // Types
 import type { CareSchedule, Plant } from '../../types';
 
-interface Props {
+interface Props extends React.ComponentProps<'div'> {
     photo: Blob;
     result: IdentifyResult;
     onCancel: () => void;
     onSaved: (plant: Plant) => void;
 }
 
-export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
+export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSaved, ...props }) => {
     const [nickname, setNickname] = useState(result.commonName || result.species);
     const [care, setCare] = useState<CareSchedule>(() => {
         return defaultCareFor(result.species, result.commonName);
@@ -49,18 +52,9 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
     }
 
     return (
-        <>
+        <div {...props}>
             <div className={`${shared.resultCard} ${shared.selected}`}>
-                {photoUrl && (
-                    <img
-                        src={photoUrl}
-                        alt=""
-                        style={{ width: 56,
-                            height: 56,
-                            borderRadius: 12,
-                            objectFit: 'cover' }}
-                    />
-                )}
+                {photoUrl && <img src={photoUrl} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} />}
                 <div>
                     <div className={shared.common}>{result.commonName || result.species}</div>
                     <div className={shared.sci}>{result.species}</div>
@@ -73,62 +67,7 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
             </div>
 
             <div className={shared.sectionTitle}>Care schedule</div>
-            <div className={shared.fieldRow}>
-                <div className={shared.field}>
-                    <label htmlFor="apf-water">💧 Water</label>
-                    <select
-                        id="apf-water"
-                        value={care.waterEveryDays}
-                        onChange={(event_) => {
-                            setCare({ ...care,
-                                waterEveryDays: +event_.target.value });
-                        }}
-                    >
-                        {[2, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 18, 21, 28].map((d) => {
-                            return (
-                                <option key={d} value={d}>every {d} days</option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div className={shared.field}>
-                    <label htmlFor="apf-fertilize">🌿 Fertilise</label>
-                    <select
-                        id="apf-fertilize"
-                        value={care.fertilizeEveryDays}
-                        onChange={(event_) => {
-                            setCare({ ...care,
-                                fertilizeEveryDays: +event_.target.value });
-                        }}
-                    >
-                        <option value={0}>never</option>
-                        {[14, 21, 30, 45, 60, 90].map((d) => {
-                            return (
-                                <option key={d} value={d}>every {d} days</option>
-                            );
-                        })}
-                    </select>
-                </div>
-            </div>
-            <div className={shared.field}>
-                <label htmlFor="apf-repot">🪴 Repot</label>
-                <select
-                    id="apf-repot"
-                    value={care.repotEveryMonths}
-                    onChange={(event_) => {
-                        setCare({ ...care,
-                            repotEveryMonths: +event_.target.value });
-                    }}
-                >
-                    <option value={0}>never</option>
-                    {[6, 12, 18, 24, 30, 36].map((m) => {
-                        return (
-                            <option key={m} value={m}>every {m} months</option>
-                        );
-                    })}
-                </select>
-                <div className={shared.hint}>Suggested defaults are based on the identified species — tweak as needed.</div>
-            </div>
+            <CareScheduleFields idPrefix="apf" value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
 
             <div className={shared.shutterRow}>
                 <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={onCancel}>
@@ -138,6 +77,6 @@ export function AddPlantForm({ photo, result, onCancel, onSaved }: Props) {
                     🌱 Add to my plants
                 </button>
             </div>
-        </>
+        </div>
     );
-}
+};

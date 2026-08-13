@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Components
 import { PlantPhoto } from '../../components/PlantPhoto';
 
@@ -15,17 +17,17 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '../../types';
 
-interface Props {
+interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
     plants: Plant[];
     onSelect: (id: string) => void;
     onAdd: () => void;
 }
 
-export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
+export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect, onAdd, className, ...props }) => {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
 
     return (
-        <div className={shared.screen}>
+        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Sprout</h1>
@@ -62,7 +64,7 @@ export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
                         const next = tasks.at(0);
                         return (
                             <button key={plant.id} type="button" className={styles.plantCard} onClick={() => { onSelect(plant.id); }}>
-                                <PlantPhoto plant={plant} className={styles.photo} />
+                                <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
                                 <div className={styles.meta}>
                                     <div className={styles.name}>{displayName(plant)}</div>
                                     <div className={styles.species}>{plant.species}</div>
@@ -70,10 +72,7 @@ export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
                                         {urgent.length > 0 ? (
                                             urgent.map((t) => {
                                                 return (
-                                                    <span
-                                                        key={t.kind}
-                                                        className={`${styles.chip} ${t.daysUntil < 0 ? styles.overdue : styles.due}`}
-                                                    >
+                                                    <span key={t.kind} className={`${styles.chip} ${t.daysUntil < 0 ? styles.overdue : styles.due}`}>
                                                         {CARE_META[t.kind].emoji} {formatDue(t.daysUntil)}
                                                     </span>
                                                 );
@@ -95,4 +94,4 @@ export function PlantsScreen({ plants, onSelect, onAdd }: Props) {
             )}
         </div>
     );
-}
+};

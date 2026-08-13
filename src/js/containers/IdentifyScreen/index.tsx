@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Components
 import { AddPlantForm } from '../../components/AddPlantForm';
@@ -7,7 +7,7 @@ import { AddPlantForm } from '../../components/AddPlantForm';
 import { useObjectUrl } from '../../hooks';
 
 // Services
-import { getPlantNetKey, identifyPlant, type IdentifyResult } from '../../services/identify';
+import { identifyPlant, type IdentifyResult } from '../../services/identify';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -17,11 +17,11 @@ import styles from './styles.module.scss';
 import type { Plant } from '../../types';
 import type { Phase } from './types';
 
-interface Props {
+interface Props extends React.ComponentProps<'div'> {
     onSaved: (plant: Plant) => void;
 }
 
-export function IdentifyScreen({ onSaved }: Props) {
+export const IdentifyScreen: React.FunctionComponent<Props> = ({ onSaved, className, ...props }) => {
     const [phase, setPhase] = useState<Phase>('capture');
     const [photo, setPhoto] = useState<Blob | undefined>(undefined);
     const [results, setResults] = useState<IdentifyResult[]>([]);
@@ -136,7 +136,7 @@ export function IdentifyScreen({ onSaved }: Props) {
     }
 
     return (
-        <div className={shared.screen}>
+        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Identify</h1>
@@ -147,7 +147,7 @@ export function IdentifyScreen({ onSaved }: Props) {
             {error && <div className={`${shared.notice} ${shared.error}`}>{error}</div>}
 
             {(phase === 'capture' || phase === 'identifying') && (
-                <>
+                <React.Fragment>
                     <div className={styles.cameraStage}>
                         {photoUrl ? (
                             <img src={photoUrl} alt="Captured plant" />
@@ -165,66 +165,46 @@ export function IdentifyScreen({ onSaved }: Props) {
 
                     <div className={shared.shutterRow}>
                         {photoUrl ? (
-                            <>
+                            <React.Fragment>
                                 <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={reset} disabled={phase === 'identifying'}>
                                     Retake
                                 </button>
                                 <button type="button" className={shared.btn} onClick={identify} disabled={phase === 'identifying'}>
                                     {phase === 'identifying' ? <span className={styles.spinner} /> : '🔍 Identify'}
                                 </button>
-                            </>
+                            </React.Fragment>
                         ) : (isStreaming
                             ? (
-                                    <>
+                                    <React.Fragment>
                                         <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={stopCamera}>
                                             Cancel
                                         </button>
                                         <button type="button" className={shared.btn} onClick={capture}>
                                             📸 Capture
                                         </button>
-                                    </>
+                                    </React.Fragment>
                                 )
                             : (
-                                    <>
+                                    <React.Fragment>
                                         <button type="button" className={shared.btn} onClick={startCamera}>
                                             📷 Open camera
                                         </button>
                                         <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={() => { return fileRef.current?.click(); }}>
                                             🖼 Upload
                                         </button>
-                                    </>
+                                    </React.Fragment>
                                 ))}
                     </div>
-                    <input
-                        ref={fileRef}
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        hidden
-                        aria-label="Upload a photo of your plant"
-                        onChange={onFile}
-                    />
-
-                    {!getPlantNetKey() && (
-                        <div className={shared.notice}>
-                            <strong>Demo mode:</strong> identification returns sample matches. Add a free{' '}
-                            PlantNet API key in Settings for real recognition.
-                        </div>
-                    )}
-                </>
+                    <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden aria-label="Upload a photo of your plant" onChange={onFile} />
+                </React.Fragment>
             )}
 
             {phase === 'results' && (
-                <>
+                <React.Fragment>
                     <div className={shared.sectionTitle}>Best matches</div>
                     {results.map((r) => {
                         return (
-                            <button
-                                key={r.species}
-                                type="button"
-                                className={`${shared.resultCard} ${picked?.species === r.species ? shared.selected : ''}`}
-                                onClick={() => { setPicked(r); }}
-                            >
+                            <button key={r.species} type="button" className={`${shared.resultCard} ${picked?.species === r.species ? shared.selected : ''}`} onClick={() => { setPicked(r); }}>
                                 <div>
                                     <div className={shared.common}>{r.commonName || r.species}</div>
                                     <div className={shared.sci}>{r.species}</div>
@@ -233,12 +213,6 @@ export function IdentifyScreen({ onSaved }: Props) {
                             </button>
                         );
                     })}
-                    {results.at(0)?.source === 'demo' && (
-                        <div className={`${shared.notice} ${shared.warn}`}>
-                            These are sample results (demo mode). Add a PlantNet key in Settings for real
-                            identification.
-                        </div>
-                    )}
                     <div className={shared.shutterRow}>
                         <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={reset}>
                             Retake
@@ -247,7 +221,7 @@ export function IdentifyScreen({ onSaved }: Props) {
                             Continue →
                         </button>
                     </div>
-                </>
+                </React.Fragment>
             )}
 
             {phase === 'form' && picked && photo && (
@@ -255,4 +229,4 @@ export function IdentifyScreen({ onSaved }: Props) {
             )}
         </div>
     );
-}
+};

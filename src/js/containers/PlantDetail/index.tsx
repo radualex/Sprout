@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // Components
 import { PlantPhoto } from '../../components/PlantPhoto';
@@ -18,14 +18,14 @@ import styles from './styles.module.scss';
 // Types
 import type { CareKind, Plant } from '../../types';
 
-interface Props {
+interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
     onBack: () => void;
     onSave: (plant: Plant) => void;
     onDelete: (id: string) => void;
 }
 
-export function PlantDetail({ plant, onBack, onSave, onDelete }: Props) {
+export const PlantDetail: React.FunctionComponent<Props> = ({ plant, onBack, onSave, onDelete, className, ...props }) => {
     const now = useClock();
     const [isEditing, setIsEditing] = useState(false);
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
@@ -36,13 +36,22 @@ export function PlantDetail({ plant, onBack, onSave, onDelete }: Props) {
                 [kind]: Date.now() } });
     }
 
+    function saveEdited(edited: Plant) {
+        onSave(edited);
+        setIsEditing(false);
+    }
+
+    function cancelEdit() {
+        setIsEditing(false);
+    }
+
     return (
-        <div className={shared.screen}>
+        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <button type="button" className={styles.backBtn} onClick={onBack}>
                 ← My Plants
             </button>
 
-            <PlantPhoto plant={plant} className={styles.detailHero} />
+            <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.detailHero} />
 
             <header className={shared.appHeader} style={{ paddingTop: 14 }}>
                 <div>
@@ -97,19 +106,9 @@ export function PlantDetail({ plant, onBack, onSave, onDelete }: Props) {
 
             <div className={shared.sectionTitle}>Schedule</div>
             {isEditing ? (
-                <EditSchedule
-                    key={plant.id}
-                    plant={plant}
-                    onSave={(p) => {
-                        onSave(p);
-                        setIsEditing(false);
-                    }}
-                    onCancel={() => {
-                        setIsEditing(false);
-                    }}
-                />
+                <EditSchedule key={plant.id} plant={plant} onSave={saveEdited} onCancel={cancelEdit} />
             ) : (
-                <>
+                <React.Fragment>
                     <div className={shared.notice}>
                         💧 every {plant.care.waterEveryDays} days ·{' '}
                         🌿 {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'} ·{' '}
@@ -118,12 +117,10 @@ export function PlantDetail({ plant, onBack, onSave, onDelete }: Props) {
                     <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={() => { setIsEditing(true); }}>
                         Edit schedule
                     </button>
-                </>
+                </React.Fragment>
             )}
 
-            <div style={{ marginTop: 24,
-                textAlign: 'center' }}
-            >
+            <div style={{ marginTop: 24, textAlign: 'center' }}>
                 {isConfirmDelete ? (
                     <div className={shared.shutterRow}>
                         <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={() => { setIsConfirmDelete(false); }}>
@@ -141,4 +138,4 @@ export function PlantDetail({ plant, onBack, onSave, onDelete }: Props) {
             </div>
         </div>
     );
-}
+};

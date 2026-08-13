@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Components
 import { TaskRow } from '../../components/TaskRow';
 
@@ -13,13 +15,13 @@ import shared from '../../scss/shared.module.scss';
 // Types
 import type { Plant } from '../../types';
 
-interface Props {
+interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
     plants: Plant[];
     onDone: (plant: Plant) => void;
     onSelect: (id: string) => void;
 }
 
-export function CareScreen({ plants, onDone, onSelect }: Props) {
+export const CareScreen: React.FunctionComponent<Props> = ({ plants, onDone, onSelect, className, ...props }) => {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
     const tasks = allTasks(plants);
     const due = tasks.filter((t) => {
@@ -39,7 +41,7 @@ export function CareScreen({ plants, onDone, onSelect }: Props) {
     }
 
     return (
-        <div className={shared.screen}>
+        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Care</h1>
@@ -56,9 +58,9 @@ export function CareScreen({ plants, onDone, onSelect }: Props) {
                     <p>Add plants and their watering, fertilising and repotting tasks will show up here.</p>
                 </div>
             ) : (
-                <>
+                <React.Fragment>
                     {due.length > 0 && (
-                        <>
+                        <React.Fragment>
                             <div className={shared.sectionTitle}>Needs attention</div>
                             <div className={shared.taskList}>
                                 {due.map((t) => {
@@ -67,7 +69,7 @@ export function CareScreen({ plants, onDone, onSelect }: Props) {
                                     );
                                 })}
                             </div>
-                        </>
+                        </React.Fragment>
                     )}
 
                     <div className={shared.sectionTitle}>Coming up</div>
@@ -82,8 +84,8 @@ export function CareScreen({ plants, onDone, onSelect }: Props) {
                             })}
                         </div>
                     )}
-                </>
+                </React.Fragment>
             )}
         </div>
     );
-}
+};

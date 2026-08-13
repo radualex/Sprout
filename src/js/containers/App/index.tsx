@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Constants
 import { TABS } from './constants';
@@ -26,7 +26,10 @@ import styles from './styles.module.scss';
 import type { Plant } from '../../types';
 import type { Tab } from './types';
 
-export default function App() {
+interface Props extends React.ComponentProps<'div'> {
+}
+
+export const App: React.FunctionComponent<Props> = ({ ...props }) => {
     const [tab, setTab] = useState<Tab>('plants');
     const [plants, setPlants] = useState<Plant[]>([]);
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
@@ -65,71 +68,61 @@ export default function App() {
         return p.id === selectedId;
     });
 
+    function selectTab(nextTab: Tab) {
+        setSelectedId(undefined);
+        setTab(nextTab);
+    }
+
+    function openAdd() {
+        setTab('identify');
+    }
+
+    function handleSaved(plant: Plant) {
+        void upsert(plant);
+        setTab('plants');
+        setSelectedId(plant.id);
+    }
+
+    function selectPlant(id: string) {
+        setSelectedId(id);
+    }
+
+    function closeDetail() {
+        setSelectedId(undefined);
+    }
+
     function renderScreen() {
         if (selected) {
             return (
-                <PlantDetail
-                    plant={selected}
-                    onBack={() => {
-                        setSelectedId(undefined);
-                    }}
-                    onSave={upsert}
-                    onDelete={remove}
-                />
+                <PlantDetail plant={selected} onBack={closeDetail} onSave={upsert} onDelete={remove} />
             );
         }
         if (tab === 'plants') {
             return (
-                <PlantsScreen
-                    plants={plants}
-                    onSelect={setSelectedId}
-                    onAdd={() => {
-                        setTab('identify');
-                    }}
-                />
+                <PlantsScreen plants={plants} onSelect={selectPlant} onAdd={openAdd} />
             );
         }
         if (tab === 'identify') {
             return (
-                <IdentifyScreen
-                    onSaved={(plant) => {
-                        void upsert(plant);
-                        setTab('plants');
-                        setSelectedId(plant.id);
-                    }}
-                />
+                <IdentifyScreen onSaved={handleSaved} />
             );
         }
         if (tab === 'care') {
             return (
-                <CareScreen
-                    plants={plants}
-                    onDone={upsert}
-                    onSelect={(id) => {
-                        setSelectedId(id);
-                    }}
-                />
+                <CareScreen plants={plants} onDone={upsert} onSelect={selectPlant} />
             );
         }
-        return <SettingsScreen plants={plants} onSeeded={refresh} />;
+        return <SettingsScreen plants={plants} />;
     }
 
     return (
-        <>
+        <div {...props}>
             {renderScreen()}
 
             <nav className={styles.bottomNav}>
                 {TABS.map((t) => {
                     return (
-                        <button
-                            key={t.id}
-                            type="button"
-                            className={tab === t.id && !selected ? styles.active : ''}
-                            onClick={() => {
-                                setSelectedId(undefined);
-                                setTab(t.id);
-                            }}
-                        >
+                        <button key={t.id} type="button" className={tab === t.id && !selected ? styles.active : ''} onClick={() => { selectTab(t.id); }}>
                             <span className={styles.icon}>{t.icon}</span>
                             {t.label}
                             {t.id === 'care' && dueCount > 0 && <span className={styles.badge}>{dueCount}</span>}
@@ -137,6 +130,8 @@ export default function App() {
                     );
                 })}
             </nav>
-        </>
+        </div>
     );
-}
+};
+
+export default App;
