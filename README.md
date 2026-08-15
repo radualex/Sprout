@@ -18,12 +18,12 @@ reminders when each plant needs watering, fertilising or repotting.
 ## Run it
 
 ```sh
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # production build in dist/
+bun install
+bun run dev      # http://localhost:3000
+bun run build    # production build in build/
 ```
 
-To use it on your phone, serve `dist/` over HTTPS (camera and notifications require a secure
+To use it on your phone, serve `build/` over HTTPS (camera and notifications require a secure
 context), open it in the browser, and **Add to Home Screen**.
 
 ## Setup
@@ -35,15 +35,15 @@ context), open it in the browser, and **Add to Home Screen**.
 
 ## Architecture
 
-| Piece | Where | Notes |
-|---|---|---|
-| Data model | `src/types.ts` | `Plant` with `care` intervals + `lastCare` timestamps |
-| Storage | `src/js/services/db/` | Thin IndexedDB wrapper; photos stored as Blobs in the record |
-| Care engine | `src/js/helpers/care/` | Due-date math, species → default schedule lookup |
-| Identification | `src/js/services/identify/` | PlantNet client |
-| Notifications | `src/js/services/notifications/` | Permission, de-duplicated due-task notifications, watcher |
-| Service worker | `public/sw.js` | Offline cache, notification click, periodic sync hook |
-| UI | `src/js/containers/` | My Plants / Identify / Care / Detail / Settings screens |
+| Piece          | Where                              | Notes                                                        |
+| -------------- | ---------------------------------- | ------------------------------------------------------------ |
+| Data model     | `src/types.ts`                   | `Plant` with `care` intervals + `lastCare` timestamps  |
+| Storage        | `src/js/services/db/`            | Thin IndexedDB wrapper; photos stored as Blobs in the record |
+| Care engine    | `src/js/helpers/care/`           | Due-date math, species → default schedule lookup            |
+| Identification | `src/js/services/identify/`      | PlantNet client                                              |
+| Notifications  | `src/js/services/notifications/` | Permission, de-duplicated due-task notifications, watcher    |
+| Service worker | `public/sw.js`                   | Offline cache, notification click, periodic sync hook        |
+| UI             | `src/js/containers/`             | My Plants / Identify / Care / Detail / Settings screens      |
 
 Known limitation: this is a serverless PWA, so reminders fire when the app is open, focused, or
 (on Chromium/Android installed PWAs) via periodic background sync. Fully reliable push while the

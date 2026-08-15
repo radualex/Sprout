@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:rules && tsc && vite build",
+    "build": "bun run build:rules && tsc && vite build",
     "build:rules": "tsc -p tsconfig.eslint-rules.json",
-    "lint": "npm run lint:js ; npm run lint:scss",
+    "lint": "bun run lint:js ; bun run lint:scss",
     "lint:js": "eslint",
     "lint:scss": "stylelint \"src/**/*.scss\"",
-    "lint:fix": "npm run lint:js -- --fix ; npm run lint:scss -- --fix",
+    "lint:fix": "bun run lint:js -- --fix ; bun run lint:scss -- --fix",
     "postpack": "find src eslint-rules -name \"*.js\" -type f -delete",
     "preview": "vite preview"
   },
@@ -31,8 +31,10 @@
     "vite": "^8.0.16"
   },
   "overrides": {
-    "eslint-plugin-react": {
-      "eslint": "10.8.1"
-    }
-  }
+    "eslint": "10.8.1"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher",
+    "unrs-resolver"
+  ]
 }
