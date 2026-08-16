@@ -30,6 +30,7 @@ export async function getPlantsForUser(userId: string): Promise<Plant[]> {
         .from(plants)
         .where(eq(plants.userId, userId))
         .orderBy(desc(plants.acquiredAt));
+
     return rows.map((row) => {
         return rowToPlant(row);
     });
@@ -41,14 +42,18 @@ export async function getPlantForUser(userId: string, id: string): Promise<Plant
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, userId)));
     const row = rows.at(0);
+
     return row ? rowToPlant(row) : undefined;
 }
 
 export async function getPlantPhoto(userId: string, id: string): Promise<Buffer | undefined> {
     const rows = await database
-        .select({ photo: plants.photo })
+        .select({
+            photo: plants.photo
+        })
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, userId)));
     const row = rows.at(0);
+
     return row?.photo ?? undefined;
 }

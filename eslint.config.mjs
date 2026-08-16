@@ -3,6 +3,9 @@ import configure, { configs } from '@onefinity/eslint-config';
 
 import propsInline from './eslint-rules/jsx-props-inline/index.js'; // eslint-disable-line @onefinity/eslint-config/import-grouping
 import componentPropsString from './eslint-rules/use-component-props-string/index.js';
+import noLiteralClassname from './eslint-rules/no-literal-classname/index.js';
+import noInlineObjectLiteral from './eslint-rules/no-inline-object-literal/index.js';
+import noInlineHandlers from './eslint-rules/no-inline-handlers/index.js';
 
 export default configure([{
     ignores: [
@@ -18,7 +21,10 @@ export default configure([{
         sprout: {
             rules: {
                 'jsx-props-inline': propsInline,
-                'use-component-props-string': componentPropsString
+                'use-component-props-string': componentPropsString,
+                'no-literal-classname': noLiteralClassname,
+                'no-inline-object-literal': noInlineObjectLiteral,
+                'no-inline-handlers': noInlineHandlers
             }
         }
     },
@@ -41,6 +47,14 @@ export default configure([{
         'object-property-newline': 'off',
         'sprout/jsx-props-inline': 'error',
         'sprout/use-component-props-string': 'error',
+        'sprout/no-literal-classname': 'error',
+        'sprout/no-inline-object-literal': 'error',
+        'sprout/no-inline-handlers': 'error',
+        '@stylistic/padding-line-between-statements': ['error', {
+            blankLine: 'always',
+            prev: '*',
+            next: 'return'
+        }],
         // Next.js app-dir files (page/layout/route/manifest.tsx…) are lowercase by
         // convention; kebabCase covers them while camel/pascal stay enforced.
         'unicorn/filename-case': ['error', {

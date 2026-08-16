@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
 import { AddPlantForm } from '../../components/AddPlantForm';
+import { IdentifyResultCard } from '../../components/IdentifyResultCard';
 
 // Hooks
 import { useObjectUrl } from '../../hooks';
@@ -26,6 +27,14 @@ import type { Phase } from './types';
 interface Props extends React.ComponentProps<'div'> {
 }
 
+async function playVideo(video: HTMLVideoElement): Promise<void> {
+    try {
+        await video.play();
+    } catch {
+        // Autoplay may be blocked by the browser; the stream is still attached to the video element.
+    }
+}
+
 export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props }) => {
     const router = useRouter();
     const [phase, setPhase] = useState<Phase>('capture');
@@ -40,25 +49,25 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
     const fileRef = useRef<HTMLInputElement>(null);
     const [isStreaming, setIsStreaming] = useState(false);
 
-    useEffect(() => {
-        return stopCamera;
-    }, []);
-
-    function stopCamera() {
+    const handleStopCamera = useCallback(() => {
         const tracks = streamRef.current?.getTracks() ?? [];
         for (const track of tracks) {
             track.stop();
         }
         streamRef.current = undefined;
         setIsStreaming(false);
-    }
+    }, []);
 
-    async function startCamera() {
+    const handleStartCamera = useCallback(async () => {
         setError(undefined);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment',
-                    width: { ideal: 1280 } },
+                video: {
+                    facingMode: 'environment',
+                    width: {
+                        ideal: 1280
+                    }
+                },
                 audio: false
             });
             streamRef.current = stream;
@@ -74,17 +83,9 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
         } catch {
             setError('Camera unavailable — you can upload a photo instead.');
         }
-    }
+    }, []);
 
-    async function playVideo(video: HTMLVideoElement) {
-        try {
-            await video.play();
-        } catch {
-            // Autoplay may be blocked by the browser; the stream is still attached to the video element.
-        }
-    }
-
-    function capture() {
+    const handleCapture = useCallback(() => {
         const video = videoRef.current;
         if (!video?.videoWidth) return;
         const canvas = document.createElement('canvas');
@@ -95,31 +96,27 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
             return;
         }
         context.drawImage(video, 0, 0);
-        canvas.toBlob(
-            (blob) => {
-                if (!blob) {
-                    return;
-                }
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                return;
+            }
 
-                setPhoto(blob);
-                stopCamera();
-            },
-            'image/jpeg',
-            0.85
-        );
-    }
+            setPhoto(blob);
+            handleStopCamera();
+        }, 'image/jpeg', 0.85);
+    }, [handleStopCamera]);
 
-    function onFile(event_: React.ChangeEvent<HTMLInputElement>) {
-        const file = event_.target.files?.item(0) ?? undefined;
+    const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.item(0) ?? undefined;
         if (file) {
             setPhoto(file);
-            stopCamera();
+            handleStopCamera();
             setError(undefined);
         }
-        event_.target.value = '';
-    }
+        event.target.value = '';
+    }, [handleStopCamera]);
 
-    async function identify() {
+    const handleIdentify = useCallback(async () => {
         if (!photo) return;
         setPhase('identifying');
         setError(undefined);
@@ -132,20 +129,40 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
             setError(error_ instanceof Error ? error_.message : 'Identification failed.');
             setPhase('capture');
         }
-    }
+    }, [photo]);
 
-    function reset() {
+    const handleReset = useCallback(() => {
         setPhoto(undefined);
         setResults([]);
         setPicked(undefined);
         setPhase('capture');
-    }
+    }, []);
 
-    async function handleSave(input: PlantInput) {
+    const handleUpload = useCallback(() => {
+        fileRef.current?.click();
+    }, []);
+
+    const handlePick = useCallback((result: IdentifyResult) => {
+        setPicked(result);
+    }, []);
+
+    const handleContinue = useCallback(() => {
+        setPhase('form');
+    }, []);
+
+    const handleBackToResults = useCallback(() => {
+        setPhase('results');
+    }, []);
+
+    const handleSave = useCallback(async (input: PlantInput) => {
         const id = await createPlant(input);
         router.push(`/plants/${id}`);
         router.refresh();
-    }
+    }, [router]);
+
+    useEffect(() => {
+        return handleStopCamera;
+    }, [handleStopCamera]);
 
     return (
         <div className={`${shared.screen} ${className ?? ''}`} {...props}>
@@ -178,36 +195,36 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
                     <div className={shared.shutterRow}>
                         {photoUrl ? (
                             <React.Fragment>
-                                <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={reset} disabled={phase === 'identifying'}>
+                                <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={handleReset} disabled={phase === 'identifying'}>
                                     Retake
                                 </button>
-                                <button type="button" className={shared.btn} onClick={identify} disabled={phase === 'identifying'}>
+                                <button type="button" className={shared.btn} onClick={handleIdentify} disabled={phase === 'identifying'}>
                                     {phase === 'identifying' ? <span className={styles.spinner} /> : '🔍 Identify'}
                                 </button>
                             </React.Fragment>
                         ) : (isStreaming
                             ? (
                                     <React.Fragment>
-                                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={stopCamera}>
+                                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={handleStopCamera}>
                                             Cancel
                                         </button>
-                                        <button type="button" className={shared.btn} onClick={capture}>
+                                        <button type="button" className={shared.btn} onClick={handleCapture}>
                                             📸 Capture
                                         </button>
                                     </React.Fragment>
                                 )
                             : (
                                     <React.Fragment>
-                                        <button type="button" className={shared.btn} onClick={startCamera}>
+                                        <button type="button" className={shared.btn} onClick={handleStartCamera}>
                                             📷 Open camera
                                         </button>
-                                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={() => { return fileRef.current?.click(); }}>
+                                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={handleUpload}>
                                             🖼 Upload
                                         </button>
                                     </React.Fragment>
                                 ))}
                     </div>
-                    <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden aria-label="Upload a photo of your plant" onChange={onFile} />
+                    <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden aria-label="Upload a photo of your plant" onChange={handleFileChange} />
                 </React.Fragment>
             )}
 
@@ -216,20 +233,14 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
                     <div className={shared.sectionTitle}>Best matches</div>
                     {results.map((r) => {
                         return (
-                            <button key={r.species} type="button" className={`${shared.resultCard} ${picked?.species === r.species ? shared.selected : ''}`} onClick={() => { setPicked(r); }}>
-                                <div>
-                                    <div className={shared.common}>{r.commonName || r.species}</div>
-                                    <div className={shared.sci}>{r.species}</div>
-                                </div>
-                                <div className={shared.conf}>{Math.round(r.confidence * 100)}%</div>
-                            </button>
+                            <IdentifyResultCard key={r.species} result={r} selected={picked?.species === r.species} onSelect={handlePick} />
                         );
                     })}
                     <div className={shared.shutterRow}>
-                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={reset}>
+                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={handleReset}>
                             Retake
                         </button>
-                        <button type="button" className={shared.btn} disabled={!picked} onClick={() => { setPhase('form'); }}>
+                        <button type="button" className={shared.btn} disabled={!picked} onClick={handleContinue}>
                             Continue →
                         </button>
                     </div>
@@ -237,7 +248,7 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
             )}
 
             {phase === 'form' && picked && photo && (
-                <AddPlantForm photo={photo} result={picked} onCancel={() => { setPhase('results'); }} onSave={handleSave} />
+                <AddPlantForm photo={photo} result={picked} onCancel={handleBackToResults} onSave={handleSave} />
             )}
         </div>
     );

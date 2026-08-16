@@ -25,6 +25,7 @@ async function fetchPlants(): Promise<Plant[]> {
             cache: 'no-store'
         });
         if (!response.ok) return [];
+
         return (await response.json()) as Plant[];
     } catch {
         return [];
@@ -39,6 +40,7 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
     if (!isNotificationsSupported()) return 'denied';
     const perm = await Notification.requestPermission();
     if (perm === 'granted') await registerPeriodicSync();
+
     return perm;
 }
 
@@ -65,6 +67,7 @@ export async function checkAndNotify(): Promise<number> {
 
     const pendingTasks = dueTasks(plants, now).filter((task) => {
         const last = task.plant.lastNotified[task.kind] ?? 0;
+
         return now - last >= DAY_MS;
     });
 

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useCallback, useState } from 'react';
 
 // Components
 import { CareScheduleFields } from '../CareScheduleFields';
@@ -19,16 +21,28 @@ export const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, on
     const [nickname, setNickname] = useState(plant.nickname);
     const [care, setCare] = useState(plant.care);
 
+    const handleNicknameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setNickname(event.target.value);
+    }, []);
+
+    const handleSave = useCallback(() => {
+        onSave({
+            ...plant,
+            nickname: nickname.trim() || plant.nickname,
+            care
+        });
+    }, [plant, onSave, nickname, care]);
+
     return (
         <div {...props}>
             <div className={shared.field}>
                 <label htmlFor="es-nickname">Nickname</label>
-                <input id="es-nickname" value={nickname} onChange={(event_) => { setNickname(event_.target.value); }} />
+                <input id="es-nickname" value={nickname} onChange={handleNicknameChange} />
             </div>
             <CareScheduleFields idPrefix="es" value={care} onChange={setCare} />
             <div className={shared.shutterRow}>
                 <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={onCancel}>Cancel</button>
-                <button type="button" className={shared.btn} onClick={() => { onSave({ ...plant, nickname: nickname.trim() || plant.nickname, care }); }}>
+                <button type="button" className={shared.btn} onClick={handleSave}>
                     Save changes
                 </button>
             </div>

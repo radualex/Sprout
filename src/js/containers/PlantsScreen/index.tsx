@@ -63,6 +63,7 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                             return t.daysUntil <= 0;
                         }).slice(0, 2);
                         const next = tasks.at(0);
+
                         return (
                             <Link key={plant.id} href={`/plants/${plant.id}`} className={styles.plantCard}>
                                 <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // Components
 import { CareScheduleFields } from '../CareScheduleFields';
@@ -20,6 +20,13 @@ import shared from '../../scss/shared.module.scss';
 // Types
 import type { CareSchedule, PlantInput } from '../../types';
 
+const RESULT_THUMB_STYLE: React.CSSProperties = {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    objectFit: 'cover'
+};
+
 interface Props extends React.ComponentProps<'div'> {
     photo: Blob;
     result: IdentifyResult;
@@ -34,7 +41,11 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
     });
     const photoUrl = useObjectUrl(photo);
 
-    function save() {
+    const handleNicknameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setNickname(event.target.value);
+    }, []);
+
+    const handleSave = useCallback(() => {
         onSave({
             nickname: nickname.trim() || result.commonName || result.species,
             species: result.species,
@@ -43,12 +54,12 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
             care,
             acquiredAt: Date.now()
         });
-    }
+    }, [nickname, result, photo, care, onSave]);
 
     return (
         <div {...props}>
             <div className={`${shared.resultCard} ${shared.selected}`}>
-                {photoUrl && <img src={photoUrl} alt="" style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover' }} />}
+                {photoUrl && <img src={photoUrl} alt="" style={RESULT_THUMB_STYLE} />}
                 <div>
                     <div className={shared.common}>{result.commonName || result.species}</div>
                     <div className={shared.sci}>{result.species}</div>
@@ -57,7 +68,7 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
 
             <div className={shared.field}>
                 <label htmlFor="apf-nickname">Nickname</label>
-                <input id="apf-nickname" value={nickname} onChange={(event_) => { setNickname(event_.target.value); }} placeholder="e.g. Kitchen monstera" />
+                <input id="apf-nickname" value={nickname} onChange={handleNicknameChange} placeholder="e.g. Kitchen monstera" />
             </div>
 
             <div className={shared.sectionTitle}>Care schedule</div>
@@ -67,7 +78,7 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
                 <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={onCancel}>
                     Back
                 </button>
-                <button type="button" className={shared.btn} onClick={save}>
+                <button type="button" className={shared.btn} onClick={handleSave}>
                     🌱 Add to my plants
                 </button>
             </div>

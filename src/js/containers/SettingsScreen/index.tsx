@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Services
@@ -17,6 +17,15 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '../../types';
 
+const NO_MARGIN_STYLE: React.CSSProperties = {
+    marginBottom: 0
+};
+
+const IPHONE_HINT_STYLE: React.CSSProperties = {
+    marginTop: 12,
+    marginBottom: 0
+};
+
 interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
     user: {
@@ -25,7 +34,7 @@ interface Props extends React.ComponentProps<'div'> {
     };
 }
 
-async function testNotification() {
+async function handleTestNotification(): Promise<void> {
     const reg = await navigator.serviceWorker.ready;
     await reg.showNotification('🌱 Sprout is ready', {
         body: 'You\'ll get a reminder here when a plant needs watering, fertilising or repotting.',
@@ -43,11 +52,29 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
     });
     const [isKeySaved, setIsKeySaved] = useState(false);
 
-    async function signOut() {
+    const handleSignOut = useCallback(async () => {
         await authClient.signOut();
         router.push('/login');
         router.refresh();
-    }
+    }, [router]);
+
+    const handleEnableNotifications = useCallback(async () => {
+        const p = await requestNotificationPermission();
+        setPerm(p);
+        if (p === 'granted') {
+            await checkAndNotify();
+        }
+    }, []);
+
+    const handleKeyChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setKey(event.target.value);
+        setIsKeySaved(false);
+    }, []);
+
+    const handleSaveKey = useCallback(() => {
+        setPlantNetKey(key);
+        setIsKeySaved(true);
+    }, [key]);
 
     function renderNotificationStatus() {
         if (!isNotificationsSupported()) {
@@ -59,7 +86,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
             return (
                 <React.Fragment>
                     <div className={shared.notice}>✓ Notifications are enabled.</div>
-                    <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={testNotification}>
+                    <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleTestNotification}>
                         Send a test notification
                     </button>
                 </React.Fragment>
@@ -72,27 +99,12 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                 </div>
             );
         }
+
         return (
-            <button type="button" className={`${shared.btn} ${shared.block}`} onClick={enableNotifications}>
+            <button type="button" className={`${shared.btn} ${shared.block}`} onClick={handleEnableNotifications}>
                 Enable notifications
             </button>
         );
-    }
-
-    async function enableNotifications() {
-        const p = await requestNotificationPermission();
-        setPerm(p);
-        if (p === 'granted') await checkAndNotify();
-    }
-
-    function updateKey(event_: React.ChangeEvent<HTMLInputElement>) {
-        setKey(event_.target.value);
-        setIsKeySaved(false);
-    }
-
-    function saveKey() {
-        setPlantNetKey(key);
-        setIsKeySaved(true);
     }
 
     return (
@@ -106,10 +118,10 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
 
             <div className={styles.settingsCard}>
                 <h3>👤 Account</h3>
-                <p style={{ marginBottom: 0 }}>
+                <p style={NO_MARGIN_STYLE}>
                     Signed in as <strong>{user.name}</strong> · {user.email}
                 </p>
-                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={signOut}>
+                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleSignOut}>
                     Sign out
                 </button>
             </div>
@@ -121,7 +133,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                     when the app is open or in the background (installed app on Android/Chrome).
                 </p>
                 {renderNotificationStatus()}
-                <p style={{ marginTop: 12, marginBottom: 0 }}>
+                <p style={IPHONE_HINT_STYLE}>
                     💡 On iPhone, open this app in Safari, tap Share → <strong>Add to Home Screen</strong>,
                     then enable notifications from the installed app (iOS 16.4+).
                 </p>
@@ -138,16 +150,16 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                 </p>
                 <div className={shared.field}>
                     <label htmlFor="settings-plantnet-key">PlantNet API key</label>
-                    <input id="settings-plantnet-key" value={key} onChange={updateKey} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" />
+                    <input id="settings-plantnet-key" value={key} onChange={handleKeyChange} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" />
                 </div>
-                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={saveKey}>
+                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleSaveKey}>
                     {isKeySaved ? '✓ Saved' : 'Save key'}
                 </button>
             </div>
 
             <div className={styles.settingsCard}>
                 <h3>ℹ️ About</h3>
-                <p style={{ marginBottom: 0 }}>
+                <p style={NO_MARGIN_STYLE}>
                     Sprout v0.1 — {plants.length} plant{plants.length === 1 ? '' : 's'} tracked. Your plants
                     are synced to your account and available on any device. Install via your browser's "Add
                     to Home Screen" for the full app experience.

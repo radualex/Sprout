@@ -6,6 +6,7 @@ import type { IdentifyResult } from './types';
 
 export function getPlantNetKey(): string {
     if (typeof window === 'undefined') return '';
+
     return localStorage.getItem(API_KEY_STORAGE) ?? '';
 }
 

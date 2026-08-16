@@ -10,5 +10,6 @@ export async function requireUser() {
         headers: await headers()
     });
     if (!session) redirect('/login');
+
     return session;
 }

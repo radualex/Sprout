@@ -9,7 +9,13 @@ import { account, plants, session, user, verification } from './db/schema';
 export const auth = betterAuth({
     database: drizzleAdapter(database, {
         provider: 'pg',
-        schema: { account, plants, session, user, verification }
+        schema: {
+            account,
+            plants,
+            session,
+            user,
+            verification
+        }
     }),
     emailAndPassword: {
         enabled: true

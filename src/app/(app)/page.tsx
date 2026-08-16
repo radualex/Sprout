@@ -8,6 +8,7 @@ import { requireUser } from '@/js/lib/session';
 const PlantsPage = async () => {
     const session = await requireUser();
     const plants = await getPlantsForUser(session.user.id);
+
     return <PlantsScreen plants={plants} />;
 };
 

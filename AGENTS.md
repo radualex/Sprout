@@ -4,8 +4,7 @@
 
 - [ ] **Add Renovate** to keep dependencies up-to-date.
 - [ ] **Create CI/CD with GitHub Actions** to build/lint/test. Next.js build output is `.next/` (Vercel/deploy later); DB migrations run via `drizzle-kit`.
-- [ ] **Refactor handlers & private functions to arrow functions**: Convert all handlers and private functions inside components/containers to arrow-function components.
-- [ ] **Add useMemo/useCallback**: Refactor so `useMemo` is used for all values and `useCallback` for all handlers/functions in all components/containers.
+- [ ] **Add useMemo/useCallback optimisation pass**: audit components for values that can be memoised with `useMemo` and ensure every computed value / handler is as stable as the conventions already enforce for handlers.
 - [ ] **Move production database to Neon**: swap the `pg` driver for `@neondatabase/serverless` and update `DATABASE_URL` (see ADR-0002 in README).
 - [ ] **Add Web Push (VAPID)** for reliable reminders while the app is closed (see the README limitation note).
 
@@ -14,6 +13,7 @@
 - [x] **Migrate Vite PWA → Next.js 16 App Router** (in place). Routes, server actions, auth (Better Auth), Postgres (Drizzle), PWA hardening, Dockerized local dev. See the ADRs in `README.md`.
 - [x] **Auth** — Better Auth with Google OAuth + email/password; per-user scoping on every query.
 - [x] **Dockerized local dev** — `docker compose up -d db` + `bun run dev`, or `docker compose up -d --build` for both containers.
+- [x] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.scss` via `styles.x`, no single-line object literals, blank line before every `return`. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements`. See the Tools table below.
 
 ## Notes
 
@@ -67,7 +67,7 @@ Security model: three layers — `proxy.ts` (cookie-only, no DB), `requireUser()
 | ESLint | 10.8.x | JS/TS/React linting | Flat config; type-aware and slow. |
 | @onefinity/eslint-config | 4.x | Base flat config + custom `import-grouping` rule | Groups imports by kind (Constants/Components/Helpers/Hooks/Services/Lib/Styles/Types + Schema). |
 | eslint-plugin-react | 7.x | React rules | `function-component-definition` requires arrow functions everywhere. |
-| Custom rules | — | `eslint-rules/` (`jsx-props-inline`, `use-component-props-string`) | Written in TS, compiled to JS by `build:rules` (`tsc -p tsconfig.eslint-rules.json`). Lint-ignored themselves. |
+| Custom rules | — | `eslint-rules/` (`jsx-props-inline`, `use-component-props-string`, `no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) | Written in TS, compiled to JS by `build:rules` (`tsc -p tsconfig.eslint-rules.json`). Lint-ignored themselves. Enforce the handle*/useCallback, styles-module, multiline-object, and no-inline-handler conventions. |
 | eslint-config-next | 16.3.x | Reference only | Installed but the project relies on the custom onefinity config; not wired in. |
 | Stylelint | via @onefinity/stylelint-config | SCSS linting | Run with `bun run lint:scss` / `lint:fix`. |
 

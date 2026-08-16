@@ -20,12 +20,16 @@ export const plants = pgTable(
         id: uuid('id').primaryKey().defaultRandom(),
         userId: text('user_id')
             .notNull()
-            .references(() => { return user.id; }, { onDelete: 'cascade' }),
+            .references(() => { return user.id; }, {
+                onDelete: 'cascade'
+            }),
         nickname: text('nickname').notNull(),
         species: text('species').notNull(),
         commonName: text('common_name').notNull().default(''),
         photo: bytea('photo'),
-        acquiredAt: bigint('acquired_at', { mode: 'number' }).notNull(),
+        acquiredAt: bigint('acquired_at', {
+            mode: 'number'
+        }).notNull(),
         care: jsonb('care').$type<CareSchedule>().notNull(),
         lastCare: jsonb('last_care').$type<Record<CareKind, number>>().notNull(),
         lastNotified: jsonb('last_notified')

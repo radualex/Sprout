@@ -11,8 +11,11 @@ export const GET = async (_request: Request, { params }: Props) => {
     const { id } = await params;
     const photo = await getPlantPhoto(session.user.id, id);
     if (!photo) {
-        return new Response('Not found', { status: 404 });
+        return new Response('Not found', {
+            status: 404
+        });
     }
+
     return new Response(new Uint8Array(photo), {
         headers: {
             'Content-Type': 'image/jpeg',

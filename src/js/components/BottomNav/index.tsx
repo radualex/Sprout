@@ -13,7 +13,27 @@ interface Tab {
     href: string;
 }
 
-const TABS: Tab[] = [{ id: 'plants', label: 'My Plants', icon: '🪴', href: '/' }, { id: 'identify', label: 'Identify', icon: '📷', href: '/identify' }, { id: 'care', label: 'Care', icon: '💧', href: '/care' }, { id: 'settings', label: 'Settings', icon: '⚙️', href: '/settings' }];
+const TABS: Tab[] = [{
+    id: 'plants',
+    label: 'My Plants',
+    icon: '🪴',
+    href: '/'
+}, {
+    id: 'identify',
+    label: 'Identify',
+    icon: '📷',
+    href: '/identify'
+}, {
+    id: 'care',
+    label: 'Care',
+    icon: '💧',
+    href: '/care'
+}, {
+    id: 'settings',
+    label: 'Settings',
+    icon: '⚙️',
+    href: '/settings'
+}];
 
 interface Props {
     dueCount: number;
@@ -26,6 +46,7 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount }) => {
         if (tab.id === 'plants') {
             return pathname === '/' || pathname.startsWith('/plants');
         }
+
         return pathname === tab.href;
     };
 
@@ -33,6 +54,7 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount }) => {
         <nav className={styles.bottomNav}>
             {TABS.map((tab) => {
                 const isTabActive = isActive(tab);
+
                 return (
                     <Link key={tab.id} href={tab.href} className={isTabActive ? styles.active : ''}>
                         <span className={styles.icon}>{tab.icon}</span>

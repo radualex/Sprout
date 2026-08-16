@@ -1,0 +1,6 @@
+.appShell {
+    max-width: 480px;
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+}

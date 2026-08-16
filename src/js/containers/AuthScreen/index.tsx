@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 // Lib
 import { authClient } from '@/js/lib/auth-client';
@@ -12,10 +12,6 @@ import styles from './styles.module.scss';
 
 interface Props {
     mode: 'login' | 'signup';
-}
-
-async function handleGoogle() {
-    await authClient.signIn.social({ provider: 'google', callbackURL: '/' });
 }
 
 export const AuthScreen: React.FunctionComponent<Props> = ({ mode }) => {
@@ -28,29 +24,58 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode }) => {
 
     const isSignup = mode === 'signup';
 
-    async function handleSubmit(event: React.SyntheticEvent) {
+    const handleNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+    }, []);
+
+    const handleEmailChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+    }, []);
+
+    const handlePasswordChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+    }, []);
+
+    const handleSubmit = useCallback(async (event: React.SyntheticEvent) => {
         event.preventDefault();
         setError('');
         setIsSubmitting(true);
         const callbackURL = '/';
         if (isSignup) {
-            const result = await authClient.signUp.email({ name, email, password, callbackURL });
+            const result = await authClient.signUp.email({
+                name,
+                email,
+                password,
+                callbackURL
+            });
             if (result.error) {
                 setError(result.error.message ?? 'Sign-up failed.');
                 setIsSubmitting(false);
+
                 return;
             }
         } else {
-            const result = await authClient.signIn.email({ email, password });
+            const result = await authClient.signIn.email({
+                email,
+                password
+            });
             if (result.error) {
                 setError(result.error.message ?? 'Sign-in failed.');
                 setIsSubmitting(false);
+
                 return;
             }
         }
         router.push(callbackURL);
         router.refresh();
-    }
+    }, [name, email, password, isSignup, router]);
+
+    const handleGoogle = useCallback(() => {
+        void authClient.signIn.social({
+            provider: 'google',
+            callbackURL: '/'
+        });
+    }, []);
 
     return (
         <div className={styles.screen}>
@@ -64,18 +89,18 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode }) => {
                 {isSignup && (
                     <label className={styles.field}>
                         Name
-                        <input value={name} onChange={(event) => { setName(event.target.value); }} placeholder="Ada Lovelace" autoComplete="name" />
+                        <input value={name} onChange={handleNameChange} placeholder="Ada Lovelace" autoComplete="name" />
                     </label>
                 )}
 
                 <label className={styles.field}>
                     Email
-                    <input type="email" value={email} onChange={(event) => { setEmail(event.target.value); }} placeholder="you@example.com" autoComplete="email" required />
+                    <input type="email" value={email} onChange={handleEmailChange} placeholder="you@example.com" autoComplete="email" required />
                 </label>
 
                 <label className={styles.field}>
                     Password
-                    <input type="password" value={password} onChange={(event) => { setPassword(event.target.value); }} placeholder="••••••••" autoComplete={isSignup ? 'new-password' : 'current-password'} required />
+                    <input type="password" value={password} onChange={handlePasswordChange} placeholder="••••••••" autoComplete={isSignup ? 'new-password' : 'current-password'} required />
                 </label>
 
                 {error && <p className={styles.error}>{error}</p>}

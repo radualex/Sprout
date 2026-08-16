@@ -12,12 +12,14 @@ function intervalMs(plant: Plant, kind: CareKind): number {
     const c = plant.care;
     if (kind === 'water') return c.waterEveryDays * DAY_MS;
     if (kind === 'fertilize') return c.fertilizeEveryDays * DAY_MS;
+
     return c.repotEveryMonths * 30 * DAY_MS;
 }
 
 export function nextDue(plant: Plant, kind: CareKind): number | undefined {
     const interval = intervalMs(plant, kind);
     if (interval <= 0) return undefined;
+
     return plant.lastCare[kind] + interval;
 }
 
@@ -35,6 +37,7 @@ function tasksForPlant(plant: Plant, now: number): CareTask[] {
             daysUntil: Math.ceil((dueAt - now) / DAY_MS)
         });
     }
+
     return tasks;
 }
 
@@ -43,6 +46,7 @@ export function allTasks(plants: Plant[], now = Date.now()): CareTask[] {
     const tasks = plants.flatMap((plant) => {
         return tasksForPlant(plant, now);
     });
+
     return tasks.toSorted((a, b) => {
         return a.dueAt - b.dueAt;
     });
@@ -61,6 +65,7 @@ export function formatDue(daysUntil: number): string {
     if (daysUntil === 1) return 'tomorrow';
     if (daysUntil < 30) return `in ${daysUntil} days`;
     const months = Math.round(daysUntil / 30);
+
     return months === 1 ? 'in ~1 month' : `in ~${months} months`;
 }
 
@@ -70,9 +75,15 @@ export function defaultCareFor(species: string, commonName = ''): CareSchedule {
     const hit = CARE_DEFAULTS.find((d) => {
         return d.match.test(hay);
     });
-    return hit
-        ? { ...hit.care }
-        : { waterEveryDays: 7,
-                fertilizeEveryDays: 30,
-                repotEveryMonths: 18 };
+    if (hit) {
+        return {
+            ...hit.care
+        };
+    }
+
+    return {
+        waterEveryDays: 7,
+        fertilizeEveryDays: 30,
+        repotEveryMonths: 18
+    };
 }

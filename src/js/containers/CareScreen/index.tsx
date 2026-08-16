@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
@@ -36,14 +36,14 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
         return t.daysUntil > 0 && t.daysUntil <= 14;
     });
 
-    async function markDone(task: CareTask) {
+    const handleDone = useCallback(async (task: CareTask) => {
         await markCareDone(task.plant.id, task.kind);
         router.refresh();
-    }
+    }, [router]);
 
-    function selectPlant(id: string) {
+    const handleSelect = useCallback((id: string) => {
         router.push(`/plants/${id}`);
-    }
+    }, [router]);
 
     return (
         <div className={`${shared.screen} ${className ?? ''}`} {...props}>
@@ -70,7 +70,7 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
                             <div className={shared.taskList}>
                                 {due.map((t) => {
                                     return (
-                                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={selectPlant} />
+                                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={handleDone} onSelect={handleSelect} />
                                     );
                                 })}
                             </div>
@@ -84,7 +84,7 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
                         <div className={shared.taskList}>
                             {upcoming.map((t) => {
                                 return (
-                                    <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={selectPlant} />
+                                    <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={handleDone} onSelect={handleSelect} />
                                 );
                             })}
                         </div>

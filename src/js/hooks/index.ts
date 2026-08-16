@@ -7,11 +7,13 @@ export function useObjectUrl(blob?: Blob): string | undefined {
         if (!blob) return;
         const objectUrl = URL.createObjectURL(blob);
         setUrl(objectUrl);
+
         return () => {
             URL.revokeObjectURL(objectUrl);
             setUrl(undefined);
         };
     }, [blob]);
+
     return url;
 }
 
@@ -24,9 +26,11 @@ export function useClock(intervalMs = 60_000): number {
         const interval = setInterval(() => {
             setNow(Date.now());
         }, intervalMs);
+
         return () => {
             clearInterval(interval);
         };
     }, [intervalMs]);
+
     return now;
 }

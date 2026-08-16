@@ -26,13 +26,20 @@ export async function createPlant(input: PlantInput): Promise<string> {
             commonName: input.commonName,
             acquiredAt: input.acquiredAt,
             care: input.care,
-            lastCare: { water: now, fertilize: now, repot: now },
+            lastCare: {
+                water: now,
+                fertilize: now,
+                repot: now
+            },
             lastNotified: {},
             notes: '',
             photo
         })
-        .returning({ id: plants.id });
+        .returning({
+            id: plants.id
+        });
     revalidatePath(ALL_PATH, 'layout');
+
     return row.id;
 }
 
@@ -40,7 +47,10 @@ export async function updatePlant(id: string, input: { nickname: string; care: C
     const session = await requireUser();
     await database
         .update(plants)
-        .set({ nickname: input.nickname, care: input.care })
+        .set({
+            nickname: input.nickname,
+            care: input.care
+        })
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     revalidatePath(ALL_PATH, 'layout');
 }
@@ -48,14 +58,21 @@ export async function updatePlant(id: string, input: { nickname: string; care: C
 export async function markCareDone(id: string, kind: CareKind): Promise<void> {
     const session = await requireUser();
     const rows = await database
-        .select({ lastCare: plants.lastCare })
+        .select({
+            lastCare: plants.lastCare
+        })
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     const row = rows.at(0);
     if (!row) return;
     await database
         .update(plants)
-        .set({ lastCare: { ...row.lastCare, [kind]: Date.now() } })
+        .set({
+            lastCare: {
+                ...row.lastCare,
+                [kind]: Date.now()
+            }
+        })
         .where(eq(plants.id, id));
     revalidatePath(ALL_PATH, 'layout');
 }
@@ -63,14 +80,21 @@ export async function markCareDone(id: string, kind: CareKind): Promise<void> {
 export async function recordNotified(id: string, kind: CareKind, at: number): Promise<void> {
     const session = await requireUser();
     const rows = await database
-        .select({ lastNotified: plants.lastNotified })
+        .select({
+            lastNotified: plants.lastNotified
+        })
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     const row = rows.at(0);
     if (!row) return;
     await database
         .update(plants)
-        .set({ lastNotified: { ...row.lastNotified, [kind]: at } })
+        .set({
+            lastNotified: {
+                ...row.lastNotified,
+                [kind]: at
+            }
+        })
         .where(eq(plants.id, id));
 }
 

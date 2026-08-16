@@ -16,6 +16,7 @@ const PlantDetailPage = async ({ params }: Props) => {
     const { id } = await params;
     const plant = await getPlantForUser(session.user.id, id);
     if (!plant) notFound();
+
     return <PlantDetail plant={plant} />;
 };
 

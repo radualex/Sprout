@@ -14,6 +14,7 @@ export function proxy(request: NextRequest) {
     if (isLoggedIn && isAuthPage) {
         return NextResponse.redirect(new URL('/', request.url));
     }
+
     return NextResponse.next();
 }
 

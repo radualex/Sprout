@@ -18,15 +18,20 @@ export const POST = async (request: Request) => {
     const form = await request.formData();
     const image = form.get('images');
     if (!(image instanceof File)) {
-        return NextResponse.json({ error: 'No image provided.' }, { status: 400 });
+        return NextResponse.json({
+            error: 'No image provided.'
+        }, {
+            status: 400
+        });
     }
 
     const apiKey = process.env.PLANTNET_API_KEY ?? (form.get('apiKey') as string | null);
     if (!apiKey) {
-        return NextResponse.json(
-            { error: 'No PlantNet API key configured. Add one in Settings.' },
-            { status: 400 }
-        );
+        return NextResponse.json({
+            error: 'No PlantNet API key configured. Add one in Settings.'
+        }, {
+            status: 400
+        });
     }
 
     const body = new FormData();
@@ -35,26 +40,33 @@ export const POST = async (request: Request) => {
 
     const response = await fetch(
         `https://my-api.plantnet.org/v2/identify/all?api-key=${encodeURIComponent(apiKey)}&nb-results=5`,
-        { method: 'POST', body }
+        {
+            method: 'POST',
+            body
+        }
     );
 
     if (!response.ok) {
         if (response.status === 401) {
-            return NextResponse.json(
-                { error: 'PlantNet rejected the API key. Check it in Settings.' },
-                { status: 400 }
-            );
+            return NextResponse.json({
+                error: 'PlantNet rejected the API key. Check it in Settings.'
+            }, {
+                status: 400
+            });
         }
         if (response.status === 404) {
-            return NextResponse.json(
-                { error: 'PlantNet couldn\'t recognise the plant. Try a clearer photo.' },
-                { status: 400 }
-            );
+            return NextResponse.json({
+                error: 'PlantNet couldn\'t recognise the plant. Try a clearer photo.'
+            }, {
+                status: 400
+            });
         }
-        return NextResponse.json(
-            { error: `PlantNet failed with HTTP ${response.status}.` },
-            { status: 502 }
-        );
+
+        return NextResponse.json({
+            error: `PlantNet failed with HTTP ${response.status}.`
+        }, {
+            status: 502
+        });
     }
 
     const data = (await response.json()) as { results?: PlantNetResult[]; };
