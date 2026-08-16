@@ -4,31 +4,43 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "bun run build:rules && tsc && vite build",
+    "dev": "next dev",
+    "build": "bun run build:rules && next build",
     "build:rules": "tsc -p tsconfig.eslint-rules.json",
+    "start": "next start",
     "lint": "bun run lint:js ; bun run lint:scss",
     "lint:js": "eslint",
     "lint:scss": "stylelint \"src/**/*.scss\"",
     "lint:fix": "bun run lint:js -- --fix ; bun run lint:scss -- --fix",
     "postpack": "find src eslint-rules -name \"*.js\" -type f -delete",
-    "preview": "vite preview"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "better-auth": "^1.6.29",
+    "drizzle-orm": "^0.45.2",
+    "next": "^16.3.1",
+    "pg": "^8.23.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.4.21",
     "@onefinity/eslint-config": "^4.1.0",
     "@onefinity/stylelint-config": "^3.3.0",
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.21.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/utils": "^8.67.0",
-    "@vitejs/plugin-react": "^6.0.2",
+    "drizzle-kit": "^0.31.10",
+    "eslint-config-next": "^16.3.1",
     "eslint-plugin-react": "^7.37.5",
     "sass": "^1.101.0",
-    "typescript": "^6.0.3",
-    "vite": "^8.0.16"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "eslint": "10.8.1"

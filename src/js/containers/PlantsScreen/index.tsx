@@ -1,3 +1,6 @@
+'use client';
+
+import Link from 'next/link';
 import React from 'react';
 
 // Components
@@ -17,13 +20,11 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '../../types';
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
+interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
-    onSelect: (id: string) => void;
-    onAdd: () => void;
 }
 
-export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect, onAdd, className, ...props }) => {
+export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
 
     return (
@@ -37,9 +38,9 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect,
                             : `${plants.length} plant${plants.length === 1 ? '' : 's'} in your care`}
                     </div>
                 </div>
-                <button type="button" className={shared.btn} onClick={onAdd}>
+                <Link href="/identify" className={shared.btn}>
                     ＋ Add
-                </button>
+                </Link>
             </header>
 
             {plants.length === 0 ? (
@@ -50,9 +51,9 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect,
                         Point your camera at a plant to identify it and start tracking watering, fertilising
                         and repotting.
                     </p>
-                    <button type="button" className={shared.btn} onClick={onAdd}>
+                    <Link href="/identify" className={shared.btn}>
                         📷 Identify your first plant
-                    </button>
+                    </Link>
                 </div>
             ) : (
                 <div className={styles.plantGrid}>
@@ -63,7 +64,7 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect,
                         }).slice(0, 2);
                         const next = tasks.at(0);
                         return (
-                            <button key={plant.id} type="button" className={styles.plantCard} onClick={() => { onSelect(plant.id); }}>
+                            <Link key={plant.id} href={`/plants/${plant.id}`} className={styles.plantCard}>
                                 <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
                                 <div className={styles.meta}>
                                     <div className={styles.name}>{displayName(plant)}</div>
@@ -87,7 +88,7 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, onSelect,
                                             : undefined)}
                                     </div>
                                 </div>
-                            </button>
+                            </Link>
                         );
                     })}
                 </div>

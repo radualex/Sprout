@@ -1,8 +1,11 @@
 // Helpers
 import { CARE_META, DAY_MS, dueTasks } from '../../helpers/care';
 
-// Services
-import { getAllPlants, savePlant } from '../db';
+// Lib
+import { recordNotified } from '../../lib/actions/plants';
+
+// Types
+import type { Plant } from '../../types';
 
 interface PeriodicSyncManager {
     register: (tag: string, options: { minInterval: number; }) => Promise<void>;
@@ -14,6 +17,18 @@ interface ServiceWorkerRegistrationWithPeriodicSync extends ServiceWorkerRegistr
 
 interface CareCheckMessage {
     type?: string;
+}
+
+async function fetchPlants(): Promise<Plant[]> {
+    try {
+        const response = await fetch('/api/plants', {
+            cache: 'no-store'
+        });
+        if (!response.ok) return [];
+        return (await response.json()) as Plant[];
+    } catch {
+        return [];
+    }
 }
 
 export function isNotificationsSupported(): boolean {
@@ -45,7 +60,7 @@ async function registerPeriodicSync() {
  */
 export async function checkAndNotify(): Promise<number> {
     if (!isNotificationsSupported() || Notification.permission !== 'granted') return 0;
-    const [reg, plants] = await Promise.all([navigator.serviceWorker.ready, getAllPlants()]);
+    const [reg, plants] = await Promise.all([navigator.serviceWorker.ready, fetchPlants()]);
     const now = Date.now();
 
     const pendingTasks = dueTasks(plants, now).filter((task) => {
@@ -65,8 +80,7 @@ export async function checkAndNotify(): Promise<number> {
             icon: '/icon-192.png',
             badge: '/icon-192.png'
         });
-        task.plant.lastNotified[task.kind] = now;
-        await savePlant(task.plant);
+        await recordNotified(task.plant.id, task.kind, now);
     }));
 
     return pendingTasks.length;

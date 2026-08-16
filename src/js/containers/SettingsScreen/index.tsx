@@ -1,8 +1,14 @@
+'use client';
+
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Services
 import { getPlantNetKey, setPlantNetKey } from '../../services/identify';
 import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '../../services/notifications';
+
+// Lib
+import { authClient } from '../../lib/auth-client';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -13,6 +19,10 @@ import type { Plant } from '../../types';
 
 interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
+    user: {
+        name: string;
+        email: string;
+    };
 }
 
 async function testNotification() {
@@ -23,7 +33,8 @@ async function testNotification() {
     });
 }
 
-export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, className, ...props }) => {
+    const router = useRouter();
     const [perm, setPerm] = useState<NotificationPermission>(() => {
         return isNotificationsSupported() ? Notification.permission : 'denied';
     });
@@ -31,6 +42,12 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, classNa
         return getPlantNetKey();
     });
     const [isKeySaved, setIsKeySaved] = useState(false);
+
+    async function signOut() {
+        await authClient.signOut();
+        router.push('/login');
+        router.refresh();
+    }
 
     function renderNotificationStatus() {
         if (!isNotificationsSupported()) {
@@ -88,6 +105,16 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, classNa
             </header>
 
             <div className={styles.settingsCard}>
+                <h3>👤 Account</h3>
+                <p style={{ marginBottom: 0 }}>
+                    Signed in as <strong>{user.name}</strong> · {user.email}
+                </p>
+                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={signOut}>
+                    Sign out
+                </button>
+            </div>
+
+            <div className={styles.settingsCard}>
                 <h3>🔔 Care reminders</h3>
                 <p>
                     Get a notification when a plant is due for watering, fertilising or repotting. Checks run
@@ -121,9 +148,9 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, classNa
             <div className={styles.settingsCard}>
                 <h3>ℹ️ About</h3>
                 <p style={{ marginBottom: 0 }}>
-                    Sprout v0.1 — {plants.length} plant{plants.length === 1 ? '' : 's'} tracked. All data
-                    stays on this device (IndexedDB). Install via your browser's "Add to Home Screen" for the
-                    full app experience.
+                    Sprout v0.1 — {plants.length} plant{plants.length === 1 ? '' : 's'} tracked. Your plants
+                    are synced to your account and available on any device. Install via your browser's "Add
+                    to Home Screen" for the full app experience.
                 </p>
             </div>
         </div>

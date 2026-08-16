@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 
 // Components
@@ -10,23 +12,22 @@ import { defaultCareFor } from '../../helpers/care';
 import { useObjectUrl } from '../../hooks';
 
 // Services
-import { newId } from '../../services/db';
 import type { IdentifyResult } from '../../services/identify';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
 
 // Types
-import type { CareSchedule, Plant } from '../../types';
+import type { CareSchedule, PlantInput } from '../../types';
 
 interface Props extends React.ComponentProps<'div'> {
     photo: Blob;
     result: IdentifyResult;
     onCancel: () => void;
-    onSaved: (plant: Plant) => void;
+    onSave: (input: PlantInput) => void;
 }
 
-export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSaved, ...props }) => {
+export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, ...props }) => {
     const [nickname, setNickname] = useState(result.commonName || result.species);
     const [care, setCare] = useState<CareSchedule>(() => {
         return defaultCareFor(result.species, result.commonName);
@@ -34,20 +35,13 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
     const photoUrl = useObjectUrl(photo);
 
     function save() {
-        const now = Date.now();
-        onSaved({
-            id: newId(),
+        onSave({
             nickname: nickname.trim() || result.commonName || result.species,
             species: result.species,
             commonName: result.commonName,
             photo,
-            acquiredAt: now,
             care,
-            lastCare: { water: now,
-                fertilize: now,
-                repot: now },
-            lastNotified: {},
-            notes: ''
+            acquiredAt: Date.now()
         });
     }
 

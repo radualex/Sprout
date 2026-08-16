@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 // Components
 import { TaskRow } from '../../components/TaskRow';
@@ -9,19 +12,21 @@ import { allTasks, type CareTask } from '../../helpers/care';
 // Hooks
 import { useClock } from '../../hooks';
 
+// Lib
+import { markCareDone } from '../../lib/actions/plants';
+
 // Styles
 import shared from '../../scss/shared.module.scss';
 
 // Types
 import type { Plant } from '../../types';
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
+interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
-    onDone: (plant: Plant) => void;
-    onSelect: (id: string) => void;
 }
 
-export const CareScreen: React.FunctionComponent<Props> = ({ plants, onDone, onSelect, className, ...props }) => {
+export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+    const router = useRouter();
     useClock(); // re-render tick; tasks computed against fresh Date.now()
     const tasks = allTasks(plants);
     const due = tasks.filter((t) => {
@@ -31,13 +36,13 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, onDone, onS
         return t.daysUntil > 0 && t.daysUntil <= 14;
     });
 
-    function markDone(task: CareTask) {
-        const updated: Plant = {
-            ...task.plant,
-            lastCare: { ...task.plant.lastCare,
-                [task.kind]: Date.now() }
-        };
-        onDone(updated);
+    async function markDone(task: CareTask) {
+        await markCareDone(task.plant.id, task.kind);
+        router.refresh();
+    }
+
+    function selectPlant(id: string) {
+        router.push(`/plants/${id}`);
     }
 
     return (
@@ -65,7 +70,7 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, onDone, onS
                             <div className={shared.taskList}>
                                 {due.map((t) => {
                                     return (
-                                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={onSelect} />
+                                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={selectPlant} />
                                     );
                                 })}
                             </div>
@@ -79,7 +84,7 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, onDone, onS
                         <div className={shared.taskList}>
                             {upcoming.map((t) => {
                                 return (
-                                    <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={onSelect} />
+                                    <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={markDone} onSelect={selectPlant} />
                                 );
                             })}
                         </div>

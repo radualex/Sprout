@@ -1,0 +1,45 @@
+services:
+    db:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_USER: sprout
+            POSTGRES_PASSWORD: sprout
+            POSTGRES_DB: sprout
+        ports:
+            - '5432:5432'
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U sprout -d sprout']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+    app:
+        build:
+            context: .
+            target: dev
+        ports:
+            - '3000:3000'
+        environment:
+            DATABASE_URL: postgres://sprout:sprout@db:5432/sprout
+            BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-dev-secret-change-me}
+            BETTER_AUTH_URL: http://localhost:3000
+            GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+            GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+            PLANTNET_API_KEY: ${PLANTNET_API_KEY:-}
+        volumes:
+            - ./src:/app/src
+            - ./public:/app/public
+            - ./next.config.ts:/app/next.config.ts
+            - ./tsconfig.json:/app/tsconfig.json
+            - ./drizzle.config.ts:/app/drizzle.config.ts
+            - ./package.json:/app/package.json
+            - ./bun.lock:/app/bun.lock
+            - .next:/app/.next
+        depends_on:
+            db:
+                condition: service_healthy
+
+volumes:
+    pgdata:

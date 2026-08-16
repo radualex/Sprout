@@ -8,7 +8,9 @@ export default configure([{
     ignores: [
         '**/*.d.ts',
         '**/*.js',
-        'eslint-rules/**'
+        'eslint-rules/**',
+        '.next/**',
+        'src/js/lib/db/auth-schema.ts'
     ]
 }, configs.react, {
     plugins: {
@@ -39,15 +41,21 @@ export default configure([{
         'object-property-newline': 'off',
         'sprout/jsx-props-inline': 'error',
         'sprout/use-component-props-string': 'error',
+        // Next.js app-dir files (page/layout/route/manifest.tsx…) are lowercase by
+        // convention; kebabCase covers them while camel/pascal stay enforced.
         'unicorn/filename-case': ['error', {
             cases: {
                 camelCase: true,
-                pascalCase: true
+                pascalCase: true,
+                kebabCase: true
             }
         }],
         '@onefinity/eslint-config/import-grouping': ['error', {
             groups: [{
                 matches: /^(?:\w|@\w).*$/.source
+            }, {
+                label: 'Schema',
+                matches: /\/auth-schema/.source
             }, {
                 label: 'Constants',
                 matches: /\/constants/.source
@@ -64,6 +72,9 @@ export default configure([{
                 label: 'Services',
                 matches: /\/services/.source
             }, {
+                label: 'Lib',
+                matches: /\/lib\//.source
+            }, {
                 label: 'Styles',
                 matches: /\/(scss|styles.module.scss)/.source
             }, {
@@ -71,5 +82,13 @@ export default configure([{
                 matches: /\/types/.source
             }]
         }]
+    }
+}, {
+    // Turbopack requires the proxy matcher to be a static string constant; the
+    // rule would force a String.raw template literal (a runtime call) which
+    // breaks `next build`.
+    files: ['src/proxy.ts'],
+    rules: {
+        'unicorn/prefer-string-raw': 'off'
     }
 }]);

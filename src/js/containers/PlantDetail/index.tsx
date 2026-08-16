@@ -1,4 +1,8 @@
+'use client';
+
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Components
 import { PlantPhoto } from '../../components/PlantPhoto';
@@ -11,6 +15,9 @@ import { displayName } from '../../helpers/plant';
 // Hooks
 import { useClock } from '../../hooks';
 
+// Lib
+import { deletePlant, markCareDone, updatePlant } from '../../lib/actions/plants';
+
 // Styles
 import shared from '../../scss/shared.module.scss';
 import styles from './styles.module.scss';
@@ -20,36 +27,39 @@ import type { CareKind, Plant } from '../../types';
 
 interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
-    onBack: () => void;
-    onSave: (plant: Plant) => void;
-    onDelete: (id: string) => void;
 }
 
-export const PlantDetail: React.FunctionComponent<Props> = ({ plant, onBack, onSave, onDelete, className, ...props }) => {
+export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
+    const router = useRouter();
     const now = useClock();
     const [isEditing, setIsEditing] = useState(false);
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
-    function markDone(kind: CareKind) {
-        onSave({ ...plant,
-            lastCare: { ...plant.lastCare,
-                [kind]: Date.now() } });
+    async function markDone(kind: CareKind) {
+        await markCareDone(plant.id, kind);
+        router.refresh();
     }
 
-    function saveEdited(edited: Plant) {
-        onSave(edited);
+    async function saveEdited(edited: Plant) {
+        await updatePlant(edited.id, {
+            nickname: edited.nickname,
+            care: edited.care
+        });
         setIsEditing(false);
+        router.refresh();
     }
 
-    function cancelEdit() {
-        setIsEditing(false);
+    async function remove() {
+        await deletePlant(plant.id);
+        router.push('/');
+        router.refresh();
     }
 
     return (
         <div className={`${shared.screen} ${className ?? ''}`} {...props}>
-            <button type="button" className={styles.backBtn} onClick={onBack}>
+            <Link href="/" className={styles.backBtn}>
                 ← My Plants
-            </button>
+            </Link>
 
             <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.detailHero} />
 
@@ -96,7 +106,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, onBack, onS
                                     Last {meta.verb} {daysAgo === 0 ? 'today' : (daysAgo === 1 ? 'yesterday' : `${daysAgo} days ago`)}
                                 </div>
                             </div>
-                            <button type="button" className={shared.doneBtn} onClick={() => { markDone(kind); }}>
+                            <button type="button" className={shared.doneBtn} onClick={() => { void markDone(kind); }}>
                                 ✓ {(meta.verb.at(0) ?? '').toUpperCase() + meta.verb.slice(1)} today
                             </button>
                         </div>
@@ -106,7 +116,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, onBack, onS
 
             <div className={shared.sectionTitle}>Schedule</div>
             {isEditing ? (
-                <EditSchedule key={plant.id} plant={plant} onSave={saveEdited} onCancel={cancelEdit} />
+                <EditSchedule key={plant.id} plant={plant} onSave={saveEdited} onCancel={() => { setIsEditing(false); }} />
             ) : (
                 <React.Fragment>
                     <div className={shared.notice}>
@@ -126,7 +136,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, onBack, onS
                         <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={() => { setIsConfirmDelete(false); }}>
                             Keep plant
                         </button>
-                        <button type="button" className={shared.btn} style={{ background: 'var(--red)' }} onClick={() => { onDelete(plant.id); }}>
+                        <button type="button" className={shared.btn} style={{ background: 'var(--red)' }} onClick={() => { void remove(); }}>
                             Delete forever
                         </button>
                     </div>

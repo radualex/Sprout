@@ -1,4 +1,8 @@
 node_modules/
-build/
+.next/
 .DS_Store
 *.js
+.playwright-mcp/
+.env
+.env.local
+.env*.local

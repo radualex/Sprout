@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Components
 import { AddPlantForm } from '../../components/AddPlantForm';
@@ -9,19 +12,22 @@ import { useObjectUrl } from '../../hooks';
 // Services
 import { identifyPlant, type IdentifyResult } from '../../services/identify';
 
+// Lib
+import { createPlant } from '../../lib/actions/plants';
+
 // Styles
 import shared from '../../scss/shared.module.scss';
 import styles from './styles.module.scss';
 
 // Types
-import type { Plant } from '../../types';
+import type { PlantInput } from '../../types';
 import type { Phase } from './types';
 
 interface Props extends React.ComponentProps<'div'> {
-    onSaved: (plant: Plant) => void;
 }
 
-export const IdentifyScreen: React.FunctionComponent<Props> = ({ onSaved, className, ...props }) => {
+export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props }) => {
+    const router = useRouter();
     const [phase, setPhase] = useState<Phase>('capture');
     const [photo, setPhoto] = useState<Blob | undefined>(undefined);
     const [results, setResults] = useState<IdentifyResult[]>([]);
@@ -135,6 +141,12 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ onSaved, classN
         setPhase('capture');
     }
 
+    async function handleSave(input: PlantInput) {
+        const id = await createPlant(input);
+        router.push(`/plants/${id}`);
+        router.refresh();
+    }
+
     return (
         <div className={`${shared.screen} ${className ?? ''}`} {...props}>
             <header className={shared.appHeader}>
@@ -225,7 +237,7 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ onSaved, classN
             )}
 
             {phase === 'form' && picked && photo && (
-                <AddPlantForm photo={photo} result={picked} onCancel={() => { setPhase('results'); }} onSaved={onSaved} />
+                <AddPlantForm photo={photo} result={picked} onCancel={() => { setPhase('results'); }} onSave={handleSave} />
             )}
         </div>
     );

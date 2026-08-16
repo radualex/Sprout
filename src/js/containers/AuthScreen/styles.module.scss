@@ -1,0 +1,129 @@
+.screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 400px;
+    min-height: 100dvh;
+    padding: 24px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+    text-align: center;
+    gap: 6px;
+
+    h1 {
+        margin: 0;
+        font-size: 28px;
+        color: var(--green-900);
+    }
+}
+
+.logo {
+    font-size: 44px;
+    line-height: 1;
+}
+
+.sub {
+    margin: 0;
+    color: var(--ink-soft);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+
+    input {
+        padding: 12px 14px;
+        border: 1px solid rgb(28 37 32 / 0.12);
+        border-radius: var(--radius);
+        outline: none;
+        background: var(--surface);
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--ink);
+
+        &:focus {
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 3px rgb(76 143 95 / 0.15);
+        }
+    }
+}
+
+.primary {
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--green-700);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+}
+
+.google {
+    padding: 13px;
+    border: 1px solid rgb(28 37 32 / 0.15);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink-soft);
+    font-size: 13px;
+
+    &:before,
+    &:after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgb(28 37 32 / 0.1);
+    }
+}
+
+.switch {
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+
+    a {
+        color: var(--green-700);
+        font-weight: 700;
+        text-decoration: none;
+    }
+}
+
+.error {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgb(192 69 47 / 0.1);
+    color: var(--red);
+    font-size: 13px;
+}

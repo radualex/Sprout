@@ -16,12 +16,23 @@ export interface Plant {
     /** Scientific name, e.g. "Monstera deliciosa". */
     species: string;
     commonName: string;
-    /** Photo stored as a Blob in IndexedDB alongside the record. */
-    photo?: Blob;
+    /** Photo URL (served from Postgres bytea at /plants/[id]/photo). */
+    photo?: string;
     acquiredAt: number;
     care: CareSchedule;
     lastCare: Record<CareKind, number>;
     /** Last time we showed a notification per care kind, to avoid repeats. */
     lastNotified: Partial<Record<CareKind, number>>;
     notes: string;
+}
+
+/** Payload sent to server actions when creating a plant. */
+export interface PlantInput {
+    nickname: string;
+    species: string;
+    commonName: string;
+    care: CareSchedule;
+    /** Captured photo; stored as bytea on the server. */
+    photo?: Blob;
+    acquiredAt: number;
 }
