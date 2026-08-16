@@ -7,6 +7,10 @@
 - [ ] **Add useMemo/useCallback optimisation pass**: audit components for values that can be memoised with `useMemo` and ensure every computed value / handler is as stable as the conventions already enforce for handlers.
 - [ ] **Move production database to Neon**: swap the `pg` driver for `@neondatabase/serverless` and update `DATABASE_URL` (see ADR-0002 in README).
 - [ ] **Add Web Push (VAPID)** for reliable reminders while the app is closed (see the README limitation note).
+- [ ] **Accessibility pass**: audit every screen for semantic HTML and ARIA — currently many `div`s are used where a semantic element (button, list, heading) fits, and no `aria-label` exists anywhere. Convert interactive `div`s to proper elements and add `aria-label`s where the meaning is icon-only.
+- [ ] **Unit tests**: add component/helper tests with Vitest + React Testing Library + jsdom. Components are already `React.FunctionComponent<Props>` with testable props — cover `handle*` handlers, `classNames` conditionals, and the care helpers (`nextDue`, `formatDue`, `dueTasks`).
+- [ ] **Integration tests**: recommended tool is **Vitest** (single runner shared with unit tests) + **`next-test-api-route-handler`** for `/api/*` route handlers and `lib/db` queries against the Docker Postgres. Run them against a test database to avoid clobbering dev data. (Alternative if a separate HTTP layer is preferred: `supertest` against `next start`.)
+- [ ] **E2E tests**: add Playwright (already available via the Playwright MCP server). Cover the critical journey: sign-up → identify (mocked PlantNet response) → add plant → care due → mark done.
 
 ## Done
 
