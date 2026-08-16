@@ -23,7 +23,7 @@ const AppLayout: React.FunctionComponent<Props> = async ({ children, ...props })
     const dueCount = dueTasks(plants).length;
 
     return (
-        <div className={styles.appShell} {...props}>
+        <div className={styles.root} {...props}>
             {children}
             <BottomNav dueCount={dueCount} />
         </div>

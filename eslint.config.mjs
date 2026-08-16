@@ -65,6 +65,12 @@ export default configure([{
             leadingUnderscore: 'forbid',
             trailingUnderscore: 'forbid'
         }, {
+            selector: 'parameter',
+            modifiers: ['unused'],
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            leadingUnderscore: 'require',
+            trailingUnderscore: 'forbid'
+        }, {
             selector: 'function',
             format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
             leadingUnderscore: 'forbid',

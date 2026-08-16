@@ -1,5 +1,7 @@
 node_modules/
+.claude/
 .next/
+.vscode/
 .DS_Store
 *.js
 .playwright-mcp/
