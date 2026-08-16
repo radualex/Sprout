@@ -3,6 +3,9 @@
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Constants
+import { IPHONE_HINT_STYLE, NO_MARGIN_STYLE } from './constants';
+
 // Services
 import { getPlantNetKey, setPlantNetKey } from '../../services/identify';
 import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '../../services/notifications';
@@ -16,15 +19,6 @@ import styles from './styles.module.scss';
 
 // Types
 import type { Plant } from '../../types';
-
-const NO_MARGIN_STYLE: React.CSSProperties = {
-    marginBottom: 0
-};
-
-const IPHONE_HINT_STYLE: React.CSSProperties = {
-    marginTop: 12,
-    marginBottom: 0
-};
 
 interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
@@ -54,13 +48,16 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
 
     const handleSignOut = useCallback(async () => {
         await authClient.signOut();
+
         router.push('/login');
         router.refresh();
     }, [router]);
 
     const handleEnableNotifications = useCallback(async () => {
         const p = await requestNotificationPermission();
+
         setPerm(p);
+
         if (p === 'granted') {
             await checkAndNotify();
         }
@@ -82,6 +79,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                 <div className={`${shared.notice} ${shared.warn}`}>Notifications aren't supported in this browser.</div>
             );
         }
+
         if (perm === 'granted') {
             return (
                 <React.Fragment>
@@ -92,6 +90,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                 </React.Fragment>
             );
         }
+
         if (perm === 'denied' && Notification.permission === 'denied') {
             return (
                 <div className={`${shared.notice} ${shared.warn}`}>

@@ -24,7 +24,10 @@ async function fetchPlants(): Promise<Plant[]> {
         const response = await fetch('/api/plants', {
             cache: 'no-store'
         });
-        if (!response.ok) return [];
+
+        if (!response.ok) {
+            return [];
+        }
 
         return (await response.json()) as Plant[];
     } catch {
@@ -37,9 +40,15 @@ export function isNotificationsSupported(): boolean {
 }
 
 export async function requestNotificationPermission(): Promise<NotificationPermission> {
-    if (!isNotificationsSupported()) return 'denied';
+    if (!isNotificationsSupported()) {
+        return 'denied';
+    }
+
     const perm = await Notification.requestPermission();
-    if (perm === 'granted') await registerPeriodicSync();
+
+    if (perm === 'granted') {
+        await registerPeriodicSync();
+    }
 
     return perm;
 }
@@ -52,7 +61,7 @@ async function registerPeriodicSync() {
             minInterval: 12 * 60 * 60 * 1000
         });
     } catch {
-    /* periodic sync unavailable — in-app checks still run */
+        /* periodic sync unavailable — in-app checks still run */
     }
 }
 
@@ -61,7 +70,10 @@ async function registerPeriodicSync() {
  * at most once per day per task.
  */
 export async function checkAndNotify(): Promise<number> {
-    if (!isNotificationsSupported() || Notification.permission !== 'granted') return 0;
+    if (!isNotificationsSupported() || Notification.permission !== 'granted') {
+        return 0;
+    }
+
     const [reg, plants] = await Promise.all([navigator.serviceWorker.ready, fetchPlants()]);
     const now = Date.now();
 
@@ -76,9 +88,9 @@ export async function checkAndNotify(): Promise<number> {
         const name = task.plant.nickname || task.plant.commonName || task.plant.species;
         await reg.showNotification(`${meta.emoji} Time to ${meta.label.toLowerCase()} ${name}`, {
             body:
-        task.daysUntil < 0
-            ? `${name} is ${-task.daysUntil} day${task.daysUntil === -1 ? '' : 's'} overdue for ${meta.label.toLowerCase()}ing.`
-            : `${name} is due for ${meta.label.toLowerCase()}ing today.`,
+                task.daysUntil < 0
+                    ? `${name} is ${-task.daysUntil} day${task.daysUntil === -1 ? '' : 's'} overdue for ${meta.label.toLowerCase()}ing.`
+                    : `${name} is due for ${meta.label.toLowerCase()}ing today.`,
             tag: `sprout-${task.plant.id}-${task.kind}`,
             icon: '/icon-192.png',
             badge: '/icon-192.png'

@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 export function useObjectUrl(blob?: Blob): string | undefined {
     const [url, setUrl] = useState<string | undefined>(undefined);
     useEffect(() => {
-        if (!blob) return;
+        if (!blob) {
+            return;
+        }
+
         const objectUrl = URL.createObjectURL(blob);
         setUrl(objectUrl);
 
@@ -22,6 +25,7 @@ export function useClock(intervalMs = 60_000): number {
     const [now, setNow] = useState(() => {
         return Date.now();
     });
+
     useEffect(() => {
         const interval = setInterval(() => {
             setNow(Date.now());

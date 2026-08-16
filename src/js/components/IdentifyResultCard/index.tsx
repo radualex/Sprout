@@ -8,19 +8,19 @@ import type { IdentifyResult } from '../../services/identify';
 // Styles
 import shared from '../../scss/shared.module.scss';
 
-interface Props {
+interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
     result: IdentifyResult;
     selected: boolean;
     onSelect: (result: IdentifyResult) => void;
 }
 
-export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect }) => {
+export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
     const handleSelect = useCallback(() => {
         onSelect(result);
     }, [onSelect, result]);
 
     return (
-        <button type="button" className={`${shared.resultCard} ${selected ? shared.selected : ''}`} onClick={handleSelect}>
+        <button type="button" className={`${shared.resultCard} ${selected ? shared.selected : ''}`} onClick={handleSelect} {...props}>
             <div>
                 <div className={shared.common}>{result.commonName || result.species}</div>
                 <div className={shared.sci}>{result.species}</div>

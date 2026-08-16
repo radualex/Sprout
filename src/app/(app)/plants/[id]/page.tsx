@@ -8,14 +8,19 @@ import { getPlantForUser } from '@/js/lib/queries/plants';
 import { requireUser } from '@/js/lib/session';
 
 interface Props {
-    params: Promise<{ id: string; }>;
+    params: Promise<{
+        id: string;
+    }>;
 }
 
 const PlantDetailPage = async ({ params }: Props) => {
     const session = await requireUser();
     const { id } = await params;
     const plant = await getPlantForUser(session.user.id, id);
-    if (!plant) notFound();
+
+    if (!plant) {
+        notFound();
+    }
 
     return <PlantDetail plant={plant} />;
 };

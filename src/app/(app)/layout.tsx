@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Components
 import { BottomNav } from '@/js/components/BottomNav';
 
@@ -11,17 +13,15 @@ import { requireUser } from '@/js/lib/session';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
-    children: React.ReactNode;
-}
+interface Props extends React.ComponentProps<'div'> {}
 
-const AppLayout = async ({ children }: Props) => {
+const AppLayout: React.FunctionComponent<Props> = async ({ children, ...props }) => {
     const session = await requireUser();
     const plants = await getPlantsForUser(session.user.id);
     const dueCount = dueTasks(plants).length;
 
     return (
-        <div className={styles.appShell}>
+        <div className={styles.appShell} {...props}>
             {children}
             <BottomNav dueCount={dueCount} />
         </div>

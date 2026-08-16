@@ -1,4 +1,8 @@
-export type CareKind = 'water' | 'fertilize' | 'repot';
+export enum CareKind {
+    Water = 'water',
+    Fertilize = 'fertilize',
+    Repot = 'repot'
+}
 
 export interface CareSchedule {
     /** Interval in days between waterings. */

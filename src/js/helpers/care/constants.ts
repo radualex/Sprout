@@ -1,16 +1,16 @@
 // Types
-import type { CareKind, CareSchedule } from '../../types';
+import { CareKind, type CareSchedule } from '../../types';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
 
 export const CARE_META: Record<CareKind, { label: string; verb: string; emoji: string; }> = {
-    water: { label: 'Water',
+    [CareKind.Water]: { label: 'Water',
         verb: 'watered',
         emoji: '💧' },
-    fertilize: { label: 'Fertilise',
+    [CareKind.Fertilize]: { label: 'Fertilise',
         verb: 'fertilised',
         emoji: '🌿' },
-    repot: { label: 'Repot',
+    [CareKind.Repot]: { label: 'Repot',
         verb: 'repotted',
         emoji: '🪴' }
 };

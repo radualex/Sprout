@@ -87,14 +87,22 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
 
     const handleCapture = useCallback(() => {
         const video = videoRef.current;
-        if (!video?.videoWidth) return;
+
+        if (!video?.videoWidth) {
+            return;
+        }
+
         const canvas = document.createElement('canvas');
+
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+
         const context = canvas.getContext('2d');
+
         if (!context) {
             return;
         }
+
         context.drawImage(video, 0, 0);
         canvas.toBlob((blob) => {
             if (!blob) {
@@ -117,7 +125,9 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
     }, [handleStopCamera]);
 
     const handleIdentify = useCallback(async () => {
-        if (!photo) return;
+        if (!photo) {
+            return;
+        }
         setPhase('identifying');
         setError(undefined);
         try {

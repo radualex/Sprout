@@ -2,6 +2,9 @@
 
 import React, { useCallback, useState } from 'react';
 
+// Constants
+import { RESULT_THUMB_STYLE } from './constants';
+
 // Components
 import { CareScheduleFields } from '../CareScheduleFields';
 
@@ -19,13 +22,6 @@ import shared from '../../scss/shared.module.scss';
 
 // Types
 import type { CareSchedule, PlantInput } from '../../types';
-
-const RESULT_THUMB_STYLE: React.CSSProperties = {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
-    objectFit: 'cover'
-};
 
 interface Props extends React.ComponentProps<'div'> {
     photo: Blob;

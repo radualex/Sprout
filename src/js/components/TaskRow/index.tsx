@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useCallback } from 'react';
+import { capitalize } from 'lodash-es';
+
+// Constants
+import { TASK_ROW_BUTTON_STYLE } from './constants';
 
 // Components
 import { PlantPhoto } from '../PlantPhoto';
@@ -12,24 +16,10 @@ import { CARE_META, formatDue, type CareTask } from '../../helpers/care';
 // Styles
 import styles from './styles.module.scss';
 
-const TASK_ROW_BUTTON_STYLE: React.CSSProperties = {
-    all: 'unset',
-    display: 'flex',
-    gap: 12,
-    alignItems: 'center',
-    flex: 1,
-    minWidth: 0,
-    cursor: 'pointer'
-};
-
 interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
     task: CareTask;
     onDone: (t: CareTask) => void;
     onSelect: (id: string) => void;
-}
-
-function capitalize(s: string): string {
-    return (s.at(0) ?? '').toUpperCase() + s.slice(1);
 }
 
 export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...props }) => {

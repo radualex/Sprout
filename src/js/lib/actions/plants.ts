@@ -9,7 +9,7 @@ import { plants } from '../db/schema';
 import { requireUser } from '../session';
 
 // Types
-import type { CareKind, CareSchedule, PlantInput } from '../../types';
+import { CareKind, type CareSchedule, type PlantInput } from '../../types';
 
 const ALL_PATH = '/';
 
@@ -27,9 +27,9 @@ export async function createPlant(input: PlantInput): Promise<string> {
             acquiredAt: input.acquiredAt,
             care: input.care,
             lastCare: {
-                water: now,
-                fertilize: now,
-                repot: now
+                [CareKind.Water]: now,
+                [CareKind.Fertilize]: now,
+                [CareKind.Repot]: now
             },
             lastNotified: {},
             notes: '',
@@ -64,7 +64,11 @@ export async function markCareDone(id: string, kind: CareKind): Promise<void> {
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     const row = rows.at(0);
-    if (!row) return;
+
+    if (!row) {
+        return;
+    }
+
     await database
         .update(plants)
         .set({
@@ -86,7 +90,11 @@ export async function recordNotified(id: string, kind: CareKind, at: number): Pr
         .from(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     const row = rows.at(0);
-    if (!row) return;
+
+    if (!row) {
+        return;
+    }
+
     await database
         .update(plants)
         .set({

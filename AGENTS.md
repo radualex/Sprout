@@ -13,7 +13,8 @@
 - [x] **Migrate Vite PWA → Next.js 16 App Router** (in place). Routes, server actions, auth (Better Auth), Postgres (Drizzle), PWA hardening, Dockerized local dev. See the ADRs in `README.md`.
 - [x] **Auth** — Better Auth with Google OAuth + email/password; per-user scoping on every query.
 - [x] **Dockerized local dev** — `docker compose up -d db` + `bun run dev`, or `docker compose up -d --build` for both containers.
-- [x] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.scss` via `styles.x`, no single-line object literals, blank line before every `return`. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements`. See the Tools table below.
+- [x] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.scss` via `styles.x`, no single-line object literals, blank line before every `return`, curly braces on all blocks. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements` + `curly`.
+- [x] **React conventions** — every component is `React.FunctionComponent<Props>` with `Props extends React.ComponentProps<'element'>` (or `Omit`), destructures and spreads `{...props}` on its root element. One component per `index.tsx` (own folder each); style/style constants live in sibling `constants.ts` files. Enums over magic strings (`CareKind.Water` not `'water'`). `lodash-es` over hand-rolled utils. These are codified globally in the `react-conventions` opencode skill (`~/.config/opencode/skills/react-conventions`). See the Tools table below.
 
 ## Notes
 

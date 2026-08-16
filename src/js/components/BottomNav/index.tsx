@@ -35,11 +35,11 @@ const TABS: Tab[] = [{
     href: '/settings'
 }];
 
-interface Props {
+interface Props extends React.ComponentProps<'nav'> {
     dueCount: number;
 }
 
-export const BottomNav: React.FunctionComponent<Props> = ({ dueCount }) => {
+export const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }) => {
     const pathname = usePathname();
 
     const isActive = (tab: Tab): boolean => {
@@ -51,7 +51,7 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount }) => {
     };
 
     return (
-        <nav className={styles.bottomNav}>
+        <nav className={styles.bottomNav} {...props}>
             {TABS.map((tab) => {
                 const isTabActive = isActive(tab);
 

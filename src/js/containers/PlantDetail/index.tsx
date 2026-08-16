@@ -4,9 +4,13 @@ import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Constants
+import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE, HEADER_STYLE, SUB_STYLE } from './constants';
+
 // Components
 import { PlantPhoto } from '../../components/PlantPhoto';
 import { EditSchedule } from '../../components/EditSchedule';
+import { CareLogRow } from '../../components/CareLogRow';
 
 // Helpers
 import { CARE_META, DAY_MS, formatDue, nextDue } from '../../helpers/care';
@@ -23,56 +27,7 @@ import shared from '../../scss/shared.module.scss';
 import styles from './styles.module.scss';
 
 // Types
-import type { CareKind, Plant } from '../../types';
-
-const HEADER_STYLE: React.CSSProperties = {
-    paddingTop: 14
-};
-
-const SUB_STYLE: React.CSSProperties = {
-    fontStyle: 'italic'
-};
-
-const DELETE_ROW_STYLE: React.CSSProperties = {
-    marginTop: 24,
-    textAlign: 'center'
-};
-
-const DELETE_BUTTON_STYLE: React.CSSProperties = {
-    background: 'var(--red)'
-};
-
-interface CareLogRowProps {
-    plant: Plant;
-    kind: CareKind;
-    now: number;
-    onDone: (kind: CareKind) => void;
-}
-
-const CareLogRow: React.FunctionComponent<CareLogRowProps> = ({ plant, kind, now, onDone }) => {
-    const meta = CARE_META[kind];
-    const last = plant.lastCare[kind];
-    const daysAgo = Math.floor((now - last) / DAY_MS);
-
-    const handleDone = useCallback(() => {
-        onDone(kind);
-    }, [onDone, kind]);
-
-    return (
-        <div className={shared.taskRow}>
-            <div className={shared.thumb}>{meta.emoji}</div>
-            <div className={shared.info}>
-                <div className={shared.title}>{meta.label}</div>
-                <div className={shared.when}>
-                    Last {meta.verb} {daysAgo === 0 ? 'today' : (daysAgo === 1 ? 'yesterday' : `${daysAgo} days ago`)}
-                </div>
-            </div>
-            <button type="button" className={shared.doneBtn} onClick={handleDone}>
-                ✓ {(meta.verb.at(0) ?? '').toUpperCase() + meta.verb.slice(1)} today
-            </button>
-        </div>
-    );
-};
+import { CareKind, type Plant } from '../../types';
 
 interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
@@ -86,6 +41,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
 
     const handleMarkDone = useCallback(async (kind: CareKind) => {
         await markCareDone(plant.id, kind);
+
         router.refresh();
     }, [plant, router]);
 
@@ -94,12 +50,14 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
             nickname: edited.nickname,
             care: edited.care
         });
+
         setIsEditing(false);
         router.refresh();
     }, [router]);
 
     const handleRemove = useCallback(async () => {
         await deletePlant(plant.id);
+
         router.push('/');
         router.refresh();
     }, [plant, router]);
@@ -139,7 +97,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
             </header>
 
             <div className={styles.careStats}>
-                {(['water', 'fertilize', 'repot'] as CareKind[]).map((kind) => {
+                {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
                     const due = nextDue(plant, kind);
                     const meta = CARE_META[kind];
                     const daysUntil = due === undefined ? undefined : Math.ceil((due - now) / DAY_MS);
@@ -159,7 +117,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
 
             <div className={shared.sectionTitle}>Log care</div>
             <div className={shared.taskList}>
-                {(['water', 'fertilize', 'repot'] as CareKind[]).map((kind) => {
+                {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
                     return (
                         <CareLogRow key={kind} plant={plant} kind={kind} now={now} onDone={handleMarkDone} />
                     );

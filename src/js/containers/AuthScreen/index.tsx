@@ -10,11 +10,11 @@ import { authClient } from '@/js/lib/auth-client';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
+interface Props extends React.ComponentProps<'div'> {
     mode: 'login' | 'signup';
 }
 
-export const AuthScreen: React.FunctionComponent<Props> = ({ mode }) => {
+export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
     const router = useRouter();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode }) => {
     }, []);
 
     return (
-        <div className={styles.screen}>
+        <div className={styles.screen} {...props}>
             <div className={styles.hero}>
                 <div className={styles.logo}>🌱</div>
                 <h1>Sprout</h1>

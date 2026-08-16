@@ -2,7 +2,7 @@
 import { CARE_DEFAULTS, DAY_MS } from './constants';
 
 // Types
-import type { CareKind, CareSchedule, Plant } from '../../types';
+import { CareKind, type CareSchedule, type Plant } from '../../types';
 import type { CareTask } from './types';
 
 export { DAY_MS, CARE_META } from './constants';
@@ -10,22 +10,28 @@ export type { CareTask } from './types';
 
 function intervalMs(plant: Plant, kind: CareKind): number {
     const c = plant.care;
-    if (kind === 'water') return c.waterEveryDays * DAY_MS;
-    if (kind === 'fertilize') return c.fertilizeEveryDays * DAY_MS;
+    if (kind === CareKind.Water) {
+        return c.waterEveryDays * DAY_MS;
+    }
+    if (kind === CareKind.Fertilize) {
+        return c.fertilizeEveryDays * DAY_MS;
+    }
 
     return c.repotEveryMonths * 30 * DAY_MS;
 }
 
 export function nextDue(plant: Plant, kind: CareKind): number | undefined {
     const interval = intervalMs(plant, kind);
-    if (interval <= 0) return undefined;
+    if (interval <= 0) {
+        return undefined;
+    }
 
     return plant.lastCare[kind] + interval;
 }
 
 function tasksForPlant(plant: Plant, now: number): CareTask[] {
     const tasks: CareTask[] = [];
-    for (const kind of ['water', 'fertilize', 'repot'] as CareKind[]) {
+    for (const kind of [CareKind.Water, CareKind.Fertilize, CareKind.Repot]) {
         const dueAt = nextDue(plant, kind);
         if (dueAt === undefined) {
             continue;
@@ -59,11 +65,26 @@ export function dueTasks(plants: Plant[], now = Date.now()): CareTask[] {
 }
 
 export function formatDue(daysUntil: number): string {
-    if (daysUntil < -1) return `${-daysUntil} days overdue`;
-    if (daysUntil === -1) return '1 day overdue';
-    if (daysUntil <= 0) return 'due today';
-    if (daysUntil === 1) return 'tomorrow';
-    if (daysUntil < 30) return `in ${daysUntil} days`;
+    if (daysUntil < -1) {
+        return `${-daysUntil} days overdue`;
+    }
+
+    if (daysUntil === -1) {
+        return '1 day overdue';
+    }
+
+    if (daysUntil <= 0) {
+        return 'due today';
+    }
+
+    if (daysUntil === 1) {
+        return 'tomorrow';
+    }
+
+    if (daysUntil < 30) {
+        return `in ${daysUntil} days`;
+    }
+
     const months = Math.round(daysUntil / 30);
 
     return months === 1 ? 'in ~1 month' : `in ~${months} months`;

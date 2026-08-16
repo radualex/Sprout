@@ -27,7 +27,9 @@ interface Props extends React.ComponentProps<'div'> {
 
 export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     const router = useRouter();
+
     useClock(); // re-render tick; tasks computed against fresh Date.now()
+
     const tasks = allTasks(plants);
     const due = tasks.filter((t) => {
         return t.daysUntil <= 0;

@@ -5,13 +5,18 @@ import { API_KEY_STORAGE } from './constants';
 import type { IdentifyResult } from './types';
 
 export function getPlantNetKey(): string {
-    if (typeof window === 'undefined') return '';
+    if (typeof window === 'undefined') {
+        return '';
+    }
 
     return localStorage.getItem(API_KEY_STORAGE) ?? '';
 }
 
 export function setPlantNetKey(key: string): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {
+        return;
+    }
+
     localStorage.setItem(API_KEY_STORAGE, key);
 }
 
