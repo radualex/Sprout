@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 /** Renders a Blob as an object URL, revoking on cleanup or change. */
 export function useObjectUrl(blob?: Blob): string | undefined {
     const [url, setUrl] = useState<string | undefined>(undefined);
+
     useEffect(() => {
         if (!blob) {
             return;

@@ -3,9 +3,11 @@ import { notFound } from 'next/navigation';
 // Components
 import { PlantDetail } from '@/js/containers/PlantDetail';
 
-// Lib
-import { getPlantForUser } from '@/js/lib/queries/plants';
-import { requireUser } from '@/js/lib/session';
+// Database
+import { getPlantForUser } from '@/js/lib/db/queries';
+
+// Auth
+import { requireUser } from '@/js/lib/auth/session';
 
 interface Props {
     params: Promise<{

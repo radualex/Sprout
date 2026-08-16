@@ -1,6 +1,8 @@
 'use client';
 
+import classNames from 'classnames';
 import Link from 'next/link';
+import { Camera, Droplets, Settings, Sprout, type LucideIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 // Styles
@@ -9,29 +11,29 @@ import styles from './styles.module.scss';
 interface Tab {
     id: 'plants' | 'identify' | 'care' | 'settings';
     label: string;
-    icon: string;
+    icon: LucideIcon;
     href: string;
 }
 
 const TABS: Tab[] = [{
     id: 'plants',
     label: 'My Plants',
-    icon: '🪴',
+    icon: Sprout,
     href: '/'
 }, {
     id: 'identify',
     label: 'Identify',
-    icon: '📷',
+    icon: Camera,
     href: '/identify'
 }, {
     id: 'care',
     label: 'Care',
-    icon: '💧',
+    icon: Droplets,
     href: '/care'
 }, {
     id: 'settings',
     label: 'Settings',
-    icon: '⚙️',
+    icon: Settings,
     href: '/settings'
 }];
 
@@ -54,10 +56,13 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }
         <nav className={styles.bottomNav} {...props}>
             {TABS.map((tab) => {
                 const isTabActive = isActive(tab);
+                const linkClasses = classNames({
+                    [styles.active]: isTabActive
+                });
 
                 return (
-                    <Link key={tab.id} href={tab.href} className={isTabActive ? styles.active : ''}>
-                        <span className={styles.icon}>{tab.icon}</span>
+                    <Link key={tab.id} href={tab.href} className={linkClasses}>
+                        <span className={styles.icon}><tab.icon size={22} /></span>
                         {tab.label}
                         {tab.id === 'care' && dueCount > 0 && (
                             <span className={styles.badge}>{dueCount}</span>

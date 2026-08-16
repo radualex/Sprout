@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
+import { Droplets, Flower2, Leaf } from 'lucide-react';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -57,7 +58,7 @@ export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, v
         <div {...props}>
             <div className={shared.fieldRow}>
                 <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-water`}>💧 Water</label>
+                    <label htmlFor={`${idPrefix}-water`}><Droplets size={14} /> Water</label>
                     <select id={`${idPrefix}-water`} value={value.waterEveryDays} onChange={handleWaterChange}>
                         {WATER_OPTIONS.map((d) => {
                             return (
@@ -67,7 +68,7 @@ export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, v
                     </select>
                 </div>
                 <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-fertilize`}>🌿 Fertilise</label>
+                    <label htmlFor={`${idPrefix}-fertilize`}><Leaf size={14} /> Fertilise</label>
                     <select id={`${idPrefix}-fertilize`} value={value.fertilizeEveryDays} onChange={handleFertilizeChange}>
                         <option value={0}>never</option>
                         {FERTILIZE_OPTIONS.map((d) => {
@@ -79,7 +80,7 @@ export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, v
                 </div>
             </div>
             <div className={shared.field}>
-                <label htmlFor={`${idPrefix}-repot`}>🪴 Repot</label>
+                <label htmlFor={`${idPrefix}-repot`}><Flower2 size={14} /> Repot</label>
                 <select id={`${idPrefix}-repot`} value={value.repotEveryMonths} onChange={handleRepotChange}>
                     <option value={0}>never</option>
                     {REPOT_OPTIONS.map((m) => {

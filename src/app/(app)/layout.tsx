@@ -6,9 +6,11 @@ import { BottomNav } from '@/js/components/BottomNav';
 // Helpers
 import { dueTasks } from '@/js/helpers/care';
 
-// Lib
-import { getPlantsForUser } from '@/js/lib/queries/plants';
-import { requireUser } from '@/js/lib/session';
+// Database
+import { getPlantsForUser } from '@/js/lib/db/queries';
+
+// Auth
+import { requireUser } from '@/js/lib/auth/session';
 
 // Styles
 import styles from './styles.module.scss';

@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { capitalize } from 'lodash-es';
 
@@ -24,7 +25,10 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
 
 export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...props }) => {
     const meta = CARE_META[task.kind];
-    const whenModule = task.daysUntil < 0 ? styles.overdue : (task.daysUntil <= 0 ? styles.due : '');
+    const classes = classNames(styles.when, {
+        [styles.overdue]: task.daysUntil < 0,
+        [styles.due]: task.daysUntil === 0
+    });
 
     const handleSelect = useCallback(() => {
         onSelect(task.plant.id);
@@ -40,9 +44,9 @@ export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
                 <div className={styles.info}>
                     <div className={styles.title}>
-                        {meta.emoji} {meta.label} {displayName(task.plant)}
+                        <meta.icon size={14} /> {meta.label} {displayName(task.plant)}
                     </div>
-                    <div className={`${styles.when} ${whenModule}`}>{capitalize(formatDue(task.daysUntil))}</div>
+                    <div className={classes}>{capitalize(formatDue(task.daysUntil))}</div>
                 </div>
             </button>
             {task.daysUntil <= 0 && (

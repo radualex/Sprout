@@ -1,8 +1,8 @@
 // Helpers
 import { CARE_META, DAY_MS, dueTasks } from '../../helpers/care';
 
-// Lib
-import { recordNotified } from '../../lib/actions/plants';
+// Database
+import { recordNotified } from '../../lib/db/actions';
 
 // Types
 import type { Plant } from '../../types';
@@ -86,7 +86,8 @@ export async function checkAndNotify(): Promise<number> {
     await Promise.all(pendingTasks.map(async (task) => {
         const meta = CARE_META[task.kind];
         const name = task.plant.nickname || task.plant.commonName || task.plant.species;
-        await reg.showNotification(`${meta.emoji} Time to ${meta.label.toLowerCase()} ${name}`, {
+
+        await reg.showNotification(`Time to ${meta.label.toLowerCase()} ${name}`, {
             body:
                 task.daysUntil < 0
                     ? `${name} is ${-task.daysUntil} day${task.daysUntil === -1 ? '' : 's'} overdue for ${meta.label.toLowerCase()}ing.`

@@ -1,6 +1,6 @@
 import { and, desc, eq } from 'drizzle-orm';
 
-// Lib
+// Database
 import { database } from '../db';
 import { plants } from '../db/schema';
 

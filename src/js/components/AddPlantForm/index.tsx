@@ -1,15 +1,14 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback, useState } from 'react';
+import { Sprout } from 'lucide-react';
 
 // Constants
 import { RESULT_THUMB_STYLE } from './constants';
 
 // Components
 import { CareScheduleFields } from '../CareScheduleFields';
-
-// Helpers
-import { defaultCareFor } from '../../helpers/care';
 
 // Hooks
 import { useObjectUrl } from '../../hooks';
@@ -31,9 +30,12 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, ...props }) => {
+    const classes = classNames(shared.resultCard, shared.selected);
+    const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
+
     const [nickname, setNickname] = useState(result.commonName || result.species);
     const [care, setCare] = useState<CareSchedule>(() => {
-        return defaultCareFor(result.species, result.commonName);
+        return result.defaultCare;
     });
     const photoUrl = useObjectUrl(photo);
 
@@ -54,7 +56,7 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
 
     return (
         <div {...props}>
-            <div className={`${shared.resultCard} ${shared.selected}`}>
+            <div className={classes}>
                 {photoUrl && <img src={photoUrl} alt="" style={RESULT_THUMB_STYLE} />}
                 <div>
                     <div className={shared.common}>{result.commonName || result.species}</div>
@@ -71,11 +73,11 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
             <CareScheduleFields idPrefix="apf" value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
 
             <div className={shared.shutterRow}>
-                <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={onCancel}>
+                <button type="button" className={secondaryButtonClasses} onClick={onCancel}>
                     Back
                 </button>
                 <button type="button" className={shared.btn} onClick={handleSave}>
-                    🌱 Add to my plants
+                    <Sprout size={16} /> Add to my plants
                 </button>
             </div>
         </div>

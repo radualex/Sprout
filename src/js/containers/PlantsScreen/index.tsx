@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import React from 'react';
+import classNames from 'classnames';
+import { Camera, Sprout } from 'lucide-react';
 
 // Components
 import { PlantPhoto } from '../../components/PlantPhoto';
@@ -27,8 +29,10 @@ interface Props extends React.ComponentProps<'div'> {
 export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
 
+    const classes = classNames(shared.screen, className);
+
     return (
-        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
+        <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Sprout</h1>
@@ -45,14 +49,16 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
 
             {plants.length === 0 ? (
                 <div className={shared.empty}>
-                    <div className={shared.big}>🌱</div>
+                    <div className={shared.big}>
+                        <Sprout size={48} />
+                    </div>
                     <h2>No plants yet</h2>
                     <p>
                         Point your camera at a plant to identify it and start tracking watering, fertilising
                         and repotting.
                     </p>
                     <Link href="/identify" className={shared.btn}>
-                        📷 Identify your first plant
+                        <Camera size={16} /> Identify your first plant
                     </Link>
                 </div>
             ) : (
@@ -63,6 +69,7 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                             return t.daysUntil <= 0;
                         }).slice(0, 2);
                         const next = tasks.at(0);
+                        const NextMeta = next ? CARE_META[next.kind] : undefined;
 
                         return (
                             <Link key={plant.id} href={`/plants/${plant.id}`} className={styles.plantCard}>
@@ -73,16 +80,22 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                                     <div className={styles.chips}>
                                         {urgent.length > 0 ? (
                                             urgent.map((t) => {
+                                                const chipClasses = classNames(styles.chip, {
+                                                    [styles.overdue]: t.daysUntil < 0,
+                                                    [styles.due]: t.daysUntil >= 0
+                                                });
+                                                const TaskIcon = CARE_META[t.kind].icon;
+
                                                 return (
-                                                    <span key={t.kind} className={`${styles.chip} ${t.daysUntil < 0 ? styles.overdue : styles.due}`}>
-                                                        {CARE_META[t.kind].emoji} {formatDue(t.daysUntil)}
+                                                    <span key={t.kind} className={chipClasses}>
+                                                        <TaskIcon size={12} /> {formatDue(t.daysUntil)}
                                                     </span>
                                                 );
                                             })
-                                        ) : (next
+                                        ) : (NextMeta && next
                                             ? (
                                                     <span className={styles.chip}>
-                                                        {CARE_META[next.kind].emoji} {CARE_META[next.kind].label}{' '}
+                                                        <NextMeta.icon size={12} /> {NextMeta.label}{' '}
                                                         {formatDue(next.daysUntil)}
                                                     </span>
                                                 )

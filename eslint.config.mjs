@@ -6,6 +6,7 @@ import componentPropsString from './eslint-rules/use-component-props-string/inde
 import noLiteralClassname from './eslint-rules/no-literal-classname/index.js';
 import noInlineObjectLiteral from './eslint-rules/no-inline-object-literal/index.js';
 import noInlineHandlers from './eslint-rules/no-inline-handlers/index.js';
+import noClassnameTernary from './eslint-rules/no-classname-ternary/index.js';
 
 export default configure([{
     ignores: [
@@ -24,7 +25,8 @@ export default configure([{
                 'use-component-props-string': componentPropsString,
                 'no-literal-classname': noLiteralClassname,
                 'no-inline-object-literal': noInlineObjectLiteral,
-                'no-inline-handlers': noInlineHandlers
+                'no-inline-handlers': noInlineHandlers,
+                'no-classname-ternary': noClassnameTernary
             }
         }
     },
@@ -51,13 +53,29 @@ export default configure([{
         'sprout/no-literal-classname': 'error',
         'sprout/no-inline-object-literal': 'error',
         'sprout/no-inline-handlers': 'error',
+        'sprout/no-classname-ternary': 'error',
+        '@typescript-eslint/naming-convention': ['error', {
+            selector: 'variable',
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            leadingUnderscore: 'forbid',
+            trailingUnderscore: 'forbid'
+        }, {
+            selector: 'parameter',
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            leadingUnderscore: 'forbid',
+            trailingUnderscore: 'forbid'
+        }, {
+            selector: 'function',
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            leadingUnderscore: 'forbid',
+            trailingUnderscore: 'forbid'
+        }],
         '@stylistic/padding-line-between-statements': ['error', {
             blankLine: 'always',
             prev: '*',
             next: 'return'
         }],
-        // Next.js app-dir files (page/layout/route/manifest.tsx…) are lowercase by
-        // convention; kebabCase covers them while camel/pascal stay enforced.
+        'unicorn/catch-error-name': 'off',
         'unicorn/filename-case': ['error', {
             cases: {
                 camelCase: true,
@@ -87,8 +105,11 @@ export default configure([{
                 label: 'Services',
                 matches: /\/services/.source
             }, {
-                label: 'Lib',
-                matches: /\/lib\//.source
+                label: 'Database',
+                matches: /(?:\/lib\/db|\/db\/|\.\/index|\.\/schema)/.source
+            }, {
+                label: 'Auth',
+                matches: /(?:\/lib\/auth|\/auth\/|\.\.\/auth)/.source
             }, {
                 label: 'Styles',
                 matches: /\/(scss|styles.module.scss)/.source

@@ -14,7 +14,7 @@
 - [x] **Auth** — Better Auth with Google OAuth + email/password; per-user scoping on every query.
 - [x] **Dockerized local dev** — `docker compose up -d db` + `bun run dev`, or `docker compose up -d --build` for both containers.
 - [x] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.scss` via `styles.x`, no single-line object literals, blank line before every `return`, curly braces on all blocks. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements` + `curly`.
-- [x] **React conventions** — every component is `React.FunctionComponent<Props>` with `Props extends React.ComponentProps<'element'>` (or `Omit`), destructures and spreads `{...props}` on its root element. One component per `index.tsx` (own folder each); style/style constants live in sibling `constants.ts` files. Enums over magic strings (`CareKind.Water` not `'water'`). `lodash-es` over hand-rolled utils. These are codified globally in the `react-conventions` opencode skill (`~/.config/opencode/skills/react-conventions`). See the Tools table below.
+- [x] **React conventions** — every component is `React.FunctionComponent<Props>` with `Props extends React.ComponentProps<'element'>` (or `Omit`), destructures and spreads `{...props}` on its root element. One component per `index.tsx` (own folder each); style/style constants live in sibling `constants.ts` files. Enums over magic strings (`CareKind.Water` not `'water'`). `lodash-es` over hand-rolled utils. `classNames` for every multi-class/conditional class via `const X = classNames(styles.root, { [styles.x]: cond })` at the top of the component above the `useState` calls (never inline in JSX, object-map form for conditionals, single class stays inline). All icons are `lucide-react` components (`CARE_META` holds `icon: LucideIcon`, not emoji strings). These are codified globally in the `react-conventions` opencode skill (`~/.config/opencode/skills/react-conventions`). See the Tools table below.
 
 ## Notes
 
@@ -37,6 +37,9 @@ Reference for the toolchain. Each entry: what it is, why we chose it, and the go
 | Next.js | 16.3.x | App Router framework (Turbopack build) | Middleware was renamed to **proxy**; `proxy.ts` lives in `src/`. `next build` does not run ESLint. |
 | React | 19.2.x | UI library | Server components by default; client components opt in with `'use client'`. |
 | TypeScript | 6.x | Types | `tsc` runs via `bun run build` (after `build:rules`); `tsconfig.json` has `@/*` → `./src/*`. |
+| classnames | 2.5.x | Conditional class composition | `classNames(styles.root, { [styles.x]: cond })` — never inline in JSX; see conventions. |
+| lucide-react | 1.31.x | Icons | Tree-shakeable, server-compatible. `CARE_META` and `TABS` hold `LucideIcon` refs, not emoji strings. |
+| lodash-es | — | Utilities over hand-rolled helpers | E.g. `capitalize`; see conventions. |
 
 ### Database
 

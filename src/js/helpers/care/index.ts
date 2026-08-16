@@ -1,8 +1,8 @@
 // Constants
-import { CARE_DEFAULTS, DAY_MS } from './constants';
+import { DAY_MS } from './constants';
 
 // Types
-import { CareKind, type CareSchedule, type Plant } from '../../types';
+import { CareKind, type Plant } from '../../types';
 import type { CareTask } from './types';
 
 export { DAY_MS, CARE_META } from './constants';
@@ -88,23 +88,4 @@ export function formatDue(daysUntil: number): string {
     const months = Math.round(daysUntil / 30);
 
     return months === 1 ? 'in ~1 month' : `in ~${months} months`;
-}
-
-/** Care defaults by species keyword. First match wins; fallback is a safe generic. */
-export function defaultCareFor(species: string, commonName = ''): CareSchedule {
-    const hay = `${species} ${commonName}`;
-    const hit = CARE_DEFAULTS.find((d) => {
-        return d.match.test(hay);
-    });
-    if (hit) {
-        return {
-            ...hit.care
-        };
-    }
-
-    return {
-        waterEveryDays: 7,
-        fertilizeEveryDays: 30,
-        repotEveryMonths: 18
-    };
 }

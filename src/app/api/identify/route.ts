@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 
-// Lib
-import { requireUser } from '@/js/lib/session';
+// Database
+import { defaultCareFor } from '@/js/lib/db/care-defaults';
+
+// Auth
+import { requireUser } from '@/js/lib/auth/session';
 
 // Types
 import type { IdentifyResult } from '@/js/services/identify/types';
@@ -71,10 +74,14 @@ export const POST = async (request: Request) => {
 
     const data = (await response.json()) as { results?: PlantNetResult[]; };
     const results: IdentifyResult[] = (data.results ?? []).map((r) => {
+        const species = r.scientificNameWithoutAuthor ?? 'Unknown species';
+        const commonName = r.commonNames?.at(0) ?? '';
+
         return {
-            species: r.scientificNameWithoutAuthor ?? 'Unknown species',
-            commonName: r.commonNames?.at(0) ?? '',
-            confidence: r.score ?? 0
+            species,
+            commonName,
+            confidence: r.score ?? 0,
+            defaultCare: defaultCareFor(species, commonName)
         };
     });
 

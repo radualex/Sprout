@@ -30,7 +30,7 @@ export const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, o
 
     return (
         <div className={shared.taskRow} {...props}>
-            <div className={shared.thumb}>{meta.emoji}</div>
+            <div className={shared.thumb}><meta.icon size={18} /></div>
             <div className={shared.info}>
                 <div className={shared.title}>{meta.label}</div>
                 <div className={shared.when}>

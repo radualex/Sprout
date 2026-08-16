@@ -1,8 +1,8 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// Lib
-import { auth } from './auth';
+// Auth
+import { auth } from '../auth';
 
 /** Redirect to /login when unauthenticated; returns the active session otherwise. */
 export async function requireUser() {

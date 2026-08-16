@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 
 // Services
@@ -15,12 +16,16 @@ interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSele
 }
 
 export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
+    const classes = classNames(shared.resultCard, {
+        [shared.selected]: selected
+    });
+
     const handleSelect = useCallback(() => {
         onSelect(result);
     }, [onSelect, result]);
 
     return (
-        <button type="button" className={`${shared.resultCard} ${selected ? shared.selected : ''}`} onClick={handleSelect} {...props}>
+        <button type="button" className={classes} onClick={handleSelect} {...props}>
             <div>
                 <div className={shared.common}>{result.commonName || result.species}</div>
                 <div className={shared.sci}>{result.species}</div>

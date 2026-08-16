@@ -1,7 +1,9 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { Droplets } from 'lucide-react';
 
 // Components
 import { TaskRow } from '../../components/TaskRow';
@@ -12,8 +14,8 @@ import { allTasks, type CareTask } from '../../helpers/care';
 // Hooks
 import { useClock } from '../../hooks';
 
-// Lib
-import { markCareDone } from '../../lib/actions/plants';
+// Database
+import { markCareDone } from '../../lib/db/actions';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -26,6 +28,7 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+    const classes = classNames(shared.screen, className);
     const router = useRouter();
 
     useClock(); // re-render tick; tasks computed against fresh Date.now()
@@ -48,7 +51,7 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
     }, [router]);
 
     return (
-        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
+        <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Care</h1>
@@ -60,7 +63,9 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
 
             {plants.length === 0 ? (
                 <div className={shared.empty}>
-                    <div className={shared.big}>💧</div>
+                    <div className={shared.big}>
+                        <Droplets size={48} />
+                    </div>
                     <h2>Nothing to do yet</h2>
                     <p>Add plants and their watering, fertilising and repotting tasks will show up here.</p>
                 </div>

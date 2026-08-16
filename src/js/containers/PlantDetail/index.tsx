@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,8 +20,8 @@ import { displayName } from '../../helpers/plant';
 // Hooks
 import { useClock } from '../../hooks';
 
-// Lib
-import { deletePlant, markCareDone, updatePlant } from '../../lib/actions/plants';
+// Database
+import { deletePlant, markCareDone, updatePlant } from '../../lib/db/actions';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -34,7 +35,15 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
+    const classes = classNames(shared.screen, className);
+    const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
+    const secondaryBlockButtonClasses = classNames(shared.btn, shared.secondary, shared.block);
+    const dangerButtonClasses = classNames(shared.btn, shared.danger);
+
     const router = useRouter();
+    const WaterIcon = CARE_META[CareKind.Water].icon;
+    const FertilizeIcon = CARE_META[CareKind.Fertilize].icon;
+    const RepotIcon = CARE_META[CareKind.Repot].icon;
     const now = useClock();
     const [isEditing, setIsEditing] = useState(false);
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
@@ -79,7 +88,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
     }, []);
 
     return (
-        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
+        <div className={classes} {...props}>
             <Link href="/" className={styles.backBtn}>
                 ← My Plants
             </Link>
@@ -101,13 +110,16 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                     const due = nextDue(plant, kind);
                     const meta = CARE_META[kind];
                     const daysUntil = due === undefined ? undefined : Math.ceil((due - now) / DAY_MS);
-                    const valueModule = daysUntil !== undefined && daysUntil < 0 ? styles.overdue : (daysUntil !== undefined && daysUntil <= 0 ? styles.due : '');
+                    const valueClasses = classNames(styles.value, {
+                        [styles.overdue]: daysUntil !== undefined && daysUntil < 0,
+                        [styles.due]: daysUntil !== undefined && daysUntil <= 0
+                    });
 
                     return (
                         <div key={kind} className={styles.careStat}>
-                            <div className={styles.emoji}>{meta.emoji}</div>
+                            <div className={styles.emoji}><meta.icon size={22} /></div>
                             <div className={styles.label}>{meta.label}</div>
-                            <div className={`${styles.value} ${valueModule}`}>
+                            <div className={valueClasses}>
                                 {daysUntil === undefined ? '—' : formatDue(daysUntil)}
                             </div>
                         </div>
@@ -130,11 +142,11 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
             ) : (
                 <React.Fragment>
                     <div className={shared.notice}>
-                        💧 every {plant.care.waterEveryDays} days ·{' '}
-                        🌿 {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'} ·{' '}
-                        🪴 {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
+                        <WaterIcon size={14} /> every {plant.care.waterEveryDays} days ·{' '}
+                        <FertilizeIcon size={14} /> {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'} ·{' '}
+                        <RepotIcon size={14} /> {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
                     </div>
-                    <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleStartEdit}>
+                    <button type="button" className={secondaryBlockButtonClasses} onClick={handleStartEdit}>
                         Edit schedule
                     </button>
                 </React.Fragment>
@@ -143,7 +155,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
             <div style={DELETE_ROW_STYLE}>
                 {isConfirmDelete ? (
                     <div className={shared.shutterRow}>
-                        <button type="button" className={`${shared.btn} ${shared.secondary}`} onClick={handleKeepPlant}>
+                        <button type="button" className={secondaryButtonClasses} onClick={handleKeepPlant}>
                             Keep plant
                         </button>
                         <button type="button" className={shared.btn} style={DELETE_BUTTON_STYLE} onClick={handleRemove}>
@@ -151,7 +163,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                         </button>
                     </div>
                 ) : (
-                    <button type="button" className={`${shared.btn} ${shared.danger}`} onClick={handleStartDelete}>
+                    <button type="button" className={dangerButtonClasses} onClick={handleStartDelete}>
                         Remove {displayName(plant)}
                     </button>
                 )}

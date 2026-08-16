@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { Sprout } from 'lucide-react';
 
-// Lib
-import { authClient } from '@/js/lib/auth-client';
+// Auth
+import { authClient } from '@/js/lib/auth/auth-client';
 
 // Styles
 import styles from './styles.module.scss';
@@ -80,7 +81,9 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
     return (
         <div className={styles.screen} {...props}>
             <div className={styles.hero}>
-                <div className={styles.logo}>🌱</div>
+                <div className={styles.logo}>
+                    <Sprout size={44} />
+                </div>
                 <h1>Sprout</h1>
                 <p className={styles.sub}>Track your plants, never miss a watering.</p>
             </div>

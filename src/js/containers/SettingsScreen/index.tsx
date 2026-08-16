@@ -1,7 +1,9 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Bell, Camera, Info, User } from 'lucide-react';
 
 // Constants
 import { IPHONE_HINT_STYLE, NO_MARGIN_STYLE } from './constants';
@@ -10,8 +12,8 @@ import { IPHONE_HINT_STYLE, NO_MARGIN_STYLE } from './constants';
 import { getPlantNetKey, setPlantNetKey } from '../../services/identify';
 import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '../../services/notifications';
 
-// Lib
-import { authClient } from '../../lib/auth-client';
+// Auth
+import { authClient } from '../../lib/auth/auth-client';
 
 // Styles
 import shared from '../../scss/shared.module.scss';
@@ -37,6 +39,11 @@ async function handleTestNotification(): Promise<void> {
 }
 
 export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, className, ...props }) => {
+    const classes = classNames(shared.screen, className);
+    const warnNoticeClasses = classNames(shared.notice, shared.warn);
+    const blockButtonClasses = classNames(shared.btn, shared.block);
+    const secondaryBlockButtonClasses = classNames(shared.btn, shared.secondary, shared.block);
+
     const router = useRouter();
     const [perm, setPerm] = useState<NotificationPermission>(() => {
         return isNotificationsSupported() ? Notification.permission : 'denied';
@@ -76,7 +83,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
     function renderNotificationStatus() {
         if (!isNotificationsSupported()) {
             return (
-                <div className={`${shared.notice} ${shared.warn}`}>Notifications aren't supported in this browser.</div>
+                <div className={warnNoticeClasses}>Notifications aren't supported in this browser.</div>
             );
         }
 
@@ -84,7 +91,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
             return (
                 <React.Fragment>
                     <div className={shared.notice}>✓ Notifications are enabled.</div>
-                    <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleTestNotification}>
+                    <button type="button" className={secondaryBlockButtonClasses} onClick={handleTestNotification}>
                         Send a test notification
                     </button>
                 </React.Fragment>
@@ -93,21 +100,21 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
 
         if (perm === 'denied' && Notification.permission === 'denied') {
             return (
-                <div className={`${shared.notice} ${shared.warn}`}>
+                <div className={warnNoticeClasses}>
                     Notifications are blocked. Enable them for this site in your browser settings.
                 </div>
             );
         }
 
         return (
-            <button type="button" className={`${shared.btn} ${shared.block}`} onClick={handleEnableNotifications}>
+            <button type="button" className={blockButtonClasses} onClick={handleEnableNotifications}>
                 Enable notifications
             </button>
         );
     }
 
     return (
-        <div className={`${shared.screen} ${className ?? ''}`} {...props}>
+        <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
                     <h1>Settings</h1>
@@ -116,17 +123,21 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
             </header>
 
             <div className={styles.settingsCard}>
-                <h3>👤 Account</h3>
+                <h3>
+                    <User size={18} /> Account
+                </h3>
                 <p style={NO_MARGIN_STYLE}>
                     Signed in as <strong>{user.name}</strong> · {user.email}
                 </p>
-                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleSignOut}>
+                <button type="button" className={secondaryBlockButtonClasses} onClick={handleSignOut}>
                     Sign out
                 </button>
             </div>
 
             <div className={styles.settingsCard}>
-                <h3>🔔 Care reminders</h3>
+                <h3>
+                    <Bell size={18} /> Care reminders
+                </h3>
                 <p>
                     Get a notification when a plant is due for watering, fertilising or repotting. Checks run
                     when the app is open or in the background (installed app on Android/Chrome).
@@ -139,7 +150,9 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
             </div>
 
             <div className={styles.settingsCard}>
-                <h3>📷 Plant recognition</h3>
+                <h3>
+                    <Camera size={18} /> Plant recognition
+                </h3>
                 <p>
                     Identification uses the free{' '}
                     <a href="https://my.plantnet.org" target="_blank" rel="noreferrer">
@@ -151,13 +164,15 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                     <label htmlFor="settings-plantnet-key">PlantNet API key</label>
                     <input id="settings-plantnet-key" value={key} onChange={handleKeyChange} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" />
                 </div>
-                <button type="button" className={`${shared.btn} ${shared.secondary} ${shared.block}`} onClick={handleSaveKey}>
+                <button type="button" className={secondaryBlockButtonClasses} onClick={handleSaveKey}>
                     {isKeySaved ? '✓ Saved' : 'Save key'}
                 </button>
             </div>
 
             <div className={styles.settingsCard}>
-                <h3>ℹ️ About</h3>
+                <h3>
+                    <Info size={18} /> About
+                </h3>
                 <p style={NO_MARGIN_STYLE}>
                     Sprout v0.1 — {plants.length} plant{plants.length === 1 ? '' : 's'} tracked. Your plants
                     are synced to your account and available on any device. Install via your browser's "Add

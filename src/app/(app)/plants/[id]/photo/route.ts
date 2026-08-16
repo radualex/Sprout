@@ -1,12 +1,14 @@
-// Lib
-import { getPlantPhoto } from '@/js/lib/queries/plants';
-import { requireUser } from '@/js/lib/session';
+// Database
+import { getPlantPhoto } from '@/js/lib/db/queries';
+
+// Auth
+import { requireUser } from '@/js/lib/auth/session';
 
 interface Props {
     params: Promise<{ id: string; }>;
 }
 
-export const GET = async (_request: Request, { params }: Props) => {
+export const GET = async (request: Request, { params }: Props) => {
     const session = await requireUser();
     const { id } = await params;
     const photo = await getPlantPhoto(session.user.id, id);
