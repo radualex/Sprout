@@ -20,26 +20,26 @@ const WATER_OPTIONS = [2, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 18, 21, 28];
 const FERTILIZE_OPTIONS = [14, 21, 30, 45, 60, 90];
 const REPOT_OPTIONS = [6, 12, 18, 24, 30, 36];
 
-function updateWater(event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void) {
+const updateWater = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
     onChange({
         ...value,
         waterEveryDays: +event.target.value
     });
-}
+};
 
-function updateFertilize(event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void) {
+const updateFertilize = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
     onChange({
         ...value,
         fertilizeEveryDays: +event.target.value
     });
-}
+};
 
-function updateRepot(event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void) {
+const updateRepot = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
     onChange({
         ...value,
         repotEveryMonths: +event.target.value
     });
-}
+};
 
 export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
     const handleWaterChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,38 +58,61 @@ export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, v
         <div {...props}>
             <div className={shared.fieldRow}>
                 <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-water`}><Droplets size={14} /> Water</label>
+                    <label htmlFor={`${idPrefix}-water`}>
+                        <Droplets size={14} />
+                        Water
+                    </label>
                     <select id={`${idPrefix}-water`} value={value.waterEveryDays} onChange={handleWaterChange}>
                         {WATER_OPTIONS.map((d) => {
                             return (
-                                <option key={d} value={d}>every {d} days</option>
+                                <option key={d} value={d}>
+                                    {`every ${d} days`}
+                                </option>
                             );
                         })}
                     </select>
                 </div>
                 <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-fertilize`}><Leaf size={14} /> Fertilise</label>
+                    <label htmlFor={`${idPrefix}-fertilize`}>
+                        <Leaf size={14} />
+                        Fertilise
+                    </label>
                     <select id={`${idPrefix}-fertilize`} value={value.fertilizeEveryDays} onChange={handleFertilizeChange}>
-                        <option value={0}>never</option>
+                        <option value={0}>
+                            never
+                        </option>
                         {FERTILIZE_OPTIONS.map((d) => {
                             return (
-                                <option key={d} value={d}>every {d} days</option>
+                                <option key={d} value={d}>
+                                    {`every ${d} days`}
+                                </option>
                             );
                         })}
                     </select>
                 </div>
             </div>
             <div className={shared.field}>
-                <label htmlFor={`${idPrefix}-repot`}><Flower2 size={14} /> Repot</label>
+                <label htmlFor={`${idPrefix}-repot`}>
+                    <Flower2 size={14} />
+                    Repot
+                </label>
                 <select id={`${idPrefix}-repot`} value={value.repotEveryMonths} onChange={handleRepotChange}>
-                    <option value={0}>never</option>
+                    <option value={0}>
+                        never
+                    </option>
                     {REPOT_OPTIONS.map((m) => {
                         return (
-                            <option key={m} value={m}>every {m} months</option>
+                            <option key={m} value={m}>
+                                {`every ${m} months`}
+                            </option>
                         );
                     })}
                 </select>
-                {hint && <div className={shared.hint}>{hint}</div>}
+                {hint && (
+                    <div className={shared.hint}>
+                        {hint}
+                    </div>
+                )}
             </div>
         </div>
     );

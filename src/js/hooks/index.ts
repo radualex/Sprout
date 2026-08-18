@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 /** Renders a Blob as an object URL, revoking on cleanup or change. */
-export function useObjectUrl(blob?: Blob): string | undefined {
+export const useObjectUrl = (blob?: Blob): string | undefined => {
     const [url, setUrl] = useState<string | undefined>(undefined);
 
     useEffect(() => {
@@ -19,10 +19,10 @@ export function useObjectUrl(blob?: Blob): string | undefined {
     }, [blob]);
 
     return url;
-}
+};
 
 /** Re-renders periodically so due/overdue states stay fresh while the app is open. */
-export function useClock(intervalMs = 60_000): number {
+export const useClock = (intervalMs = 60_000): number => {
     const [now, setNow] = useState(() => {
         return Date.now();
     });
@@ -38,4 +38,4 @@ export function useClock(intervalMs = 60_000): number {
     }, [intervalMs]);
 
     return now;
-}
+};

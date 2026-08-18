@@ -3,24 +3,24 @@
 import Link from 'next/link';
 import React from 'react';
 import classNames from 'classnames';
-import { Camera, Sprout } from 'lucide-react';
+import { Camera, Plus, Sprout } from 'lucide-react';
 
 // Components
-import { PlantPhoto } from '../../components/PlantPhoto';
+import { PlantPhoto } from '@/js/components/PlantPhoto';
 
 // Helpers
-import { allTasks, CARE_META, formatDue } from '../../helpers/care';
-import { displayName } from '../../helpers/plant';
+import { allTasks, CARE_META, formatDue } from '@/js/helpers/care';
+import { displayName } from '@/js/helpers/plant';
 
 // Hooks
-import { useClock } from '../../hooks';
+import { useClock } from '@/js/hooks';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 import styles from './styles.module.scss';
 
 // Types
-import type { Plant } from '../../types';
+import type { Plant } from '@/js/types';
 
 interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
@@ -35,7 +35,9 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
         <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
-                    <h1>Sprout</h1>
+                    <h1>
+                        Sprout
+                    </h1>
                     <div className={shared.sub}>
                         {plants.length === 0
                             ? 'Your plant collection'
@@ -43,7 +45,10 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                     </div>
                 </div>
                 <Link href="/identify" className={shared.btn}>
-                    ＋ Add
+                    <Plus size={16} />
+                    <span>
+                        Add
+                    </span>
                 </Link>
             </header>
 
@@ -52,13 +57,18 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                     <div className={shared.big}>
                         <Sprout size={48} />
                     </div>
-                    <h2>No plants yet</h2>
+                    <h2>
+                        No plants yet
+                    </h2>
                     <p>
                         Point your camera at a plant to identify it and start tracking watering, fertilising
                         and repotting.
                     </p>
                     <Link href="/identify" className={shared.btn}>
-                        <Camera size={16} /> Identify your first plant
+                        <Camera size={16} />
+                        <span>
+                            Identify your first plant
+                        </span>
                     </Link>
                 </div>
             ) : (
@@ -75,8 +85,12 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
                             <Link key={plant.id} href={`/plants/${plant.id}`} className={styles.plantCard}>
                                 <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
                                 <div className={styles.meta}>
-                                    <div className={styles.name}>{displayName(plant)}</div>
-                                    <div className={styles.species}>{plant.species}</div>
+                                    <div className={styles.name}>
+                                        {displayName(plant)}
+                                    </div>
+                                    <div className={styles.species}>
+                                        {plant.species}
+                                    </div>
                                     <div className={styles.chips}>
                                         {urgent.length > 0 ? (
                                             urgent.map((t) => {
@@ -88,15 +102,23 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
 
                                                 return (
                                                     <span key={t.kind} className={chipClasses}>
-                                                        <TaskIcon size={12} /> {formatDue(t.daysUntil)}
+                                                        <TaskIcon size={12} />
+                                                        <span>
+                                                            {` ${formatDue(t.daysUntil)}`}
+                                                        </span>
                                                     </span>
                                                 );
                                             })
                                         ) : (NextMeta && next
                                             ? (
                                                     <span className={styles.chip}>
-                                                        <NextMeta.icon size={12} /> {NextMeta.label}{' '}
-                                                        {formatDue(next.daysUntil)}
+                                                        <NextMeta.icon size={12} />
+                                                        <span>
+                                                            {` ${NextMeta.label} `}
+                                                        </span>
+                                                        <span>
+                                                            {formatDue(next.daysUntil)}
+                                                        </span>
                                                     </span>
                                                 )
                                             : undefined)}

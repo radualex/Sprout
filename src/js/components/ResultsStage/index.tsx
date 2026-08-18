@@ -2,15 +2,16 @@
 
 import classNames from 'classnames';
 import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 // Components
-import { IdentifyResultCard } from '../IdentifyResultCard';
+import { IdentifyResultCard } from './IdentifyResultCard';
 
 // Services
-import type { IdentifyResult } from '../../services/identify';
+import type { IdentifyResult } from '@/js/services/identify';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 interface Props {
     results: IdentifyResult[];
@@ -25,7 +26,9 @@ export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, 
 
     return (
         <React.Fragment>
-            <div className={shared.sectionTitle}>Best matches</div>
+            <div className={shared.sectionTitle}>
+                Best matches
+            </div>
             {results.map((result) => {
                 return (
                     <IdentifyResultCard key={result.species} result={result} selected={picked?.species === result.species} onSelect={onPick} />
@@ -36,7 +39,8 @@ export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, 
                     Retake
                 </button>
                 <button type="button" className={shared.btn} disabled={!picked} onClick={onContinue}>
-                    Continue →
+                    Continue
+                    <ArrowRight size={16} />
                 </button>
             </div>
         </React.Fragment>

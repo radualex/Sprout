@@ -5,24 +5,24 @@ import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
-import { AddPlantForm } from '../../components/AddPlantForm';
-import { CaptureStage } from '../../components/CaptureStage';
-import { ResultsStage } from '../../components/ResultsStage';
+import { AddPlantForm } from '@/js/components/AddPlantForm';
+import { CaptureStage } from '@/js/components/CaptureStage';
+import { ResultsStage } from '@/js/components/ResultsStage';
 
 // Hooks
-import { useObjectUrl } from '../../hooks';
+import { useObjectUrl } from '@/js/hooks';
 
 // Services
-import { identifyPlant, type IdentifyResult } from '../../services/identify';
+import { identifyPlant, type IdentifyResult } from '@/js/services/identify';
 
 // Database
-import { createPlant } from '../../lib/db/actions';
+import { createPlant } from '@/js/lib/db/actions';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 // Types
-import type { PlantInput } from '../../types';
+import type { PlantInput } from '@/js/types';
 import type { Phase } from './types';
 
 interface Props extends React.ComponentProps<'div'> {
@@ -95,12 +95,20 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
         <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
-                    <h1>Identify</h1>
-                    <div className={shared.sub}>Snap a leaf or flower up close</div>
+                    <h1>
+                        Identify
+                    </h1>
+                    <div className={shared.sub}>
+                        Snap a leaf or flower up close
+                    </div>
                 </div>
             </header>
 
-            {error && <div className={errorNoticeClasses}>{error}</div>}
+            {error && (
+                <div className={errorNoticeClasses}>
+                    {error}
+                </div>
+            )}
 
             {(phase === 'capture' || phase === 'identifying') && (
                 <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />

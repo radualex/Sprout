@@ -1,11 +1,11 @@
 // Helpers
-import { CARE_META, DAY_MS, dueTasks } from '../../helpers/care';
+import { CARE_META, DAY_MS, dueTasks } from '@/js/helpers/care';
 
 // Database
-import { recordNotified } from '../../lib/db/actions';
+import { recordNotified } from '@/js/lib/db/actions';
 
 // Types
-import type { Plant } from '../../types';
+import type { Plant } from '@/js/types';
 
 interface PeriodicSyncManager {
     register: (tag: string, options: { minInterval: number; }) => Promise<void>;
@@ -19,7 +19,7 @@ interface CareCheckMessage {
     type?: string;
 }
 
-async function fetchPlants(): Promise<Plant[]> {
+const fetchPlants = async (): Promise<Plant[]> => {
     try {
         const response = await fetch('/api/plants', {
             cache: 'no-store'
@@ -33,13 +33,25 @@ async function fetchPlants(): Promise<Plant[]> {
     } catch {
         return [];
     }
-}
+};
 
-export function isNotificationsSupported(): boolean {
+const registerPeriodicSync = async () => {
+    try {
+        const reg = await navigator.serviceWorker.ready as ServiceWorkerRegistrationWithPeriodicSync;
+        // Only available on installed PWAs in Chromium; fails silently elsewhere.
+        await reg.periodicSync?.register('sprout-care-check', {
+            minInterval: 12 * 60 * 60 * 1000
+        });
+    } catch {
+        /* periodic sync unavailable — in-app checks still run */
+    }
+};
+
+export const isNotificationsSupported = (): boolean => {
     return 'Notification' in globalThis && 'serviceWorker' in navigator;
-}
+};
 
-export async function requestNotificationPermission(): Promise<NotificationPermission> {
+export const requestNotificationPermission = async (): Promise<NotificationPermission> => {
     if (!isNotificationsSupported()) {
         return 'denied';
     }
@@ -51,25 +63,13 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
     }
 
     return perm;
-}
-
-async function registerPeriodicSync() {
-    try {
-        const reg = await navigator.serviceWorker.ready as ServiceWorkerRegistrationWithPeriodicSync;
-        // Only available on installed PWAs in Chromium; fails silently elsewhere.
-        await reg.periodicSync?.register('sprout-care-check', {
-            minInterval: 12 * 60 * 60 * 1000
-        });
-    } catch {
-        /* periodic sync unavailable — in-app checks still run */
-    }
-}
+};
 
 /**
  * Check all plants for due care and show one notification per due task,
  * at most once per day per task.
  */
-export async function checkAndNotify(): Promise<number> {
+export const checkAndNotify = async (): Promise<number> => {
     if (!isNotificationsSupported() || Notification.permission !== 'granted') {
         return 0;
     }
@@ -100,10 +100,10 @@ export async function checkAndNotify(): Promise<number> {
     }));
 
     return pendingTasks.length;
-}
+};
 
 /** Run care checks: on load, when the tab regains focus, and hourly while open. */
-export async function startCareWatcher() {
+export const startCareWatcher = async () => {
     await checkAndNotify();
     window.addEventListener('focus', () => {
         return checkAndNotify();
@@ -118,4 +118,4 @@ export async function startCareWatcher() {
             await checkAndNotify();
         }
     });
-}
+};

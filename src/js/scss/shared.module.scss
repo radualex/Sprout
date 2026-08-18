@@ -253,10 +253,13 @@
 }
 
 .doneBtn {
+    display: inline-flex;
     flex-shrink: 0;
+    align-items: center;
     padding: 9px 14px;
     border: none;
     border-radius: 12px;
+    gap: 6px;
     background: var(--green-100);
     color: var(--green-900);
     font-weight: 650;

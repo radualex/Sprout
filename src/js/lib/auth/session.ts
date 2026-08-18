@@ -2,10 +2,10 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 // Auth
-import { auth } from '../auth';
+import { auth } from '@/js/lib/auth';
 
 /** Redirect to /login when unauthenticated; returns the active session otherwise. */
-export async function requireUser() {
+export const requireUser = async () => {
     const session = await auth.api.getSession({
         headers: await headers()
     });
@@ -15,4 +15,4 @@ export async function requireUser() {
     }
 
     return session;
-}
+};

@@ -1,5 +1,5 @@
 // Types
-import type { CareKind, Plant } from '../../types';
+import type { CareKind, Plant } from '@/js/types';
 
 export interface CareTask {
     plant: Plant;

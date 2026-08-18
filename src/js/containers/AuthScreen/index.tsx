@@ -84,8 +84,12 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
                 <div className={styles.logo}>
                     <Sprout size={44} />
                 </div>
-                <h1>Sprout</h1>
-                <p className={styles.sub}>Track your plants, never miss a watering.</p>
+                <h1>
+                    Sprout
+                </h1>
+                <p className={styles.sub}>
+                    Track your plants, never miss a watering.
+                </p>
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
@@ -106,7 +110,11 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
                     <input type="password" value={password} onChange={handlePasswordChange} placeholder="••••••••" autoComplete={isSignup ? 'new-password' : 'current-password'} required />
                 </label>
 
-                {error && <p className={styles.error}>{error}</p>}
+                {error && (
+                    <p className={styles.error}>
+                        {error}
+                    </p>
+                )}
 
                 <button className={styles.primary} type="submit" disabled={isSubmitting}>
                     {isSubmitting ? 'One moment…' : (isSignup ? 'Create account' : 'Sign in')}
@@ -114,7 +122,9 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
             </form>
 
             <div className={styles.divider}>
-                <span>or</span>
+                <span>
+                    or
+                </span>
             </div>
 
             <button className={styles.google} type="button" onClick={handleGoogle}>
@@ -122,7 +132,7 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
             </button>
 
             <p className={styles.switch}>
-                {isSignup ? 'Already have an account?' : 'New to Sprout?'}{' '}
+                {`${isSignup ? 'Already have an account?' : 'New to Sprout?'} `}
                 <Link href={isSignup ? '/login' : '/signup'}>
                     {isSignup ? 'Sign in' : 'Create account'}
                 </Link>

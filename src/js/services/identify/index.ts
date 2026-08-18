@@ -4,23 +4,23 @@ import { API_KEY_STORAGE } from './constants';
 // Types
 import type { IdentifyResult } from './types';
 
-export function getPlantNetKey(): string {
+export const getPlantNetKey = (): string => {
     if (typeof window === 'undefined') {
         return '';
     }
 
     return localStorage.getItem(API_KEY_STORAGE) ?? '';
-}
+};
 
-export function setPlantNetKey(key: string): void {
+export const setPlantNetKey = (key: string): void => {
     if (typeof window === 'undefined') {
         return;
     }
 
     localStorage.setItem(API_KEY_STORAGE, key);
-}
+};
 
-export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
+export const identifyPlant = async (photo: Blob): Promise<IdentifyResult[]> => {
     const form = new FormData();
     form.append('images', photo, 'plant.jpg');
 
@@ -45,6 +45,6 @@ export async function identifyPlant(photo: Blob): Promise<IdentifyResult[]> {
     }
 
     return (await response.json()) as IdentifyResult[];
-}
+};
 
 export { type IdentifyResult } from './types';

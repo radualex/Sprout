@@ -1,7 +1,7 @@
 import { Droplets, Flower2, Leaf, type LucideIcon } from 'lucide-react';
 
 // Types
-import { CareKind } from '../../types';
+import { CareKind } from '@/js/types';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
 

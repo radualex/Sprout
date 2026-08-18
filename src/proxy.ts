@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 // Optimistic, cookie-only auth check. Real session validation happens in
 // server components / server actions via `requireUser`.
-export function proxy(request: NextRequest) {
+export const proxy = (request: NextRequest) => {
     const { pathname } = request.nextUrl;
     const isLoggedIn = Boolean(getSessionCookie(request));
     const isAuthPage = pathname === '/login' || pathname === '/signup';
@@ -16,7 +16,7 @@ export function proxy(request: NextRequest) {
     }
 
     return NextResponse.next();
-}
+};
 
 // Matcher must be a plain string constant for Turbopack to statically analyze
 // it, so `unicorn/prefer-string-raw` is disabled for this file in eslint.config.mjs.

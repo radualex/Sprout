@@ -1,27 +1,27 @@
 'use client';
 
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Droplets } from 'lucide-react';
+import { Droplets, PartyPopper } from 'lucide-react';
 
 // Components
-import { TaskRow } from '../../components/TaskRow';
+import { TaskRow } from '@/js/components/TaskRow';
 
 // Helpers
-import { allTasks, type CareTask } from '../../helpers/care';
+import { allTasks, type CareTask } from '@/js/helpers/care';
 
 // Hooks
-import { useClock } from '../../hooks';
+import { useClock } from '@/js/hooks';
 
 // Database
-import { markCareDone } from '../../lib/db/actions';
+import { markCareDone } from '@/js/lib/db/actions';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 // Types
-import type { Plant } from '../../types';
+import type { Plant } from '@/js/types';
 
 interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
@@ -31,15 +31,21 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
     const classes = classNames(shared.screen, className);
     const router = useRouter();
 
-    useClock(); // re-render tick; tasks computed against fresh Date.now()
+    const now = useClock(); // re-render tick; tasks computed against fresh Date.now()
 
-    const tasks = allTasks(plants);
-    const due = tasks.filter((t) => {
-        return t.daysUntil <= 0;
-    });
-    const upcoming = tasks.filter((t) => {
-        return t.daysUntil > 0 && t.daysUntil <= 14;
-    });
+    const tasks = useMemo(() => {
+        return allTasks(plants, now);
+    }, [plants, now]);
+    const due = useMemo(() => {
+        return tasks.filter((t) => {
+            return t.daysUntil <= 0;
+        });
+    }, [tasks]);
+    const upcoming = useMemo(() => {
+        return tasks.filter((t) => {
+            return t.daysUntil > 0 && t.daysUntil <= 14;
+        });
+    }, [tasks]);
 
     const handleDone = useCallback(async (task: CareTask) => {
         await markCareDone(task.plant.id, task.kind);
@@ -54,9 +60,16 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
         <div className={classes} {...props}>
             <header className={shared.appHeader}>
                 <div>
-                    <h1>Care</h1>
+                    <h1>
+                        Care
+                    </h1>
                     <div className={shared.sub}>
-                        {due.length === 0 ? 'All plants are happy 🎉' : `${due.length} task${due.length === 1 ? ' needs' : 's need'} attention`}
+                        {due.length === 0 ? (
+                            <React.Fragment>
+                                All plants are happy
+                                <PartyPopper size={14} />
+                            </React.Fragment>
+                        ) : `${due.length} task${due.length === 1 ? ' needs' : 's need'} attention`}
                     </div>
                 </div>
             </header>
@@ -66,14 +79,20 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
                     <div className={shared.big}>
                         <Droplets size={48} />
                     </div>
-                    <h2>Nothing to do yet</h2>
-                    <p>Add plants and their watering, fertilising and repotting tasks will show up here.</p>
+                    <h2>
+                        Nothing to do yet
+                    </h2>
+                    <p>
+                        Add plants and their watering, fertilising and repotting tasks will show up here.
+                    </p>
                 </div>
             ) : (
                 <React.Fragment>
                     {due.length > 0 && (
                         <React.Fragment>
-                            <div className={shared.sectionTitle}>Needs attention</div>
+                            <div className={shared.sectionTitle}>
+                                Needs attention
+                            </div>
                             <div className={shared.taskList}>
                                 {due.map((t) => {
                                     return (
@@ -84,9 +103,13 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
                         </React.Fragment>
                     )}
 
-                    <div className={shared.sectionTitle}>Coming up</div>
+                    <div className={shared.sectionTitle}>
+                        Coming up
+                    </div>
                     {upcoming.length === 0 ? (
-                        <div className={shared.notice}>Nothing due in the next two weeks.</div>
+                        <div className={shared.notice}>
+                            Nothing due in the next two weeks.
+                        </div>
                     ) : (
                         <div className={shared.taskList}>
                             {upcoming.map((t) => {

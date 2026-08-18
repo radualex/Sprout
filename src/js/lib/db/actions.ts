@@ -4,18 +4,18 @@ import { revalidatePath } from 'next/cache';
 import { and, eq } from 'drizzle-orm';
 
 // Database
-import { database } from '../db';
-import { plants } from '../db/schema';
+import { database } from '@/js/lib/db';
+import { plants } from '@/js/lib/db/schema';
 
 // Auth
-import { requireUser } from '../auth/session';
+import { requireUser } from '@/js/lib/auth/session';
 
 // Types
-import { CareKind, type CareSchedule, type PlantInput } from '../../types';
+import { CareKind, type CareSchedule, type PlantInput } from '@/js/types';
 
 const ALL_PATH = '/';
 
-export async function createPlant(input: PlantInput): Promise<string> {
+export const createPlant = async (input: PlantInput): Promise<string> => {
     const session = await requireUser();
     const now = Date.now();
     const photo = input.photo ? Buffer.from(await input.photo.arrayBuffer()) : undefined;
@@ -43,9 +43,9 @@ export async function createPlant(input: PlantInput): Promise<string> {
     revalidatePath(ALL_PATH, 'layout');
 
     return row.id;
-}
+};
 
-export async function updatePlant(id: string, input: { nickname: string; care: CareSchedule; }): Promise<void> {
+export const updatePlant = async (id: string, input: { nickname: string; care: CareSchedule; }): Promise<void> => {
     const session = await requireUser();
     await database
         .update(plants)
@@ -55,9 +55,9 @@ export async function updatePlant(id: string, input: { nickname: string; care: C
         })
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     revalidatePath(ALL_PATH, 'layout');
-}
+};
 
-export async function markCareDone(id: string, kind: CareKind): Promise<void> {
+export const markCareDone = async (id: string, kind: CareKind): Promise<void> => {
     const session = await requireUser();
     const rows = await database
         .select({
@@ -81,9 +81,9 @@ export async function markCareDone(id: string, kind: CareKind): Promise<void> {
         })
         .where(eq(plants.id, id));
     revalidatePath(ALL_PATH, 'layout');
-}
+};
 
-export async function recordNotified(id: string, kind: CareKind, at: number): Promise<void> {
+export const recordNotified = async (id: string, kind: CareKind, at: number): Promise<void> => {
     const session = await requireUser();
     const rows = await database
         .select({
@@ -106,12 +106,12 @@ export async function recordNotified(id: string, kind: CareKind, at: number): Pr
             }
         })
         .where(eq(plants.id, id));
-}
+};
 
-export async function deletePlant(id: string): Promise<void> {
+export const deletePlant = async (id: string): Promise<void> => {
     const session = await requireUser();
     await database
         .delete(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
     revalidatePath(ALL_PATH, 'layout');
-}
+};

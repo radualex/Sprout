@@ -1,6 +1,6 @@
 // Types
-import type { Plant } from '../../types';
+import type { Plant } from '@/js/types';
 
-export function displayName(plant: Plant): string {
+export const displayName = (plant: Plant): string => {
     return plant.nickname || plant.commonName || plant.species;
-}
+};

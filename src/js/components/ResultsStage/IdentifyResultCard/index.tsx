@@ -1,13 +1,13 @@
 'use client';
 
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 // Services
-import type { IdentifyResult } from '../../services/identify';
+import type { IdentifyResult } from '@/js/services/identify';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
     result: IdentifyResult;
@@ -20,6 +20,10 @@ export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, sel
         [shared.selected]: selected
     });
 
+    const confidence = useMemo(() => {
+        return Math.round(result.confidence * 100);
+    }, [result.confidence]);
+
     const handleSelect = useCallback(() => {
         onSelect(result);
     }, [onSelect, result]);
@@ -27,10 +31,16 @@ export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, sel
     return (
         <button type="button" className={classes} onClick={handleSelect} {...props}>
             <div>
-                <div className={shared.common}>{result.commonName || result.species}</div>
-                <div className={shared.sci}>{result.species}</div>
+                <div className={shared.common}>
+                    {result.commonName || result.species}
+                </div>
+                <div className={shared.sci}>
+                    {result.species}
+                </div>
             </div>
-            <div className={shared.conf}>{Math.round(result.confidence * 100)}%</div>
+            <div className={shared.conf}>
+                {`${confidence}%`}
+            </div>
         </button>
     );
 };

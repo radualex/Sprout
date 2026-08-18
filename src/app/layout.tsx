@@ -37,7 +37,9 @@ const RootLayout = ({ children }: Props) => {
     return (
         <html lang="en">
             <body>
-                <SiteCore>{children}</SiteCore>
+                <SiteCore>
+                    {children}
+                </SiteCore>
             </body>
         </html>
     );

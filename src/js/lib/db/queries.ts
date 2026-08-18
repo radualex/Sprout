@@ -1,15 +1,15 @@
 import { and, desc, eq } from 'drizzle-orm';
 
 // Database
-import { database } from '../db';
-import { plants } from '../db/schema';
+import { database } from '@/js/lib/db';
+import { plants } from '@/js/lib/db/schema';
 
 // Types
-import type { Plant } from '../../types';
+import type { Plant } from '@/js/types';
 
 type PlantRow = typeof plants.$inferSelect;
 
-function rowToPlant(row: PlantRow): Plant {
+const rowToPlant = (row: PlantRow): Plant => {
     return {
         id: row.id,
         nickname: row.nickname,
@@ -22,9 +22,9 @@ function rowToPlant(row: PlantRow): Plant {
         lastNotified: row.lastNotified,
         notes: row.notes
     };
-}
+};
 
-export async function getPlantsForUser(userId: string): Promise<Plant[]> {
+export const getPlantsForUser = async (userId: string): Promise<Plant[]> => {
     const rows = await database
         .select()
         .from(plants)
@@ -34,9 +34,9 @@ export async function getPlantsForUser(userId: string): Promise<Plant[]> {
     return rows.map((row) => {
         return rowToPlant(row);
     });
-}
+};
 
-export async function getPlantForUser(userId: string, id: string): Promise<Plant | undefined> {
+export const getPlantForUser = async (userId: string, id: string): Promise<Plant | undefined> => {
     const rows = await database
         .select()
         .from(plants)
@@ -44,9 +44,9 @@ export async function getPlantForUser(userId: string, id: string): Promise<Plant
     const row = rows.at(0);
 
     return row ? rowToPlant(row) : undefined;
-}
+};
 
-export async function getPlantPhoto(userId: string, id: string): Promise<Buffer | undefined> {
+export const getPlantPhoto = async (userId: string, id: string): Promise<Buffer | undefined> => {
     const rows = await database
         .select({
             photo: plants.photo
@@ -56,4 +56,4 @@ export async function getPlantPhoto(userId: string, id: string): Promise<Buffer 
     const row = rows.at(0);
 
     return row?.photo ?? undefined;
-}
+};

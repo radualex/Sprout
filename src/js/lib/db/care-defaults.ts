@@ -1,5 +1,5 @@
 // Types
-import type { CareSchedule } from '../../types';
+import type { CareSchedule } from '@/js/types';
 
 /** Species keyword → recommended care schedule. First match wins; fallback is a safe generic. */
 const CARE_DEFAULTS: { match: RegExp; care: CareSchedule; }[] = [{
@@ -80,7 +80,7 @@ const FALLBACK_CARE: CareSchedule = {
     repotEveryMonths: 18
 };
 
-export function defaultCareFor(species: string, commonName = ''): CareSchedule {
+export const defaultCareFor = (species: string, commonName = ''): CareSchedule => {
     const hay = `${species} ${commonName}`;
     const hit = CARE_DEFAULTS.find((entry) => {
         return entry.match.test(hay);
@@ -93,4 +93,4 @@ export function defaultCareFor(species: string, commonName = ''): CareSchedule {
         : {
                 ...FALLBACK_CARE
             };
-}
+};

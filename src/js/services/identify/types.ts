@@ -1,5 +1,5 @@
 // Types
-import type { CareSchedule } from '../../types';
+import type { CareSchedule } from '@/js/types';
 
 export interface IdentifyResult {
     species: string;

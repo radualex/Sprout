@@ -2,15 +2,17 @@
 
 import React, { useCallback } from 'react';
 import { capitalize } from 'lodash-es';
+import { Check } from 'lucide-react';
 
 // Helpers
-import { CARE_META, DAY_MS } from '../../helpers/care';
+import { formatDaysAgo } from './helpers';
+import { CARE_META, DAY_MS } from '@/js/helpers/care';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 // Types
-import type { CareKind, Plant } from '../../types';
+import type { CareKind, Plant } from '@/js/types';
 
 interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
@@ -30,15 +32,20 @@ export const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, o
 
     return (
         <div className={shared.taskRow} {...props}>
-            <div className={shared.thumb}><meta.icon size={18} /></div>
+            <div className={shared.thumb}>
+                <meta.icon size={18} />
+            </div>
             <div className={shared.info}>
-                <div className={shared.title}>{meta.label}</div>
+                <div className={shared.title}>
+                    {meta.label}
+                </div>
                 <div className={shared.when}>
-                    Last {meta.verb} {daysAgo === 0 ? 'today' : (daysAgo === 1 ? 'yesterday' : `${daysAgo} days ago`)}
+                    {`Last ${meta.verb} ${formatDaysAgo(daysAgo)}`}
                 </div>
             </div>
             <button type="button" className={shared.doneBtn} onClick={handleDone}>
-                ✓ {capitalize(meta.verb)} today
+                <Check size={14} />
+                {`${capitalize(meta.verb)} today`}
             </button>
         </div>
     );

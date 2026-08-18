@@ -8,19 +8,19 @@ import { Sprout } from 'lucide-react';
 import { RESULT_THUMB_STYLE } from './constants';
 
 // Components
-import { CareScheduleFields } from '../CareScheduleFields';
+import { CareScheduleFields } from '@/js/components/CareScheduleFields';
 
 // Hooks
-import { useObjectUrl } from '../../hooks';
+import { useObjectUrl } from '@/js/hooks';
 
 // Services
-import type { IdentifyResult } from '../../services/identify';
+import type { IdentifyResult } from '@/js/services/identify';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 
 // Types
-import type { CareSchedule, PlantInput } from '../../types';
+import type { CareSchedule, PlantInput } from '@/js/types';
 
 interface Props extends React.ComponentProps<'div'> {
     photo: Blob;
@@ -59,17 +59,25 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
             <div className={classes}>
                 {photoUrl && <img src={photoUrl} alt="" style={RESULT_THUMB_STYLE} />}
                 <div>
-                    <div className={shared.common}>{result.commonName || result.species}</div>
-                    <div className={shared.sci}>{result.species}</div>
+                    <div className={shared.common}>
+                        {result.commonName || result.species}
+                    </div>
+                    <div className={shared.sci}>
+                        {result.species}
+                    </div>
                 </div>
             </div>
 
             <div className={shared.field}>
-                <label htmlFor="apf-nickname">Nickname</label>
+                <label htmlFor="apf-nickname">
+                    Nickname
+                </label>
                 <input id="apf-nickname" value={nickname} onChange={handleNicknameChange} placeholder="e.g. Kitchen monstera" />
             </div>
 
-            <div className={shared.sectionTitle}>Care schedule</div>
+            <div className={shared.sectionTitle}>
+                Care schedule
+            </div>
             <CareScheduleFields idPrefix="apf" value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
 
             <div className={shared.shutterRow}>
@@ -77,7 +85,8 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
                     Back
                 </button>
                 <button type="button" className={shared.btn} onClick={handleSave}>
-                    <Sprout size={16} /> Add to my plants
+                    <Sprout size={16} />
+                    Add to my plants
                 </button>
             </div>
         </div>

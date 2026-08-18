@@ -47,6 +47,7 @@ export default configure([{
         '@stylistic/jsx-max-props-per-line': 'off',
         '@stylistic/jsx-first-prop-new-line': 'off',
         '@stylistic/jsx-closing-bracket-location': 'off',
+        '@/func-style': ['error', 'expression'],
         'object-property-newline': 'off',
         'sprout/jsx-props-inline': 'error',
         'sprout/use-component-props-string': 'error',
@@ -82,6 +83,7 @@ export default configure([{
             next: 'return'
         }],
         'unicorn/catch-error-name': 'off',
+        'unicorn/prefer-minimal-ternary': 'off',
         'unicorn/filename-case': ['error', {
             cases: {
                 camelCase: true,

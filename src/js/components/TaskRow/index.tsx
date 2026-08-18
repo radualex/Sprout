@@ -3,16 +3,17 @@
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { capitalize } from 'lodash-es';
+import { Check } from 'lucide-react';
 
 // Constants
 import { TASK_ROW_BUTTON_STYLE } from './constants';
 
 // Components
-import { PlantPhoto } from '../PlantPhoto';
+import { PlantPhoto } from '@/js/components/PlantPhoto';
 
 // Helpers
-import { displayName } from '../../helpers/plant';
-import { CARE_META, formatDue, type CareTask } from '../../helpers/care';
+import { displayName } from '@/js/helpers/plant';
+import { CARE_META, formatDue, type CareTask } from '@/js/helpers/care';
 
 // Styles
 import styles from './styles.module.scss';
@@ -44,14 +45,19 @@ export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
                 <div className={styles.info}>
                     <div className={styles.title}>
-                        <meta.icon size={14} /> {meta.label} {displayName(task.plant)}
+                        <meta.icon size={14} />
+                        {meta.label}
+                        {displayName(task.plant)}
                     </div>
-                    <div className={classes}>{capitalize(formatDue(task.daysUntil))}</div>
+                    <div className={classes}>
+                        {capitalize(formatDue(task.daysUntil))}
+                    </div>
                 </div>
             </button>
             {task.daysUntil <= 0 && (
                 <button type="button" className={styles.doneBtn} onClick={handleDone}>
-                    ✓ Done
+                    <Check size={14} />
+                    Done
                 </button>
             )}
         </div>

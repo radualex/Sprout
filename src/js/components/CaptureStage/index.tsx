@@ -1,12 +1,10 @@
 'use client';
 
-import classNames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Aperture, Camera, ImageUp, Leaf, Search } from 'lucide-react';
 
-// Styles
-import shared from '../../scss/shared.module.scss';
-import styles from './styles.module.scss';
+// Components
+import { CameraStageView } from './CameraStageView';
+import { ShutterRow } from './ShutterRow';
 
 interface Props {
     photoUrl?: string;
@@ -17,16 +15,15 @@ interface Props {
     onIdentify: () => void;
 }
 
-async function playVideo(video: HTMLVideoElement): Promise<void> {
+const playVideo = async (video: HTMLVideoElement): Promise<void> => {
     try {
         await video.play();
     } catch {
         // Autoplay may be blocked by the browser; the stream is still attached to the video element.
     }
-}
+};
 
 export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdentifying, onPhoto, onError, onReset, onIdentify }) => {
-    const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
     const videoRef = useRef<HTMLVideoElement>(null);
     const streamRef = useRef<MediaStream | undefined>(undefined);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -34,15 +31,18 @@ export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdent
 
     const handleStopCamera = useCallback(() => {
         const tracks = streamRef.current?.getTracks() ?? [];
+
         for (const track of tracks) {
             track.stop();
         }
+
         streamRef.current = undefined;
         setIsStreaming(false);
     }, []);
 
     const handleStartCamera = useCallback(async () => {
         onError('');
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
@@ -54,7 +54,9 @@ export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdent
                 audio: false
             });
             streamRef.current = stream;
+
             setIsStreaming(true);
+
             requestAnimationFrame(() => {
                 if (!videoRef.current) {
                     return;
@@ -117,53 +119,8 @@ export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdent
 
     return (
         <React.Fragment>
-            <div className={styles.cameraStage}>
-                {photoUrl ? (
-                    <img src={photoUrl} alt="Captured plant" />
-                ) : (isStreaming
-                    ? (
-                            <video ref={videoRef} playsInline muted aria-label="Camera preview" />
-                        )
-                    : (
-                            <div className={styles.placeholder}>
-                                <div className={styles.big}><Leaf size={48} /></div>
-                                Use the camera or upload a photo of the plant you want to identify.
-                            </div>
-                        ))}
-            </div>
-
-            <div className={shared.shutterRow}>
-                {photoUrl ? (
-                    <React.Fragment>
-                        <button type="button" className={secondaryButtonClasses} onClick={onReset} disabled={isIdentifying}>
-                            Retake
-                        </button>
-                        <button type="button" className={shared.btn} onClick={onIdentify} disabled={isIdentifying}>
-                            {isIdentifying ? <span className={styles.spinner} /> : <React.Fragment><Search size={16} /> Identify</React.Fragment>}
-                        </button>
-                    </React.Fragment>
-                ) : (isStreaming
-                    ? (
-                            <React.Fragment>
-                                <button type="button" className={secondaryButtonClasses} onClick={handleStopCamera}>
-                                    Cancel
-                                </button>
-                                <button type="button" className={shared.btn} onClick={handleCapture}>
-                                    <Aperture size={16} /> Capture
-                                </button>
-                            </React.Fragment>
-                        )
-                    : (
-                            <React.Fragment>
-                                <button type="button" className={shared.btn} onClick={handleStartCamera}>
-                                    <Camera size={16} /> Open camera
-                                </button>
-                                <button type="button" className={secondaryButtonClasses} onClick={handleUpload}>
-                                    <ImageUp size={16} /> Upload
-                                </button>
-                            </React.Fragment>
-                        ))}
-            </div>
+            <CameraStageView photoUrl={photoUrl} isStreaming={isStreaming} videoRef={videoRef} />
+            <ShutterRow photoUrl={photoUrl} isStreaming={isStreaming} isIdentifying={isIdentifying} onReset={onReset} onIdentify={onIdentify} onStopCamera={handleStopCamera} onCapture={handleCapture} onStartCamera={handleStartCamera} onUpload={handleUpload} />
             <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden aria-label="Upload a photo of your plant" onChange={handleFileChange} />
         </React.Fragment>
     );

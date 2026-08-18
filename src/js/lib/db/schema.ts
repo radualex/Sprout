@@ -5,7 +5,7 @@ export { account, session, user, verification } from './auth-schema';
 import { user } from './auth-schema';
 
 // Types
-import type { CareKind, CareSchedule } from '../../types';
+import type { CareKind, CareSchedule } from '@/js/types';
 
 /** Postgres `bytea` column. node-postgres already maps bytea <-> Buffer. */
 const bytea = customType<{ data: Buffer; driverData: Buffer; }>({

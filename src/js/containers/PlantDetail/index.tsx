@@ -4,31 +4,32 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
 
 // Constants
 import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE, HEADER_STYLE, SUB_STYLE } from './constants';
 
 // Components
-import { PlantPhoto } from '../../components/PlantPhoto';
-import { EditSchedule } from '../../components/EditSchedule';
-import { CareLogRow } from '../../components/CareLogRow';
+import { PlantPhoto } from '@/js/components/PlantPhoto';
+import { EditSchedule } from '@/js/components/EditSchedule';
+import { CareLogRow } from '@/js/components/CareLogRow';
 
 // Helpers
-import { CARE_META, DAY_MS, formatDue, nextDue } from '../../helpers/care';
-import { displayName } from '../../helpers/plant';
+import { CARE_META, DAY_MS, formatDue, nextDue } from '@/js/helpers/care';
+import { displayName } from '@/js/helpers/plant';
 
 // Hooks
-import { useClock } from '../../hooks';
+import { useClock } from '@/js/hooks';
 
 // Database
-import { deletePlant, markCareDone, updatePlant } from '../../lib/db/actions';
+import { deletePlant, markCareDone, updatePlant } from '@/js/lib/db/actions';
 
 // Styles
-import shared from '../../scss/shared.module.scss';
+import shared from '@/js/scss/shared.module.scss';
 import styles from './styles.module.scss';
 
 // Types
-import { CareKind, type Plant } from '../../types';
+import { CareKind, type Plant } from '@/js/types';
 
 interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
@@ -90,14 +91,17 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
     return (
         <div className={classes} {...props}>
             <Link href="/" className={styles.backBtn}>
-                ← My Plants
+                <ArrowLeft size={16} />
+                My Plants
             </Link>
 
             <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.detailHero} />
 
             <header className={shared.appHeader} style={HEADER_STYLE}>
                 <div>
-                    <h1>{displayName(plant)}</h1>
+                    <h1>
+                        {displayName(plant)}
+                    </h1>
                     <div className={shared.sub} style={SUB_STYLE}>
                         {plant.species}
                         {plant.commonName && plant.commonName !== plant.nickname ? ` · ${plant.commonName}` : ''}
@@ -117,8 +121,12 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
 
                     return (
                         <div key={kind} className={styles.careStat}>
-                            <div className={styles.emoji}><meta.icon size={22} /></div>
-                            <div className={styles.label}>{meta.label}</div>
+                            <div className={styles.emoji}>
+                                <meta.icon size={22} />
+                            </div>
+                            <div className={styles.label}>
+                                {meta.label}
+                            </div>
                             <div className={valueClasses}>
                                 {daysUntil === undefined ? '—' : formatDue(daysUntil)}
                             </div>
@@ -127,7 +135,9 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                 })}
             </div>
 
-            <div className={shared.sectionTitle}>Log care</div>
+            <div className={shared.sectionTitle}>
+                Log care
+            </div>
             <div className={shared.taskList}>
                 {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
                     return (
@@ -136,15 +146,29 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                 })}
             </div>
 
-            <div className={shared.sectionTitle}>Schedule</div>
+            <div className={shared.sectionTitle}>
+                Schedule
+            </div>
             {isEditing ? (
                 <EditSchedule key={plant.id} plant={plant} onSave={handleSaveEdited} onCancel={handleCancelEdit} />
             ) : (
                 <React.Fragment>
                     <div className={shared.notice}>
-                        <WaterIcon size={14} /> every {plant.care.waterEveryDays} days ·{' '}
-                        <FertilizeIcon size={14} /> {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'} ·{' '}
-                        <RepotIcon size={14} /> {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
+                        <WaterIcon size={14} />
+                        <span>
+                            {` every ${plant.care.waterEveryDays} days · `}
+                        </span>
+                        <FertilizeIcon size={14} />
+                        <span>
+                            {' '}
+                            {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'}
+                            {' · '}
+                        </span>
+                        <RepotIcon size={14} />
+                        <span>
+                            {' '}
+                            {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
+                        </span>
                     </div>
                     <button type="button" className={secondaryBlockButtonClasses} onClick={handleStartEdit}>
                         Edit schedule
@@ -164,7 +188,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                     </div>
                 ) : (
                     <button type="button" className={dangerButtonClasses} onClick={handleStartDelete}>
-                        Remove {displayName(plant)}
+                        {`Remove ${displayName(plant)}`}
                     </button>
                 )}
             </div>
