@@ -11,6 +11,7 @@ export const proxy = (request: NextRequest) => {
     if (!isLoggedIn && !isAuthPage) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
+
     if (isLoggedIn && isAuthPage) {
         return NextResponse.redirect(new URL('/', request.url));
     }

@@ -109,7 +109,7 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
                     {error}
                 </div>
             )}
-
+            {/* TODO: Create a render helper */}
             {(phase === 'capture' || phase === 'identifying') && (
                 <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />
             )}

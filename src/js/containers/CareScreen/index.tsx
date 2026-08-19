@@ -3,10 +3,11 @@
 import classNames from 'classnames';
 import React, { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Droplets, PartyPopper } from 'lucide-react';
+import { PartyPopper } from 'lucide-react';
 
 // Components
-import { TaskRow } from '@/js/components/TaskRow';
+import { CareEmptyState } from './CareEmptyState';
+import { CareTaskSection } from './CareTaskSection';
 
 // Helpers
 import { allTasks, type CareTask } from '@/js/helpers/care';
@@ -75,50 +76,11 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
             </header>
 
             {plants.length === 0 ? (
-                <div className={shared.empty}>
-                    <div className={shared.big}>
-                        <Droplets size={48} />
-                    </div>
-                    <h2>
-                        Nothing to do yet
-                    </h2>
-                    <p>
-                        Add plants and their watering, fertilising and repotting tasks will show up here.
-                    </p>
-                </div>
+                <CareEmptyState />
             ) : (
                 <React.Fragment>
-                    {due.length > 0 && (
-                        <React.Fragment>
-                            <div className={shared.sectionTitle}>
-                                Needs attention
-                            </div>
-                            <div className={shared.taskList}>
-                                {due.map((t) => {
-                                    return (
-                                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={handleDone} onSelect={handleSelect} />
-                                    );
-                                })}
-                            </div>
-                        </React.Fragment>
-                    )}
-
-                    <div className={shared.sectionTitle}>
-                        Coming up
-                    </div>
-                    {upcoming.length === 0 ? (
-                        <div className={shared.notice}>
-                            Nothing due in the next two weeks.
-                        </div>
-                    ) : (
-                        <div className={shared.taskList}>
-                            {upcoming.map((t) => {
-                                return (
-                                    <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={handleDone} onSelect={handleSelect} />
-                                );
-                            })}
-                        </div>
-                    )}
+                    <CareTaskSection title="Needs attention" tasks={due} onDone={handleDone} onSelectPlant={handleSelect} />
+                    <CareTaskSection title="Coming up" tasks={upcoming} onDone={handleDone} onSelectPlant={handleSelect} emptyNotice="Nothing due in the next two weeks." />
                 </React.Fragment>
             )}
         </div>

@@ -5,14 +5,21 @@ import { CareKind } from '@/js/types';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
 
+// TODO: Extract into type
 export const CARE_META: Record<CareKind, { label: string; verb: string; icon: LucideIcon; }> = {
-    [CareKind.Water]: { label: 'Water',
+    [CareKind.Water]: {
+        label: 'Water',
         verb: 'watered',
-        icon: Droplets },
-    [CareKind.Fertilize]: { label: 'Fertilise',
+        icon: Droplets
+    },
+    [CareKind.Fertilize]: {
+        label: 'Fertilise',
         verb: 'fertilised',
-        icon: Leaf },
-    [CareKind.Repot]: { label: 'Repot',
+        icon: Leaf
+    },
+    [CareKind.Repot]: {
+        label: 'Repot',
         verb: 'repotted',
-        icon: Flower2 }
+        icon: Flower2
+    }
 };

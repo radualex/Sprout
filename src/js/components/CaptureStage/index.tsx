@@ -6,6 +6,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CameraStageView } from './CameraStageView';
 import { ShutterRow } from './ShutterRow';
 
+// Helpers
+import { playVideo } from './helpers';
+
 interface Props {
     photoUrl?: string;
     isIdentifying: boolean;
@@ -14,14 +17,6 @@ interface Props {
     onReset: () => void;
     onIdentify: () => void;
 }
-
-const playVideo = async (video: HTMLVideoElement): Promise<void> => {
-    try {
-        await video.play();
-    } catch {
-        // Autoplay may be blocked by the browser; the stream is still attached to the video element.
-    }
-};
 
 export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdentifying, onPhoto, onError, onReset, onIdentify }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -63,6 +58,7 @@ export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdent
                 }
 
                 videoRef.current.srcObject = stream;
+
                 void playVideo(videoRef.current);
             });
         } catch {

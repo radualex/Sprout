@@ -3,6 +3,9 @@
 import React, { useCallback } from 'react';
 import { Droplets, Flower2, Leaf } from 'lucide-react';
 
+// Constants
+import { FERTILIZE_OPTIONS, REPOT_OPTIONS, WATER_OPTIONS } from './constants';
+
 // Styles
 import shared from '../../scss/shared.module.scss';
 
@@ -16,44 +19,29 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     hint?: string;
 }
 
-const WATER_OPTIONS = [2, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 18, 21, 28];
-const FERTILIZE_OPTIONS = [14, 21, 30, 45, 60, 90];
-const REPOT_OPTIONS = [6, 12, 18, 24, 30, 36];
-
-const updateWater = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
-    onChange({
-        ...value,
-        waterEveryDays: +event.target.value
-    });
-};
-
-const updateFertilize = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
-    onChange({
-        ...value,
-        fertilizeEveryDays: +event.target.value
-    });
-};
-
-const updateRepot = (event: React.ChangeEvent<HTMLSelectElement>, value: CareSchedule, onChange: (care: CareSchedule) => void): void => {
-    onChange({
-        ...value,
-        repotEveryMonths: +event.target.value
-    });
-};
-
 export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
     const handleWaterChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        updateWater(event, value, onChange);
+        onChange({
+            ...value,
+            waterEveryDays: +event.target.value
+        });
     }, [value, onChange]);
 
     const handleFertilizeChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        updateFertilize(event, value, onChange);
+        onChange({
+            ...value,
+            fertilizeEveryDays: +event.target.value
+        });
     }, [value, onChange]);
 
     const handleRepotChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        updateRepot(event, value, onChange);
+        onChange({
+            ...value,
+            repotEveryMonths: +event.target.value
+        });
     }, [value, onChange]);
 
+    // TODO: Refactor into subcomponent
     return (
         <div {...props}>
             <div className={shared.fieldRow}>

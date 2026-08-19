@@ -40,6 +40,7 @@ export const createPlant = async (input: PlantInput): Promise<string> => {
         .returning({
             id: plants.id
         });
+
     revalidatePath(ALL_PATH, 'layout');
 
     return row.id;
@@ -54,6 +55,7 @@ export const updatePlant = async (id: string, input: { nickname: string; care: C
             care: input.care
         })
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
+
     revalidatePath(ALL_PATH, 'layout');
 };
 
@@ -80,6 +82,7 @@ export const markCareDone = async (id: string, kind: CareKind): Promise<void> =>
             }
         })
         .where(eq(plants.id, id));
+
     revalidatePath(ALL_PATH, 'layout');
 };
 
@@ -113,5 +116,6 @@ export const deletePlant = async (id: string): Promise<void> => {
     await database
         .delete(plants)
         .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
+
     revalidatePath(ALL_PATH, 'layout');
 };

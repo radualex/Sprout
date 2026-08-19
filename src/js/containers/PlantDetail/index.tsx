@@ -13,9 +13,12 @@ import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE, HEADER_STYLE, SUB_STYLE } from '
 import { PlantPhoto } from '@/js/components/PlantPhoto';
 import { EditSchedule } from '@/js/components/EditSchedule';
 import { CareLogRow } from '@/js/components/CareLogRow';
+import { PlantCommonNameSuffix } from './PlantCommonNameSuffix';
+import { CareStatValue } from './CareStatValue';
+import { CareScheduleNotice } from './CareScheduleNotice';
 
 // Helpers
-import { CARE_META, DAY_MS, formatDue, nextDue } from '@/js/helpers/care';
+import { CARE_META } from '@/js/helpers/care';
 import { displayName } from '@/js/helpers/plant';
 
 // Hooks
@@ -38,13 +41,9 @@ interface Props extends React.ComponentProps<'div'> {
 export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     const classes = classNames(shared.screen, className);
     const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
-    const secondaryBlockButtonClasses = classNames(shared.btn, shared.secondary, shared.block);
     const dangerButtonClasses = classNames(shared.btn, shared.danger);
 
     const router = useRouter();
-    const WaterIcon = CARE_META[CareKind.Water].icon;
-    const FertilizeIcon = CARE_META[CareKind.Fertilize].icon;
-    const RepotIcon = CARE_META[CareKind.Repot].icon;
     const now = useClock();
     const [isEditing, setIsEditing] = useState(false);
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
@@ -104,20 +103,16 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                     </h1>
                     <div className={shared.sub} style={SUB_STYLE}>
                         {plant.species}
-                        {plant.commonName && plant.commonName !== plant.nickname ? ` · ${plant.commonName}` : ''}
+                        {plant.commonName && plant.commonName !== plant.nickname && (
+                            <PlantCommonNameSuffix plant={plant} />
+                        )}
                     </div>
                 </div>
             </header>
 
             <div className={styles.careStats}>
                 {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
-                    const due = nextDue(plant, kind);
                     const meta = CARE_META[kind];
-                    const daysUntil = due === undefined ? undefined : Math.ceil((due - now) / DAY_MS);
-                    const valueClasses = classNames(styles.value, {
-                        [styles.overdue]: daysUntil !== undefined && daysUntil < 0,
-                        [styles.due]: daysUntil !== undefined && daysUntil <= 0
-                    });
 
                     return (
                         <div key={kind} className={styles.careStat}>
@@ -127,9 +122,7 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
                             <div className={styles.label}>
                                 {meta.label}
                             </div>
-                            <div className={valueClasses}>
-                                {daysUntil === undefined ? '—' : formatDue(daysUntil)}
-                            </div>
+                            <CareStatValue plant={plant} kind={kind} now={now} />
                         </div>
                     );
                 })}
@@ -149,34 +142,15 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
             <div className={shared.sectionTitle}>
                 Schedule
             </div>
+            {/* TODO: render helper */}
             {isEditing ? (
                 <EditSchedule key={plant.id} plant={plant} onSave={handleSaveEdited} onCancel={handleCancelEdit} />
             ) : (
-                <React.Fragment>
-                    <div className={shared.notice}>
-                        <WaterIcon size={14} />
-                        <span>
-                            {` every ${plant.care.waterEveryDays} days · `}
-                        </span>
-                        <FertilizeIcon size={14} />
-                        <span>
-                            {' '}
-                            {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'}
-                            {' · '}
-                        </span>
-                        <RepotIcon size={14} />
-                        <span>
-                            {' '}
-                            {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
-                        </span>
-                    </div>
-                    <button type="button" className={secondaryBlockButtonClasses} onClick={handleStartEdit}>
-                        Edit schedule
-                    </button>
-                </React.Fragment>
+                <CareScheduleNotice plant={plant} onEdit={handleStartEdit} />
             )}
 
             <div style={DELETE_ROW_STYLE}>
+                {/* TOODO: split subcomponents (This is common pattern in other components -> generic block needed) */}
                 {isConfirmDelete ? (
                     <div className={shared.shutterRow}>
                         <button type="button" className={secondaryButtonClasses} onClick={handleKeepPlant}>

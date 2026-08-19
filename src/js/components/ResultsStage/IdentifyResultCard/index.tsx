@@ -39,7 +39,7 @@ export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, sel
                 </div>
             </div>
             <div className={shared.conf}>
-                {`${confidence}%`}
+                <span>{confidence}%</span>
             </div>
         </button>
     );

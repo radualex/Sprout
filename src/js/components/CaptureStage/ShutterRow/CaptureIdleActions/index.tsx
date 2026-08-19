@@ -15,6 +15,7 @@ interface Props {
 export const CaptureIdleActions: React.FunctionComponent<Props> = ({ onStartCamera, onUpload }) => {
     const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
 
+    // TODO: Creata a generic Button component
     return (
         <React.Fragment>
             <button type="button" className={shared.btn} onClick={onStartCamera}>

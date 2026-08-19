@@ -89,6 +89,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
             );
         }
 
+        // TODO: More render helpers splitting here.
         if (perm === 'granted') {
             return (
                 <React.Fragment>
@@ -118,6 +119,7 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
         );
     };
 
+    // TODO: This needs some splitting. It's too large
     return (
         <div className={classes} {...props}>
             <header className={shared.appHeader}>
@@ -182,7 +184,6 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
                 </h3>
                 <p>
                     Identification uses the free
-                    {' '}
                     <a href="https://my.plantnet.org" target="_blank" rel="noreferrer">
                         PlantNet API
                     </a>

@@ -1,3 +1,5 @@
+// TODO: Let's create a main theme with primary/secondary colors
+// TODO: Let's create a light/dark theme
 :root {
     --bg: #f4f1e8;
     --surface: #fff;
@@ -15,7 +17,10 @@
     --nav-h: 64px;
 }
 
-* { box-sizing: border-box; }
+// TODO: Let's add a stylelint rule to not allow inline blocks.
+* {
+    box-sizing: border-box;
+}
 
 html,
 body {
@@ -51,4 +56,8 @@ textarea {
     }
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

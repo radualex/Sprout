@@ -10,9 +10,11 @@ export type { CareTask } from './types';
 
 const intervalMs = (plant: Plant, kind: CareKind): number => {
     const c = plant.care;
+
     if (kind === CareKind.Water) {
         return c.waterEveryDays * DAY_MS;
     }
+
     if (kind === CareKind.Fertilize) {
         return c.fertilizeEveryDays * DAY_MS;
     }
@@ -22,6 +24,7 @@ const intervalMs = (plant: Plant, kind: CareKind): number => {
 
 export const nextDue = (plant: Plant, kind: CareKind): number | undefined => {
     const interval = intervalMs(plant, kind);
+
     if (interval <= 0) {
         return undefined;
     }
@@ -31,11 +34,15 @@ export const nextDue = (plant: Plant, kind: CareKind): number | undefined => {
 
 const tasksForPlant = (plant: Plant, now: number): CareTask[] => {
     const tasks: CareTask[] = [];
+
+    // TODO: all for loops should be refactored into Array.reduce
     for (const kind of [CareKind.Water, CareKind.Fertilize, CareKind.Repot]) {
         const dueAt = nextDue(plant, kind);
+
         if (dueAt === undefined) {
             continue;
         }
+
         tasks.push({
             plant,
             kind,

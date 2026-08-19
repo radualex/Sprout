@@ -26,9 +26,7 @@ export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, 
 
     return (
         <React.Fragment>
-            <div className={shared.sectionTitle}>
-                Best matches
-            </div>
+            <span className={shared.sectionTitle}>Best matches</span>
             {results.map((result) => {
                 return (
                     <IdentifyResultCard key={result.species} result={result} selected={picked?.species === result.species} onSelect={onPick} />
