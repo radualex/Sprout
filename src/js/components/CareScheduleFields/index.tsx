@@ -6,8 +6,11 @@ import { Droplets, Flower2, Leaf } from 'lucide-react';
 // Constants
 import { FERTILIZE_OPTIONS, REPOT_OPTIONS, WATER_OPTIONS } from './constants';
 
+// Components
+import { ScheduleField } from './ScheduleField';
+
 // Styles
-import shared from '../../scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 // Types
 import type { CareSchedule } from '../../types';
@@ -20,88 +23,60 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
 }
 
 export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
-    const handleWaterChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleWaterChange = useCallback((newValue: number) => {
         onChange({
             ...value,
-            waterEveryDays: +event.target.value
+            waterEveryDays: newValue
         });
     }, [value, onChange]);
 
-    const handleFertilizeChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleFertilizeChange = useCallback((newValue: number) => {
         onChange({
             ...value,
-            fertilizeEveryDays: +event.target.value
+            fertilizeEveryDays: newValue
         });
     }, [value, onChange]);
 
-    const handleRepotChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleRepotChange = useCallback((newValue: number) => {
         onChange({
             ...value,
-            repotEveryMonths: +event.target.value
+            repotEveryMonths: newValue
         });
     }, [value, onChange]);
 
-    // TODO: Refactor into subcomponent
+    const renderWaterField = () => {
+        return (
+            <ScheduleField id={`${idPrefix}-water`} label="Water" icon={Droplets} value={value.waterEveryDays} options={WATER_OPTIONS} unit="days" onChange={handleWaterChange} />
+        );
+    };
+
+    const renderFertilizeField = () => {
+        return (
+            <ScheduleField id={`${idPrefix}-fertilize`} label="Fertilise" icon={Leaf} value={value.fertilizeEveryDays} options={FERTILIZE_OPTIONS} unit="days" allowNever onChange={handleFertilizeChange} />
+        );
+    };
+
+    const renderRepotField = () => {
+        return (
+            <ScheduleField id={`${idPrefix}-repot`} label="Repot" icon={Flower2} value={value.repotEveryMonths} options={REPOT_OPTIONS} unit="months" allowNever onChange={handleRepotChange} hint={hint} />
+        );
+    };
+
+    const renderContent = () => {
+        return (
+            <React.Fragment>
+                <div className={styles.fieldRow}>
+                    {renderWaterField()}
+                    {renderFertilizeField()}
+                </div>
+                {renderRepotField()}
+            </React.Fragment>
+        );
+    };
+
     return (
         <div {...props}>
-            <div className={shared.fieldRow}>
-                <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-water`}>
-                        <Droplets size={14} />
-                        Water
-                    </label>
-                    <select id={`${idPrefix}-water`} value={value.waterEveryDays} onChange={handleWaterChange}>
-                        {WATER_OPTIONS.map((d) => {
-                            return (
-                                <option key={d} value={d}>
-                                    {`every ${d} days`}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div className={shared.field}>
-                    <label htmlFor={`${idPrefix}-fertilize`}>
-                        <Leaf size={14} />
-                        Fertilise
-                    </label>
-                    <select id={`${idPrefix}-fertilize`} value={value.fertilizeEveryDays} onChange={handleFertilizeChange}>
-                        <option value={0}>
-                            never
-                        </option>
-                        {FERTILIZE_OPTIONS.map((d) => {
-                            return (
-                                <option key={d} value={d}>
-                                    {`every ${d} days`}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-            </div>
-            <div className={shared.field}>
-                <label htmlFor={`${idPrefix}-repot`}>
-                    <Flower2 size={14} />
-                    Repot
-                </label>
-                <select id={`${idPrefix}-repot`} value={value.repotEveryMonths} onChange={handleRepotChange}>
-                    <option value={0}>
-                        never
-                    </option>
-                    {REPOT_OPTIONS.map((m) => {
-                        return (
-                            <option key={m} value={m}>
-                                {`every ${m} months`}
-                            </option>
-                        );
-                    })}
-                </select>
-                {hint && (
-                    <div className={shared.hint}>
-                        {hint}
-                    </div>
-                )}
-            </div>
+            {renderContent()}
         </div>
     );
 };

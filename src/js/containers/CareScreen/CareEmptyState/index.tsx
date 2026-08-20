@@ -3,16 +3,16 @@ import React from 'react';
 import { Droplets } from 'lucide-react';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 interface Props extends React.ComponentProps<'div'> {}
 
 export const CareEmptyState: React.FunctionComponent<Props> = ({ className, ...props }) => {
-    const classes = classNames(shared.empty, className);
+    const classes = classNames(styles.empty, className);
 
     return (
         <div className={classes} {...props}>
-            <div className={shared.big}>
+            <div className={styles.big}>
                 <Droplets size={48} />
             </div>
             <h2>

@@ -17,25 +17,25 @@ interface Props extends React.ComponentProps<'div'> {
 export const PlantChips: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     const classes = classNames(styles.chips, className);
     const tasks = allTasks([plant]);
-    const urgent = tasks.filter((t) => {
-        return t.daysUntil <= 0;
+    const urgent = tasks.filter((task) => {
+        return task.daysUntil <= 0;
     }).slice(0, 2);
     const next = tasks.at(0);
     const NextMeta = next ? CARE_META[next.kind] : undefined;
 
     const renderUrgentChips = () => {
-        return urgent.map((t) => {
+        return urgent.map((task) => {
             const chipClasses = classNames(styles.chip, {
-                [styles.overdue]: t.daysUntil < 0,
-                [styles.due]: t.daysUntil >= 0
+                [styles.overdue]: task.daysUntil < 0,
+                [styles.due]: task.daysUntil >= 0
             });
-            const TaskIcon = CARE_META[t.kind].icon;
+            const TaskIcon = CARE_META[task.kind].icon;
 
             return (
-                <span key={t.kind} className={chipClasses}>
+                <span key={task.kind} className={chipClasses}>
                     <TaskIcon size={12} />
                     <span>
-                        {formatDue(t.daysUntil)}
+                        {formatDue(task.daysUntil)}
                     </span>
                 </span>
             );

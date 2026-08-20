@@ -1,0 +1,22 @@
+.empty {
+    padding: 56px 24px;
+    text-align: center;
+    color: var(--ink-soft);
+
+    .big {
+        margin-bottom: 12px;
+        font-size: 56px;
+    }
+
+    h2 {
+        margin: 0 0 6px;
+        color: var(--ink);
+        font-size: 19px;
+    }
+
+    p {
+        margin: 0 0 20px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}

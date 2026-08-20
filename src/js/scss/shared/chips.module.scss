@@ -1,0 +1,19 @@
+.chip {
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    background: var(--surface-2);
+    color: var(--green-700);
+    font-weight: 600;
+    white-space: nowrap;
+
+    &.overdue {
+        background: #f7e3de;
+        color: var(--red);
+    }
+
+    &.due {
+        background: #f6ecd9;
+        color: var(--amber);
+    }
+}

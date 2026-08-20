@@ -39,9 +39,12 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
 
     const handleSubmit = useCallback(async (event: React.SyntheticEvent) => {
         event.preventDefault();
+
         setError('');
         setIsSubmitting(true);
+
         const callbackURL = '/';
+
         if (isSignup) {
             const result = await authClient.signUp.email({
                 name,
@@ -67,6 +70,7 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
                 return;
             }
         }
+
         router.push(callbackURL);
         router.refresh();
     }, [name, email, password, isSignup, router]);
@@ -79,7 +83,7 @@ export const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) =
     }, []);
 
     return (
-        <div className={styles.screen} {...props}>
+        <div className={styles.root} {...props}>
             <div className={styles.hero}>
                 <div className={styles.logo}>
                     <Sprout size={44} />

@@ -1,24 +1,22 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 import classNames from 'classnames';
 import { Plus } from 'lucide-react';
 
-// Components
-import { PlantPhoto } from '@/js/components/PlantPhoto';
-import { PlantSubtitle } from './PlantSubtitle';
-import { PlantChips } from './PlantChips';
-import { PlantsEmptyState } from './PlantsEmptyState';
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
 
-// Helpers
-import { displayName } from '@/js/helpers/plant';
+// Components
+import { Button } from '@/design-system/Button';
+import { PlantGrid } from './PlantGrid';
+import { PlantsEmptyState } from './PlantsEmptyState';
+import { PlantSubtitle } from './PlantSubtitle';
 
 // Hooks
 import { useClock } from '@/js/hooks';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
 import styles from './styles.module.scss';
 
 // Types
@@ -31,51 +29,32 @@ interface Props extends React.ComponentProps<'div'> {
 export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     useClock(); // re-render tick; tasks computed against fresh Date.now()
 
-    const classes = classNames(shared.screen, className);
+    const classes = classNames(styles.screen, className);
+
+    const renderContent = () => {
+        if (plants.length === 0) {
+            return <PlantsEmptyState />;
+        }
+
+        return <PlantGrid plants={plants} />;
+    };
 
     return (
         <div className={classes} {...props}>
-            <header className={shared.appHeader}>
+            <header className={styles.appHeader}>
                 <div>
                     <h1>
                         Sprout
                     </h1>
-                    <div className={shared.sub}>
+                    <div className={styles.sub}>
                         <PlantSubtitle plants={plants} />
                     </div>
                 </div>
-                <Link href="/identify" className={shared.btn}>
-                    <Plus size={16} />
-                    <span>
-                        Add
-                    </span>
-                </Link>
+                <Button variant={ButtonVariant.Link} href="/identify" icon={Plus}>
+                    Add
+                </Button>
             </header>
-            {/* TODO: Split 2nd into subcomponent -> render helper needed here */}
-            {plants.length === 0 ? (
-                <PlantsEmptyState />
-            ) : (
-                <div className={styles.plantGrid}>
-                    {plants.map((plant) => {
-                        return (
-                            <Link key={plant.id} href={`/plants/${plant.id}`} className={styles.plantCard}>
-                                <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
-                                <div className={styles.meta}>
-                                    <div className={styles.name}>
-                                        {displayName(plant)}
-                                    </div>
-                                    <div className={styles.species}>
-                                        {plant.species}
-                                    </div>
-                                    <div className={styles.chips}>
-                                        <PlantChips plant={plant} />
-                                    </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
-                </div>
-            )}
+            {renderContent()}
         </div>
     );
 };

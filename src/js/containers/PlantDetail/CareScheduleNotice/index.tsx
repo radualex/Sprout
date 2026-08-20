@@ -1,11 +1,16 @@
 import React from 'react';
-import classNames from 'classnames';
+
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
+
+// Components
+import { Button } from '@/design-system/Button';
 
 // Helpers
 import { CARE_META } from '@/js/helpers/care';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 // Types
 import { CareKind, type Plant } from '@/js/types';
@@ -16,14 +21,13 @@ interface Props {
 }
 
 export const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEdit }) => {
-    const secondaryBlockButtonClasses = classNames(shared.btn, shared.secondary, shared.block);
     const WaterIcon = CARE_META[CareKind.Water].icon;
     const FertilizeIcon = CARE_META[CareKind.Fertilize].icon;
     const RepotIcon = CARE_META[CareKind.Repot].icon;
 
     return (
         <React.Fragment>
-            <div className={shared.notice}>
+            <div className={styles.notice}>
                 <WaterIcon size={14} />
                 <span>
                     {`every ${plant.care.waterEveryDays} days`}
@@ -37,9 +41,9 @@ export const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEd
                     {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
                 </span>
             </div>
-            <button type="button" className={secondaryBlockButtonClasses} onClick={onEdit}>
+            <Button variant={ButtonVariant.Secondary} block onClick={onEdit}>
                 Edit schedule
-            </button>
+            </Button>
         </React.Fragment>
     );
 };

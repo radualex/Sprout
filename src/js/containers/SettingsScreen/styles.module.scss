@@ -1,3 +1,7 @@
+@use '@/js/scss/shared/layout.module.scss';
+@use '@/js/scss/shared/notices.module.scss';
+@use '@/js/scss/shared/forms.module.scss';
+
 .settingsCard {
     padding: 16px;
     margin-bottom: 14px;

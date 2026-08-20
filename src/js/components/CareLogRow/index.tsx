@@ -4,12 +4,18 @@ import React, { useCallback } from 'react';
 import { capitalize } from 'lodash-es';
 import { Check } from 'lucide-react';
 
+// Constants
+import { ButtonSize, ButtonVariant } from '@/design-system/Button/constants';
+
+// Components
+import { Button } from '@/design-system/Button';
+
 // Helpers
 import { formatDaysAgo } from './helpers';
 import { CARE_META, DAY_MS } from '@/js/helpers/care';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 // Types
 import type { CareKind, Plant } from '@/js/types';
@@ -30,23 +36,24 @@ export const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, o
         onDone(kind);
     }, [onDone, kind]);
 
+    const rootClasses = styles.taskRow;
+
     return (
-        <div className={shared.taskRow} {...props}>
-            <div className={shared.thumb}>
+        <div className={rootClasses} {...props}>
+            <div className={styles.thumb}>
                 <meta.icon size={18} />
             </div>
-            <div className={shared.info}>
-                <div className={shared.title}>
+            <div className={styles.info}>
+                <div className={styles.title}>
                     {meta.label}
                 </div>
-                <div className={shared.when}>
+                <div className={styles.when}>
                     {`Last ${meta.verb} ${formatDaysAgo(daysAgo)}`}
                 </div>
             </div>
-            <button type="button" className={shared.doneBtn} onClick={handleDone}>
-                <Check size={14} />
+            <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>
                 {`${capitalize(meta.verb)} today`}
-            </button>
+            </Button>
         </div>
     );
 };

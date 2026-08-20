@@ -19,18 +19,17 @@ import { identifyPlant, type IdentifyResult } from '@/js/services/identify';
 import { createPlant } from '@/js/lib/db/actions';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 // Types
 import type { PlantInput } from '@/js/types';
 import type { Phase } from './types';
 
-interface Props extends React.ComponentProps<'div'> {
-}
+interface Props extends React.ComponentProps<'div'> {}
 
 export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props }) => {
-    const classes = classNames(shared.screen, className);
-    const errorNoticeClasses = classNames(shared.notice, shared.error);
+    const classes = classNames(styles.screen, className);
+    const errorNoticeClasses = classNames(styles.notice, styles.error);
     const router = useRouter();
     const [phase, setPhase] = useState<Phase>('capture');
     const [photo, setPhoto] = useState<Blob | undefined>(undefined);
@@ -91,14 +90,54 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
         router.refresh();
     }, [router]);
 
+    const renderCaptureStage = () => {
+        if (phase !== 'capture' && phase !== 'identifying') {
+            return;
+        }
+
+        return (
+            <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />
+        );
+    };
+
+    const renderResultsStage = () => {
+        if (phase !== 'results') {
+            return;
+        }
+
+        return (
+            <ResultsStage results={results} picked={picked} onPick={handlePick} onReset={handleReset} onContinue={handleContinue} />
+        );
+    };
+
+    const renderFormStage = () => {
+        if (phase !== 'form' || !picked || !photo) {
+            return;
+        }
+
+        return (
+            <AddPlantForm photo={photo} result={picked} onCancel={handleBackToResults} onSave={handleSave} />
+        );
+    };
+
+    const renderContent = () => {
+        return (
+            <React.Fragment>
+                {renderCaptureStage()}
+                {renderResultsStage()}
+                {renderFormStage()}
+            </React.Fragment>
+        );
+    };
+
     return (
         <div className={classes} {...props}>
-            <header className={shared.appHeader}>
+            <header className={styles.appHeader}>
                 <div>
                     <h1>
                         Identify
                     </h1>
-                    <div className={shared.sub}>
+                    <div className={styles.sub}>
                         Snap a leaf or flower up close
                     </div>
                 </div>
@@ -109,18 +148,7 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
                     {error}
                 </div>
             )}
-            {/* TODO: Create a render helper */}
-            {(phase === 'capture' || phase === 'identifying') && (
-                <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />
-            )}
-
-            {phase === 'results' && (
-                <ResultsStage results={results} picked={picked} onPick={handlePick} onReset={handleReset} onContinue={handleContinue} />
-            )}
-
-            {phase === 'form' && picked && photo && (
-                <AddPlantForm photo={photo} result={picked} onCancel={handleBackToResults} onSave={handleSave} />
-            )}
+            {renderContent()}
         </div>
     );
 };

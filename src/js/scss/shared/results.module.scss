@@ -1,0 +1,36 @@
+.resultCard {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    gap: 12px;
+    text-align: left;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+
+    &.selected {
+        border-color: var(--green-500);
+    }
+}
+
+.conf {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-weight: 700;
+    color: var(--green-700);
+    font-size: 14px;
+}
+
+.sci {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+.common {
+    font-weight: 650;
+    font-size: 15px;
+}

@@ -24,7 +24,7 @@ export const CareStatValue: React.FunctionComponent<Props> = ({ plant, kind, now
         return daysUntil === undefined ? '—' : formatDue(daysUntil);
     };
 
-    const valueClasses = classNames(styles.value, {
+    const valueClasses = classNames(styles.root, {
         [styles.overdue]: daysUntil !== undefined && daysUntil < 0,
         [styles.due]: daysUntil !== undefined && daysUntil <= 0
     });

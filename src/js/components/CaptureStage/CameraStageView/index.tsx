@@ -41,7 +41,7 @@ export const CameraStageView: React.FunctionComponent<Props> = ({ photoUrl, isSt
     };
 
     return (
-        <div className={styles.cameraStage} {...props}>
+        <div className={styles.root} {...props}>
             {renderContent()}
         </div>
     );

@@ -7,7 +7,7 @@ import React, { useCallback, useMemo } from 'react';
 import type { IdentifyResult } from '@/js/services/identify';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
     result: IdentifyResult;
@@ -16,8 +16,8 @@ interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSele
 }
 
 export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
-    const classes = classNames(shared.resultCard, {
-        [shared.selected]: selected
+    const classes = classNames({
+        [styles.selected]: selected
     });
 
     const confidence = useMemo(() => {
@@ -31,14 +31,14 @@ export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, sel
     return (
         <button type="button" className={classes} onClick={handleSelect} {...props}>
             <div>
-                <div className={shared.common}>
+                <div className={styles.common}>
                     {result.commonName || result.species}
                 </div>
-                <div className={shared.sci}>
+                <div className={styles.sci}>
                     {result.species}
                 </div>
             </div>
-            <div className={shared.conf}>
+            <div className={styles.conf}>
                 <span>{confidence}%</span>
             </div>
         </button>

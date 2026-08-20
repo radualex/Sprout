@@ -14,6 +14,7 @@ export const SiteCore: React.FunctionComponent<Props> = ({ children }) => {
         if ('serviceWorker' in navigator) {
             void navigator.serviceWorker.register('/sw.js');
         }
+
         void startCareWatcher();
     }, []);
 

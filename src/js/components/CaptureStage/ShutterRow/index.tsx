@@ -1,14 +1,14 @@
 'use client';
 
 import React from 'react';
+import { Aperture, Camera, ImageUp } from 'lucide-react';
+
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { CaptureIdleActions } from './CaptureIdleActions';
-import { CaptureStreamActions } from './CaptureStreamActions';
 import { IdentifyActions } from './IdentifyActions';
-
-// Styles
-import shared from '@/js/scss/shared.module.scss';
+import { ShutterActions } from './ShutterActions';
 
 interface Props {
     photoUrl?: string;
@@ -28,11 +28,42 @@ export const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreami
     };
 
     const renderStreamActions = () => {
-        return <CaptureStreamActions onStopCamera={onStopCamera} onCapture={onCapture} />;
+        const actions = [{
+            key: 'cancel',
+            label: 'Cancel',
+            variant: ButtonVariant.Secondary,
+            onClick: onStopCamera
+        }, {
+            key: 'capture',
+            label: 'Capture',
+            icon: Aperture,
+            variant: ButtonVariant.Primary,
+            onClick: onCapture
+        }];
+
+        return (
+            <ShutterActions actions={actions} />
+        );
     };
 
     const renderIdleActions = () => {
-        return <CaptureIdleActions onStartCamera={onStartCamera} onUpload={onUpload} />;
+        const actions = [{
+            key: 'camera',
+            label: 'Open camera',
+            icon: Camera,
+            variant: ButtonVariant.Primary,
+            onClick: onStartCamera
+        }, {
+            key: 'upload',
+            label: 'Upload',
+            icon: ImageUp,
+            variant: ButtonVariant.Secondary,
+            onClick: onUpload
+        }];
+
+        return (
+            <ShutterActions actions={actions} />
+        );
     };
 
     const renderContent = () => {
@@ -44,7 +75,7 @@ export const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreami
     };
 
     return (
-        <div className={shared.shutterRow}>
+        <div>
             {renderContent()}
         </div>
     );

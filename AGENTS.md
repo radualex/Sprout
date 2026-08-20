@@ -93,7 +93,7 @@ Gotcha: `eslint --fix` will happily mangle files — prefer targeted edits, then
 
 | Tool             | Used for     | Notes                                                                                                                                                                      |
 | ---------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| sass (dart-sass) | Compile SCSS | CSS modules via Next (no Vite plugin needed). Globals in`src/js/scss/globals.scss` (CSS vars + `body`/`.appShell` layout), shared classes in `shared.module.scss`. |
+| sass (dart-sass) | Compile SCSS | CSS modules via Next (no Vite plugin needed). Globals in`src/js/scss/globals.scss` (CSS vars + `body`/`.appShell` layout), shared classes in section files under `src/js/scss/shared/` (`layout`/`forms`/`tasks`/`results`/`notices`/`chips`/`empty`/`sections`/`shutter`). Atomic components (Button) live in `src/design-system/`. |
 
 ### Docker
 

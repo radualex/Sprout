@@ -1,3 +1,6 @@
+// Constants
+import { CARE_CHECK_INTERVAL_MS, PERIODIC_SYNC_MIN_INTERVAL_MS } from './constants';
+
 // Helpers
 import { CARE_META, DAY_MS, dueTasks } from '@/js/helpers/care';
 
@@ -40,7 +43,7 @@ const registerPeriodicSync = async () => {
         const reg = await navigator.serviceWorker.ready as ServiceWorkerRegistrationWithPeriodicSync;
         // Only available on installed PWAs in Chromium; fails silently elsewhere.
         await reg.periodicSync?.register('sprout-care-check', {
-            minInterval: 12 * 60 * 60 * 1000
+            minInterval: PERIODIC_SYNC_MIN_INTERVAL_MS
         });
     } catch {
         /* periodic sync unavailable — in-app checks still run */
@@ -111,7 +114,7 @@ export const startCareWatcher = async () => {
 
     setInterval(() => {
         return checkAndNotify();
-    }, 60 * 60 * 1000);
+    }, CARE_CHECK_INTERVAL_MS);
 
     navigator.serviceWorker.addEventListener('message', async (event: MessageEvent<CareCheckMessage>) => {
         if (event.data.type === 'care-check') {

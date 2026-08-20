@@ -1,25 +1,25 @@
 // Constants
-import { DAY_MS } from './constants';
+import { DAY_MS, DAYS_PER_MONTH } from './constants';
 
 // Types
 import { CareKind, type Plant } from '@/js/types';
 import type { CareTask } from './types';
 
-export { DAY_MS, CARE_META } from './constants';
-export type { CareTask } from './types';
+export { DAYS_PER_MONTH, DAY_MS, CARE_META } from './constants';
+export type { CareMeta, CareTask } from './types';
 
 const intervalMs = (plant: Plant, kind: CareKind): number => {
-    const c = plant.care;
+    const care = plant.care;
 
     if (kind === CareKind.Water) {
-        return c.waterEveryDays * DAY_MS;
+        return care.waterEveryDays * DAY_MS;
     }
 
     if (kind === CareKind.Fertilize) {
-        return c.fertilizeEveryDays * DAY_MS;
+        return care.fertilizeEveryDays * DAY_MS;
     }
 
-    return c.repotEveryMonths * 30 * DAY_MS;
+    return care.repotEveryMonths * DAYS_PER_MONTH * DAY_MS;
 };
 
 export const nextDue = (plant: Plant, kind: CareKind): number | undefined => {
@@ -33,25 +33,24 @@ export const nextDue = (plant: Plant, kind: CareKind): number | undefined => {
 };
 
 const tasksForPlant = (plant: Plant, now: number): CareTask[] => {
-    const tasks: CareTask[] = [];
+    const kinds = [CareKind.Water, CareKind.Fertilize, CareKind.Repot];
 
-    // TODO: all for loops should be refactored into Array.reduce
-    for (const kind of [CareKind.Water, CareKind.Fertilize, CareKind.Repot]) {
+    return kinds.reduce<CareTask[]>((tasks, kind) => {
         const dueAt = nextDue(plant, kind);
 
         if (dueAt === undefined) {
-            continue;
+            return tasks;
         }
 
-        tasks.push({
-            plant,
-            kind,
-            dueAt,
-            daysUntil: Math.ceil((dueAt - now) / DAY_MS)
-        });
-    }
-
-    return tasks;
+        return [
+            ...tasks,
+            {
+                plant,
+                kind,
+                dueAt,
+                daysUntil: Math.ceil((dueAt - now) / DAY_MS)
+            }];
+    }, []);
 };
 
 /** All tasks across plants, soonest first. */
@@ -60,14 +59,14 @@ export const allTasks = (plants: Plant[], now = Date.now()): CareTask[] => {
         return tasksForPlant(plant, now);
     });
 
-    return tasks.toSorted((a, b) => {
-        return a.dueAt - b.dueAt;
+    return tasks.toSorted((left, right) => {
+        return left.dueAt - right.dueAt;
     });
 };
 
 export const dueTasks = (plants: Plant[], now = Date.now()): CareTask[] => {
-    return allTasks(plants, now).filter((t) => {
-        return t.dueAt <= now;
+    return allTasks(plants, now).filter((task) => {
+        return task.dueAt <= now;
     });
 };
 

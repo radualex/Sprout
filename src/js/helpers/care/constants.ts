@@ -1,12 +1,13 @@
-import { Droplets, Flower2, Leaf, type LucideIcon } from 'lucide-react';
+import { Droplets, Flower2, Leaf } from 'lucide-react';
 
 // Types
 import { CareKind } from '@/js/types';
+import type { CareMeta } from './types';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
+export const DAYS_PER_MONTH = 30;
 
-// TODO: Extract into type
-export const CARE_META: Record<CareKind, { label: string; verb: string; icon: LucideIcon; }> = {
+export const CARE_META: Record<CareKind, CareMeta> = {
     [CareKind.Water]: {
         label: 'Water',
         verb: 'watered',

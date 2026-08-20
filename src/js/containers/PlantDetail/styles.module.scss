@@ -1,3 +1,7 @@
+@use '@/js/scss/shared/layout.module.scss';
+@use '@/js/scss/shared/sections.module.scss';
+@use '@/js/scss/shared/tasks.module.scss';
+
 .detailHero {
     display: flex;
     justify-content: center;
@@ -59,7 +63,7 @@
     letter-spacing: 0.5px;
 }
 
-.value {
+.root {
     margin-top: 3px;
     font-size: 13px;
     font-weight: 650;

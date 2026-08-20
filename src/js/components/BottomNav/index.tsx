@@ -77,7 +77,7 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }
     }, [isActive, dueCount]);
 
     return (
-        <nav className={styles.bottomNav} {...props}>
+        <nav className={styles.root} {...props}>
             {navLinks}
         </nav>
     );

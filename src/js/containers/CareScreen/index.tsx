@@ -19,7 +19,7 @@ import { useClock } from '@/js/hooks';
 import { markCareDone } from '@/js/lib/db/actions';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 // Types
 import type { Plant } from '@/js/types';
@@ -29,7 +29,7 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
-    const classes = classNames(shared.screen, className);
+    const classes = classNames(styles.screen, className);
     const router = useRouter();
 
     const now = useClock(); // re-render tick; tasks computed against fresh Date.now()
@@ -38,13 +38,13 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
         return allTasks(plants, now);
     }, [plants, now]);
     const due = useMemo(() => {
-        return tasks.filter((t) => {
-            return t.daysUntil <= 0;
+        return tasks.filter((task) => {
+            return task.daysUntil <= 0;
         });
     }, [tasks]);
     const upcoming = useMemo(() => {
-        return tasks.filter((t) => {
-            return t.daysUntil > 0 && t.daysUntil <= 14;
+        return tasks.filter((task) => {
+            return task.daysUntil > 0 && task.daysUntil <= 14;
         });
     }, [tasks]);
 
@@ -59,12 +59,12 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
 
     return (
         <div className={classes} {...props}>
-            <header className={shared.appHeader}>
+            <header className={styles.appHeader}>
                 <div>
                     <h1>
                         Care
                     </h1>
-                    <div className={shared.sub}>
+                    <div className={styles.sub}>
                         {due.length === 0 ? (
                             <React.Fragment>
                                 All plants are happy

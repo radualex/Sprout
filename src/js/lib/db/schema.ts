@@ -6,6 +6,7 @@ import { user } from './auth-schema';
 
 // Types
 import type { CareKind, CareSchedule } from '@/js/types';
+import { TableName } from './types';
 
 /** Postgres `bytea` column. node-postgres already maps bytea <-> Buffer. */
 const bytea = customType<{ data: Buffer; driverData: Buffer; }>({
@@ -15,7 +16,7 @@ const bytea = customType<{ data: Buffer; driverData: Buffer; }>({
 });
 
 export const plants = pgTable(
-    'plants',
+    TableName.Plants,
     {
         id: uuid('id').primaryKey().defaultRandom(),
         userId: text('user_id')

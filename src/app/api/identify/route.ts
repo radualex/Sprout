@@ -73,14 +73,14 @@ export const POST = async (request: Request) => {
     }
 
     const data = (await response.json()) as { results?: PlantNetResult[]; };
-    const results: IdentifyResult[] = (data.results ?? []).map((r) => {
-        const species = r.scientificNameWithoutAuthor ?? 'Unknown species';
-        const commonName = r.commonNames?.at(0) ?? '';
+    const results: IdentifyResult[] = (data.results ?? []).map((result) => {
+        const species = result.scientificNameWithoutAuthor ?? 'Unknown species';
+        const commonName = result.commonNames?.at(0) ?? '';
 
         return {
             species,
             commonName,
-            confidence: r.score ?? 0,
+            confidence: result.score ?? 0,
             defaultCare: defaultCareFor(species, commonName)
         };
     });

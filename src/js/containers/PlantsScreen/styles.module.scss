@@ -1,3 +1,6 @@
+@use '@/js/scss/shared/layout.module.scss';
+@use '@/js/scss/shared/empty.module.scss';
+
 .plantGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;

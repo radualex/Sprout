@@ -59,12 +59,20 @@ export default configure([{
             selector: 'variable',
             format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
             leadingUnderscore: 'forbid',
-            trailingUnderscore: 'forbid'
+            trailingUnderscore: 'forbid',
+            custom: {
+                regex: '^.{2,}$',
+                match: true
+            }
         }, {
             selector: 'parameter',
             format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
             leadingUnderscore: 'forbid',
-            trailingUnderscore: 'forbid'
+            trailingUnderscore: 'forbid',
+            custom: {
+                regex: '^.{2,}$',
+                match: true
+            }
         }, {
             selector: 'parameter',
             modifiers: ['unused'],
@@ -75,7 +83,11 @@ export default configure([{
             selector: 'function',
             format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
             leadingUnderscore: 'forbid',
-            trailingUnderscore: 'forbid'
+            trailingUnderscore: 'forbid',
+            custom: {
+                regex: '^.{2,}$',
+                match: true
+            }
         }],
         '@stylistic/padding-line-between-statements': ['error', {
             blankLine: 'always',
@@ -102,7 +114,7 @@ export default configure([{
                 matches: /\/constants/.source
             }, {
                 label: 'Components',
-                matches: /\/(components|containers)/.source
+                matches: /\/(components|containers|design-system)/.source
             }, {
                 label: 'Helpers',
                 matches: /\/helpers/.source

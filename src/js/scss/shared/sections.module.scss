@@ -1,0 +1,12 @@
+.sectionTitle {
+    margin: 22px 0 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--ink-soft);
+
+    &:first-child {
+        margin-top: 0;
+    }
+}

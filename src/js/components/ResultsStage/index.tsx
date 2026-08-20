@@ -1,17 +1,20 @@
 'use client';
 
-import classNames from 'classnames';
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
+
 // Components
+import { Button } from '@/design-system/Button';
 import { IdentifyResultCard } from './IdentifyResultCard';
 
 // Services
 import type { IdentifyResult } from '@/js/services/identify';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 interface Props {
     results: IdentifyResult[];
@@ -22,24 +25,22 @@ interface Props {
 }
 
 export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick, onReset, onContinue }) => {
-    const secondaryButtonClasses = classNames(shared.btn, shared.secondary);
-
     return (
         <React.Fragment>
-            <span className={shared.sectionTitle}>Best matches</span>
+            <span className={styles.sectionTitle}>Best matches</span>
             {results.map((result) => {
                 return (
                     <IdentifyResultCard key={result.species} result={result} selected={picked?.species === result.species} onSelect={onPick} />
                 );
             })}
-            <div className={shared.shutterRow}>
-                <button type="button" className={secondaryButtonClasses} onClick={onReset}>
+            <div className={styles.shutterRow}>
+                <Button variant={ButtonVariant.Secondary} grow onClick={onReset}>
                     Retake
-                </button>
-                <button type="button" className={shared.btn} disabled={!picked} onClick={onContinue}>
+                </Button>
+                <Button grow onClick={onContinue} disabled={!picked}>
                     Continue
                     <ArrowRight size={16} />
-                </button>
+                </Button>
             </div>
         </React.Fragment>
     );

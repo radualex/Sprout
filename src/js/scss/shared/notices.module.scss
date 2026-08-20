@@ -1,0 +1,19 @@
+.notice {
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 12px;
+    background: var(--surface-2);
+    font-size: 13px;
+    color: var(--green-900);
+    line-height: 1.45;
+
+    &.warn {
+        background: #f6ecd9;
+        color: #7a4d12;
+    }
+
+    &.error {
+        background: #f7e3de;
+        color: var(--red);
+    }
+}

@@ -7,8 +7,10 @@ import { Check } from 'lucide-react';
 
 // Constants
 import { TASK_ROW_BUTTON_STYLE } from './constants';
+import { ButtonSize, ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
+import { Button } from '@/design-system/Button';
 import { PlantPhoto } from '@/js/components/PlantPhoto';
 
 // Helpers
@@ -26,6 +28,7 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
 
 export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...props }) => {
     const meta = CARE_META[task.kind];
+    const rootClasses = styles.taskRow;
     const classes = classNames(styles.when, {
         [styles.overdue]: task.daysUntil < 0,
         [styles.due]: task.daysUntil === 0
@@ -40,7 +43,7 @@ export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect
     }, [onDone, task]);
 
     return (
-        <div className={styles.taskRow} {...props}>
+        <div className={rootClasses} {...props}>
             <button type="button" style={TASK_ROW_BUTTON_STYLE} onClick={handleSelect}>
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
                 <div className={styles.info}>
@@ -55,10 +58,9 @@ export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect
                 </div>
             </button>
             {task.daysUntil <= 0 && (
-                <button type="button" className={styles.doneBtn} onClick={handleDone}>
-                    <Check size={14} />
+                <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>
                     Done
-                </button>
+                </Button>
             )}
         </div>
     );

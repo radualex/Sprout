@@ -7,7 +7,7 @@ import { TaskRow } from '@/js/components/TaskRow';
 import type { CareTask } from '@/js/helpers/care';
 
 // Styles
-import shared from '@/js/scss/shared.module.scss';
+import styles from './styles.module.scss';
 
 interface Props {
     title: string;
@@ -22,7 +22,7 @@ export const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, 
 
     const renderTitle = () => {
         return (
-            <div className={shared.sectionTitle}>
+            <div className={styles.sectionTitle}>
                 {title}
             </div>
         );
@@ -30,7 +30,7 @@ export const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, 
 
     const renderEmptyNotice = () => {
         return (
-            <div className={shared.notice}>
+            <div className={styles.notice}>
                 {emptyNotice}
             </div>
         );
@@ -38,10 +38,10 @@ export const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, 
 
     const renderTaskList = () => {
         return (
-            <div className={shared.taskList}>
-                {tasks.map((t) => {
+            <div className={styles.taskList}>
+                {tasks.map((task) => {
                     return (
-                        <TaskRow key={`${t.plant.id}-${t.kind}`} task={t} onDone={onDone} onSelect={onSelectPlant} />
+                        <TaskRow key={`${task.plant.id}-${task.kind}`} task={task} onDone={onDone} onSelect={onSelectPlant} />
                     );
                 })}
             </div>
