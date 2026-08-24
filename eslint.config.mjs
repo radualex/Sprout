@@ -39,6 +39,9 @@ export default configure([{
         'react/react-in-jsx-scope': 'off',
         'react/no-unescaped-entities': 'off',
         'react/jsx-fragments': ['error', 'element'],
+        '@stylistic/object-curly-spacing': ['error', 'always', {
+            emptyObjects: 'never'
+        }],
         'curly': ['error', 'all'],
         'react/function-component-definition': ['error', {
             namedComponents: 'arrow-function',
