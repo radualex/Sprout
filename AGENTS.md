@@ -20,6 +20,8 @@
   [optional footer(s)]
   ```
 
+- [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/js/lib/auth.ts`, `src/js/lib/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
+
 ## Done
 
 - [X] **Migrate Vite PWA → Next.js 16 App Router** (in place). Routes, server actions, auth (Better Auth), Postgres (Drizzle), PWA hardening, Dockerized local dev. See the ADRs in `README.md`.
