@@ -41,5 +41,23 @@ services:
             db:
                 condition: service_healthy
 
+    app-prod:
+        build:
+            context: .
+            target: prod
+        profiles: ['prod']
+        ports:
+            - '3001:3000'
+        environment:
+            DATABASE_URL: postgres://sprout:sprout@db:5432/sprout
+            BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-dev-secret-change-me}
+            BETTER_AUTH_URL: http://localhost:3001
+            GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+            GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+            PLANTNET_API_KEY: ${PLANTNET_API_KEY:-}
+        depends_on:
+            db:
+                condition: service_healthy
+
 volumes:
     pgdata:

@@ -31,6 +31,7 @@ Full dockerized dev (app + db in two containers) is also available:
 ```sh
 docker compose up -d --build # builds the dev image, starts db + next dev
 bun run build                # production build (inside the container: docker compose run app bun run build)
+docker compose --profile prod up --build app-prod # prod image (standalone) on :3001
 ```
 
 To use it on your phone, run the app over HTTPS (camera and notifications require a secure

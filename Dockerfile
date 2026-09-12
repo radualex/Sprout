@@ -21,14 +21,15 @@ RUN bun install --frozen-lockfile
 COPY . .
 RUN bun run build
 
-FROM base AS prod
+FROM oven/bun:1-alpine AS prod
+WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next ./.next
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+# `output: 'standalone'` traces the runtime deps into .next/standalone, so the
+# prod image ships that tree instead of a full node_modules + source checkout.
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/public ./public
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/next.config.ts ./next.config.ts
-COPY --from=build /app/tsconfig.json ./tsconfig.json
-COPY --from=build /app/next-env.d.ts ./next-env.d.ts
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["bun", "server.js"]

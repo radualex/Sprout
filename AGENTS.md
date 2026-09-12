@@ -101,10 +101,10 @@ Gotcha: `eslint --fix` will happily mangle files — prefer targeted edits, then
 
 | Tool              | Used for                | Notes                                                                                              |
 | ----------------- | ----------------------- | -------------------------------------------------------------------------------------------------- |
-| Docker Compose v2 | Local dev orchestration | `db` (Postgres) + `app` (Next dev) services in `docker-compose.yml`.                         |
-| Dockerfile        | Multi-stage build       | `dev` target (bind-mounted source, HMR) and `prod` target (`bun run build` + `bun start`). |
+| Docker Compose v2 | Local dev orchestration | `db` (Postgres) + `app` (Next dev) services; `app-prod` (profile `prod`) serves the production image on :3001. |
+| Dockerfile        | Multi-stage build       | `dev` target (bind-mounted source, HMR) and `prod` target (standalone output on `oven/bun:1-alpine`, `bun server.js`). |
 
-Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=postgres://sprout:sprout@db:5432/sprout`). macOS volume-mount HMR is slower than native dev.
+Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=postgres://sprout:sprout@db:5432/sprout`). macOS volume-mount HMR is slower than native dev. Prod parity locally: `docker compose --profile prod up --build app-prod` (serves :3001).
 
 ### PWA
 
@@ -130,5 +130,6 @@ Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=
 | `start`                                        | `next start`                         | Serve the production build.                  |
 | `lint` / `lint:fix`                          | `lint:js ; lint:scss`                | Run both linters (JS then SCSS).             |
 | `db:up` / `db:down`                          | `docker compose up -d db` / `down` | Start/stop the dev Postgres.                 |
+| `docker:build:prod`                            | `docker build --target prod -t sprout .` | Build the standalone production image.  |
 | `db:migrate` / `db:generate` / `db:studio` | `drizzle-kit …`                     | Apply / create migrations; inspect data.     |
 | `build:rules`                                  | `tsc -p tsconfig.eslint-rules.json`  | Compile custom ESLint rules.                 |

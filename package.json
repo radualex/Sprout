@@ -24,7 +24,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "docker:build:prod": "docker build --target prod -t sprout ."
   },
   "dependencies": {
     "better-auth": "^1.6.29",
