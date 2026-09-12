@@ -9,9 +9,10 @@
 - [ ] **Add Web Push (VAPID)** for reliable reminders while the app is closed (see the README limitation note).
 - [ ] **Accessibility pass**: audit every screen for semantic HTML and ARIA — currently many `div`s are used where a semantic element (button, list, heading) fits, and no `aria-label` exists anywhere. Convert interactive `div`s to proper elements and add `aria-label`s where the meaning is icon-only.
 - [ ] **Unit tests**: add component/helper tests with Vitest + React Testing Library + jsdom. Components are already `React.FunctionComponent<Props>` with testable props — cover `handle*` handlers, `classNames` conditionals, and the care helpers (`nextDue`, `formatDue`, `dueTasks`).
-- [ ] **Integration tests**: recommended tool is **Vitest** (single runner shared with unit tests) + **`next-test-api-route-handler`** for `/api/*` route handlers and `lib/db` queries against the Docker Postgres. Run them against a test database to avoid clobbering dev data. (Alternative if a separate HTTP layer is preferred: `supertest` against `next start`.)
+- [ ] **Integration tests**: recommended tool is **Vitest** (single runner shared with unit tests) + **`next-test-api-route-handler`** for `/api/*` route handlers and `lib/db` queries against the Docker Postgres. Run them against a test database to avoid clobbering dev data. (Alternative if a separate HTTP layer is preferred: `supertest` against `bun run start:prod`.)
 - [ ] **E2E tests**: add Playwright (already available via the Playwright MCP server). Cover the critical journey: sign-up → identify (mocked PlantNet response) → add plant → care due → mark done.
 - [ ] **Conventional commits**: Let's make sure that wrong formatted commits are caught on pre-commit hook. Add husky first. Commit format according to [docs](https://www.conventionalcommits.org/en/v1.0.0/#specification):
+
   ```
   <type>[optional scope]: <description>
 
@@ -19,14 +20,13 @@
 
   [optional footer(s)]
   ```
-
-- [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/js/lib/auth/index.ts`, `src/js/lib/auth/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
+- [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/lib/auth/index.ts`, `src/lib/auth/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
 
 ## Done
 
 - [X] **Migrate Vite PWA → Next.js 16 App Router** (in place). Routes, server actions, auth (Better Auth), Postgres (Drizzle), PWA hardening, Dockerized local dev. See the ADRs in `README.md`.
 - [X] **Auth** — Better Auth with Google OAuth + email/password; per-user scoping on every query.
-- [X] **Dockerized local dev** — `docker compose up -d db` + `bun run dev`, or `docker compose up -d --build` for both containers.
+- [X] **Dockerized local dev** — `docker compose up -d db` + `bun run start`, or `docker compose up -d --build` for both containers.
 - [X] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.scss` via `styles.x`, no single-line object literals, blank line before every `return`, curly braces on all blocks. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements` + `curly`.
 - [X] **React conventions** — every component is `React.FunctionComponent<Props>` with `Props extends React.ComponentProps<'element'>` (or `Omit`), destructures and spreads `{...props}` on its root element. One component per `index.tsx` (own folder each); style/style constants live in sibling `constants.ts` files. Enums over magic strings (`CareKind.Water` not `'water'`). `lodash-es` over hand-rolled utils. `classNames` for every multi-class/conditional class via `const X = classNames(styles.root, { [styles.x]: cond })` at the top of the component above the `useState` calls (never inline in JSX, object-map form for conditionals, single class stays inline). All icons are `lucide-react` components (`CARE_META` holds `icon: LucideIcon`, not emoji strings). These are codified globally in the `react-conventions` opencode skill (`~/.config/opencode/skills/react-conventions`). See the Tools table below.
 
@@ -35,7 +35,7 @@
 - ESLint is type-aware and slow; `bunx eslint .` (not `--fix` in a loop) is the reliable check.
 - `next build` does **not** run ESLint; lint is a separate `bun run lint`.
 - The proxy matcher in `src/proxy.ts` must stay a plain string constant (Turbopack requirement); `unicorn/prefer-string-raw` is disabled for that file in `eslint.config.mjs`.
-- `src/js/lib/db/auth-schema.ts` is generated by Better Auth CLI and lint-ignored; don't edit by hand.
+- `src/lib/db/auth-schema.ts` is generated by Better Auth CLI and lint-ignored; don't edit by hand.
 - Server actions need `bodySizeLimit` (5 MB) for photo uploads — configured in `next.config.ts`.
 
 ## Tools
@@ -60,7 +60,7 @@ Reference for the toolchain. Each entry: what it is, why we chose it, and the go
 | Tool                   | Version                     | Used for                 | Notes                                                                                        |
 | ---------------------- | --------------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
 | Postgres               | 16 (`postgres:16-alpine`) | Data store               | Runs in Docker (`db` compose service).                                                     |
-| Drizzle ORM            | 0.45.x                      | Query builder + types    | Schema in`src/js/lib/db/schema.ts`; queries in `src/js/lib/db/queries.ts`.                           |
+| Drizzle ORM            | 0.45.x                      | Query builder + types    | Schema in`src/lib/db/schema.ts`; queries in `src/lib/db/queries.ts`.                     |
 | drizzle-kit            | 0.31.x                      | Migrations + studio      | `db:generate`, `db:migrate`, `db:studio`.                                              |
 | `pg` (node-postgres) | 8.x                         | Postgres driver          | Maps`bytea` ↔ `Buffer` natively. Prod swaps to `@neondatabase/serverless` (ADR-0002). |
 | Neon                   | (planned)                   | Serverless prod Postgres | Not used yet — see roadmap.                                                                 |
@@ -69,12 +69,12 @@ Gotchas: Drizzle's pg driver has **no binary column type** — `schema.ts` defin
 
 ### Auth
 
-| Tool                | Version | Used for              | Notes                                                                                                   |
-| ------------------- | ------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| Better Auth         | 1.6.x   | Auth server + client  | `src/js/lib/auth/index.ts`; Drizzle adapter.                                                                |
-| @better-auth/cli    | 1.4.x   | Generates auth schema | `bunx @better-auth/cli generate` → `src/js/lib/db/auth-schema.ts` (lint-ignored, don't hand-edit). |
-| better-auth/react   | —      | Client hooks          | `authClient` in `src/js/lib/auth/auth-client.ts` (signIn/signUp/signOut).                                |
-| better-auth/cookies | —      | Proxy cookie check    | `getSessionCookie` for the optimistic `src/proxy.ts` check.                                         |
+| Tool                | Version | Used for              | Notes                                                                                                |
+| ------------------- | ------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
+| Better Auth         | 1.6.x   | Auth server + client  | `src/lib/auth/index.ts`; Drizzle adapter.                                                          |
+| @better-auth/cli    | 1.4.x   | Generates auth schema | `bunx @better-auth/cli generate` → `src/lib/db/auth-schema.ts` (lint-ignored, don't hand-edit). |
+| better-auth/react   | —      | Client hooks          | `authClient` in `src/lib/auth/auth-client.ts` (signIn/signUp/signOut).                           |
+| better-auth/cookies | —      | Proxy cookie check    | `getSessionCookie` for the optimistic `src/proxy.ts` check.                                      |
 
 Security model: three layers — `proxy.ts` (cookie-only, no DB), `requireUser()` in every server component/action/route, and per-user `userId` scoping on every query.
 
@@ -93,15 +93,15 @@ Gotcha: `eslint --fix` will happily mangle files — prefer targeted edits, then
 
 ### SCSS
 
-| Tool             | Used for     | Notes                                                                                                                                                                      |
-| ---------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| sass (dart-sass) | Compile SCSS | CSS modules via Next (no Vite plugin needed). Globals in`src/js/scss/globals.scss` (CSS vars + `body`/`.appShell` layout), shared classes in section files under `src/js/scss/shared/` (`layout`/`forms`/`tasks`/`results`/`notices`/`chips`/`empty`/`sections`/`shutter`). Atomic components (Button) live in `src/design-system/`. |
+| Tool             | Used for     | Notes                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| sass (dart-sass) | Compile SCSS | CSS modules via Next (no Vite plugin needed). Globals in`src/styles/globals.scss` (CSS vars + `body`/`.appShell` layout), shared classes in section files under `src/styles/shared/` (`layout`/`forms`/`tasks`/`results`/`notices`/`chips`/`empty`/`sections`/`shutter`). Atomic components (Button) live in `src/design-system/`. |
 
 ### Docker
 
-| Tool              | Used for                | Notes                                                                                              |
-| ----------------- | ----------------------- | -------------------------------------------------------------------------------------------------- |
-| Docker Compose v2 | Local dev orchestration | `db` (Postgres) + `app` (Next dev) services; `app-prod` (profile `prod`) serves the production image on :3001. |
+| Tool              | Used for                | Notes                                                                                                                          |
+| ----------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Docker Compose v2 | Local dev orchestration | `db` (Postgres) + `app` (Next dev) services; `app-prod` (profile `prod`) serves the production image on :3001.         |
 | Dockerfile        | Multi-stage build       | `dev` target (bind-mounted source, HMR) and `prod` target (standalone output on `oven/bun:1-alpine`, `bun server.js`). |
 
 Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=postgres://sprout:sprout@db:5432/sprout`). macOS volume-mount HMR is slower than native dev. Prod parity locally: `docker compose --profile prod up --build app-prod` (serves :3001).
@@ -123,13 +123,13 @@ Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=
 
 ### Scripts (`package.json`)
 
-| Script                                           | Command                                | Purpose                                      |
-| ------------------------------------------------ | -------------------------------------- | -------------------------------------------- |
-| `dev`                                          | `next dev`                           | Dev server (Turbopack).                      |
+| Script                                           | Command                                    | Purpose                                      |
+| ------------------------------------------------ | ------------------------------------------ | -------------------------------------------- |
+| `start`                                        | `next dev`                               | Dev server (Turbopack).                      |
 | `build`                                        | `build:rules && next build`          | Compile ESLint rules, then production build. |
-| `start`                                        | `next start`                         | Serve the production build.                  |
-| `lint` / `lint:fix`                          | `lint:js ; lint:scss`                | Run both linters (JS then SCSS).             |
-| `db:up` / `db:down`                          | `docker compose up -d db` / `down` | Start/stop the dev Postgres.                 |
-| `docker:build:prod`                            | `docker build --target prod -t sprout .` | Build the standalone production image.  |
-| `db:migrate` / `db:generate` / `db:studio` | `drizzle-kit …`                     | Apply / create migrations; inspect data.     |
-| `build:rules`                                  | `tsc -p tsconfig.eslint-rules.json`  | Compile custom ESLint rules.                 |
+| `start:prod`                                   | `next start`                             | Serve the production build.                  |
+| `lint` / `lint:fix`                          | `lint:js ; lint:scss`                    | Run both linters (JS then SCSS).             |
+| `db:up` / `db:down`                          | `docker compose up -d db` / `down`     | Start/stop the dev Postgres.                 |
+| `docker:build:prod`                            | `docker build --target prod -t sprout .` | Build the standalone production image.       |
+| `db:migrate` / `db:generate` / `db:studio` | `drizzle-kit …`                         | Apply / create migrations; inspect data.     |
+| `build:rules`                                  | `tsc -p tsconfig.eslint-rules.json`      | Compile custom ESLint rules.                 |

@@ -1,11 +1,11 @@
 // Components
-import { CareScreen } from '@/js/containers/CareScreen';
+import { CareScreen } from '@/containers/CareScreen';
 
 // Database
-import { getPlantsForUser } from '@/js/lib/db/queries';
+import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 const CarePage = async () => {
     const session = await requireUser();

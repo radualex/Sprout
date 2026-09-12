@@ -4,11 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "start": "next dev",
+    "start:prod": "next start",
     "prepare": "husky",
     "build": "bun run build:rules && next build",
     "build:rules": "tsc -p tsconfig.eslint-rules.json",
-    "start": "next start",
     "prelint": "bun run build:rules",
     "lint": "bun run lint:js ; bun run lint:scss",
     "lint:js": "eslint",

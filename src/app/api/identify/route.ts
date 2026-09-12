@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 
 // Database
-import { defaultCareFor } from '@/js/lib/db/care-defaults';
+import { defaultCareFor } from '@/lib/db/care-defaults';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 // Types
-import type { IdentifyResult } from '@/js/services/identify/types';
+import type { IdentifyResult } from '@/services/identify/types';
 
 interface PlantNetResult {
     scientificNameWithoutAuthor?: string | null;

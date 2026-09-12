@@ -1,11 +1,11 @@
 // Components
-import { SettingsScreen } from '@/js/containers/SettingsScreen';
+import { SettingsScreen } from '@/containers/SettingsScreen';
 
 // Database
-import { getPlantsForUser } from '@/js/lib/db/queries';
+import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 const SettingsPage = async () => {
     const session = await requireUser();

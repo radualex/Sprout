@@ -1,5 +1,5 @@
 // Types
-import { CareKind, type Plant } from '@/js/types';
+import { CareKind, type Plant } from '@/types';
 
 export const NOW = 1_700_000_000_000;
 

@@ -1,16 +1,16 @@
 import React from 'react';
 
 // Components
-import { BottomNav } from '@/js/components/BottomNav';
+import { BottomNav } from '@/components/BottomNav';
 
 // Helpers
-import { dueTasks } from '@/js/helpers/care';
+import { dueTasks } from '@/helpers/care';
 
 // Database
-import { getPlantsForUser } from '@/js/lib/db/queries';
+import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 // Styles
 import styles from './styles.module.scss';

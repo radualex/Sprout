@@ -1,8 +1,8 @@
 // Database
-import { getPlantPhoto } from '@/js/lib/db/queries';
+import { getPlantPhoto } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 interface Props {
     params: Promise<{ id: string; }>;

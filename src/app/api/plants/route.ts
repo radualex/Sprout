@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
 // Database
-import { getPlantsForUser } from '@/js/lib/db/queries';
+import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 export const GET = async () => {
     const session = await requireUser();

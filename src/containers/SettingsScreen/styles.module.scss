@@ -1,0 +1,23 @@
+@use '@/styles/shared/layout.module.scss';
+@use '@/styles/shared/notices.module.scss';
+@use '@/styles/shared/forms.module.scss';
+
+.settingsCard {
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+
+    h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+    }
+
+    p {
+        margin: 0 0 12px;
+        font-size: 13px;
+        color: var(--ink-soft);
+        line-height: 1.5;
+    }
+}

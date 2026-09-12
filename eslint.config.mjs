@@ -14,7 +14,7 @@ export default configure([{
         '**/*.js',
         'eslint-rules/**',
         '.next/**',
-        'src/js/lib/db/auth-schema.ts'
+        'src/lib/db/auth-schema.ts'
     ]
 }, configs.react, {
     plugins: {
@@ -135,7 +135,7 @@ export default configure([{
                 matches: /(?:\/lib\/auth|\/auth\/|\.\.\/auth)/.source
             }, {
                 label: 'Styles',
-                matches: /\/(scss|styles.module.scss)/.source
+                matches: /\/(scss|styles)/.source
             }, {
                 label: 'Types',
                 matches: /\/types/.source

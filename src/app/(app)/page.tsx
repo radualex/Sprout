@@ -1,11 +1,11 @@
 // Components
-import { PlantsScreen } from '@/js/containers/PlantsScreen';
+import { PlantsScreen } from '@/containers/PlantsScreen';
 
 // Database
-import { getPlantsForUser } from '@/js/lib/db/queries';
+import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 const PlantsPage = async () => {
     const session = await requireUser();

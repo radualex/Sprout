@@ -12,13 +12,15 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'lcov'],
-            include: ['src/js/**/*.{ts,tsx}', 'src/design-system/**/*.{ts,tsx}'],
+            include: ['src/**/*.{ts,tsx}'],
             exclude: [
                 '**/*.d.ts',
                 '**/test.unit.{ts,tsx}',
                 '**/*.mock.{ts,tsx}',
                 'test/**',
-                'src/js/lib/db/auth-schema.ts'
+                'src/app/**',
+                'src/proxy.ts',
+                'src/lib/db/auth-schema.ts'
             ],
             thresholds: {
                 statements: 11,

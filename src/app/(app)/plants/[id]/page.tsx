@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation';
 
 // Components
-import { PlantDetail } from '@/js/containers/PlantDetail';
+import { PlantDetail } from '@/containers/PlantDetail';
 
 // Database
-import { getPlantForUser } from '@/js/lib/db/queries';
+import { getPlantForUser } from '@/lib/db/queries';
 
 // Auth
-import { requireUser } from '@/js/lib/auth/session';
+import { requireUser } from '@/lib/auth/session';
 
 interface Props {
     params: Promise<{
