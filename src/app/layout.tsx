@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from 'next';
 import SiteCore from '@/components/SiteCore';
 
 // Styles
-import '@/styles/globals.scss';
+import './globals.css';
 
 export const metadata: Metadata = {
     title: 'Sprout — Plant Tracker',

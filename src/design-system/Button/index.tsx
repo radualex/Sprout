@@ -9,7 +9,7 @@ import type { LucideIcon } from 'lucide-react';
 import { ButtonSize, ButtonVariant } from './constants';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props extends React.ComponentProps<'button'> {
     variant?: ButtonVariant;

@@ -135,7 +135,7 @@ export default configure([{
                 matches: /(?:\/lib\/auth|\/auth\/|\.\.\/auth)/.source
             }, {
                 label: 'Styles',
-                matches: /\/(scss|styles)/.source
+                matches: /\.(css|scss)$/.source
             }, {
                 label: 'Types',
                 matches: /\/types/.source
