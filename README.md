@@ -258,3 +258,39 @@ Postgres). Teams and machines drift.
 **Consequences:** macOS volume-mount hot reload can be slower than native dev. `DATABASE_URL` inside
 compose points at `postgres://sprout:sprout@db:5432/sprout`, while local `bun run start` uses
 `localhost`. Seeded values for local-only credentials live in `docker-compose.yml`.
+
+### ADR-0009 — Server Components + Server Actions instead of TanStack Query
+
+**Status:** Accepted
+
+**Context:** The global `frontend-code-conventions` skill mandates **TanStack Query** for all server
+state (§5): a single `QueryClient` in `QueryClientProvider`, one thin HTTP client module,
+`useQuery`/`useMutation` hooks, and `queryKey`-based cache invalidation. This app is a Next.js 16
+App Router application whose data layer was already decided in ADR-0005: data is read in Server
+Components and mutated via Server Actions with `revalidatePath`. Applying §5 literally would mean
+adding a client-side server-state cache on top of a model that already fetches and renders on the
+server.
+
+**Decision:** Keep the ADR-0005 model and do **not** install TanStack Query. Server state is fetched
+in Server Components (per-user Drizzle queries), mutated through Server Actions that revalidate the
+affected paths, and passed to client components as props. This is a deliberate, documented deviation
+from the skill's §5 mandate; the rest of the skill applies unchanged.
+
+**Rationale & alternatives considered:**
+- *TanStack Query (skill §5 default)* — designed for client-rendered apps that must own their
+  server-state cache. Here the server is same-origin and RSC already fetches and renders the data, so
+  a client cache would duplicate the data flow, add a provider and a serialization boundary, and
+  re-create the loading/error state the App Router handles natively. It would also require public
+  read endpoints that ADR-0001 deliberately avoided.
+- *REST API + client fetching* — doubles the code (route handlers for reads plus client state sync)
+  for no benefit in a same-origin app; rejected in ADR-0005 and again here.
+- *RSC + Server Actions (chosen)* — data is fetched where it is rendered; mutations revalidate the
+  cache for free; the old `useState` + `refresh()` boilerplate disappears. Fewer dependencies and one
+  source of truth.
+
+**Consequences:** No `@tanstack/react-query` dependency, no `QueryClientProvider`, and the skill's
+`queryKey` / `enabled` / `invalidateQueries` conventions do not apply. Loading and error states come
+from the App Router (`loading.tsx`, `error.tsx`, `Suspense`) rather than `useQuery`'s
+`isLoading`/`isError`. This ADR does not ban TanStack Query outright: if the app later needs genuine
+client-owned server state — interactive polling, offline refetching — TanStack Query becomes the
+right tool for that specific concern, and a superseding record would capture it.
