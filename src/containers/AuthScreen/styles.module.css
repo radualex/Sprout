@@ -2,8 +2,8 @@
 
 .root {
   @apply
-    m-auto flex min-h-dvh max-w-[400px] flex-col items-stretch justify-center
-    gap-5 p-6
+    m-auto flex min-h-dvh max-w-100 flex-col items-stretch justify-center gap-5
+    p-6
   ;
 }
 
@@ -11,12 +11,12 @@
   @apply mb-2 flex flex-col items-center gap-1.5 text-center;
 
   h1 {
-    @apply m-0 text-[28px] text-green-900;
+    @apply m-0 text-[1.75rem] text-green-900;
   }
 }
 
 .logo {
-  @apply text-[44px] leading-none;
+  @apply text-[2.75rem] leading-none;
 }
 
 .sub {
@@ -28,7 +28,7 @@
 }
 
 .field {
-  @apply flex flex-col gap-1.5 text-[13px] font-semibold text-ink;
+  @apply flex flex-col gap-1.5 text-[0.8125rem] font-semibold text-ink;
 
   input {
     @apply
@@ -47,8 +47,7 @@
 
 .primary {
   @apply
-    rounded-card border-none bg-green-700 p-[13px] text-base font-bold
-    text-white
+    rounded-card border-none bg-green-700 p-3.25 text-base font-bold text-white
   ;
 
   &:disabled {
@@ -57,19 +56,19 @@
 }
 
 .google {
-  @apply rounded-card bg-surface p-[13px] text-[15px] font-semibold text-ink;
+  @apply rounded-card bg-surface p-3.25 text-[0.9375rem] font-semibold text-ink;
 
   border: 1px solid rgb(28 37 32 / 15%);
 }
 
 .divider {
-  @apply flex items-center gap-3 text-[13px] text-ink-soft;
+  @apply flex items-center gap-3 text-[0.8125rem] text-ink-soft;
 
   &::before,
   &::after {
     content: "";
     flex: 1;
-    height: 1px;
+    height: 0.0625rem;
     background: rgb(28 37 32 / 10%);
   }
 }
@@ -83,7 +82,7 @@
 }
 
 .error {
-  @apply m-0 rounded-btn-sm px-3 py-2.5 text-[13px] text-red;
+  @apply m-0 rounded-btn-sm px-3 py-2.5 text-[0.8125rem] text-red;
 
   background: rgb(192 69 47 / 10%);
 }

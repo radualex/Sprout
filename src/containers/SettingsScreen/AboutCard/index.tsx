@@ -17,7 +17,7 @@ const AboutCard: React.FunctionComponent<Props> = ({ plantCount }) => {
     return (
         <div className={classes}>
             <h3>
-                <Info size={18} />
+                <Info size="1.125rem" />
                 About
             </h3>
             <p style={NO_MARGIN_STYLE}>

@@ -1,7 +1,7 @@
 import { Droplets, Flower2, Leaf } from 'lucide-react';
 
 // Types
-import { CareKind } from '@/types';
+import { CareKind, type CareSchedule } from '@/types';
 import type { CareMeta } from './types';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
@@ -23,4 +23,10 @@ export const CARE_META: Record<CareKind, CareMeta> = {
         verb: 'repotted',
         icon: Flower2
     }
+};
+
+export const FALLBACK_CARE: CareSchedule = {
+    waterEveryDays: 7,
+    fertilizeEveryDays: 30,
+    repotEveryMonths: 18
 };

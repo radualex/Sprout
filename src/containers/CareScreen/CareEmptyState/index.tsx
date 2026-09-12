@@ -13,7 +13,7 @@ const CareEmptyState: React.FunctionComponent<Props> = ({ className, ...props })
     return (
         <div className={classes} {...props}>
             <div className={styles.big}>
-                <Droplets size={48} />
+                <Droplets size="3rem" />
             </div>
             <h2>
                 Nothing to do yet

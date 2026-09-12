@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 export const HEADER_STYLE: CSSProperties = {
-    paddingTop: 14
+    paddingTop: '0.875rem'
 };
 
 export const SUB_STYLE: CSSProperties = {
@@ -9,10 +9,10 @@ export const SUB_STYLE: CSSProperties = {
 };
 
 export const DELETE_ROW_STYLE: CSSProperties = {
-    marginTop: 24,
+    marginTop: '1.5rem',
     textAlign: 'center'
 };
 
 export const DELETE_BUTTON_STYLE: CSSProperties = {
-    background: 'var(--red)'
+    background: 'var(--color-red)'
 };

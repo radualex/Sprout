@@ -56,6 +56,9 @@ const config = configure([{
         '@stylistic/object-curly-spacing': ['error', 'always', {
             emptyObjects: 'never'
         }],
+        '@stylistic/object-curly-newline': ['error', {
+            ImportDeclaration: 'never'
+        }],
         'curly': ['error', 'all'],
         'react/function-component-definition': ['error', {
             namedComponents: 'arrow-function',

@@ -86,7 +86,7 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
         <div className={styles.root} {...props}>
             <div className={styles.hero}>
                 <div className={styles.logo}>
-                    <Sprout size={44} />
+                    <Sprout size="2.75rem" />
                 </div>
                 <h1>
                     Sprout

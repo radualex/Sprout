@@ -1,5 +1,5 @@
-// Database
-import { getPlantPhoto } from '@/lib/db/queries';
+// Services
+import { readPlantPhoto } from '@/services/server/plants';
 
 // Auth
 import { requireUser } from '@/lib/auth/session';
@@ -11,7 +11,7 @@ interface Props {
 export const GET = async (_request: Request, { params }: Props) => {
     const session = await requireUser();
     const { id } = await params;
-    const photo = await getPlantPhoto(session.user.id, id);
+    const photo = await readPlantPhoto(session.user.id, id);
 
     if (!photo) {
         return new Response('Not found', {
@@ -22,7 +22,8 @@ export const GET = async (_request: Request, { params }: Props) => {
     return new Response(new Uint8Array(photo), {
         headers: {
             'Content-Type': 'image/jpeg',
-            'Cache-Control': 'private, max-age=3600'
+            'Cache-Control': 'private, max-age=3600',
+            'X-Content-Type-Options': 'nosniff'
         }
     });
 };

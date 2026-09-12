@@ -39,7 +39,7 @@ const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick,
                 </Button>
                 <Button grow onClick={onContinue} disabled={!picked}>
                     Continue
-                    <ArrowRight size={16} />
+                    <ArrowRight size="1rem" />
                 </Button>
             </div>
         </React.Fragment>

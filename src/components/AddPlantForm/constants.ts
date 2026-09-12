@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react';
 
 export const RESULT_THUMB_STYLE: CSSProperties = {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
+    width: '3.5rem',
+    height: '3.5rem',
+    borderRadius: '0.75rem',
     objectFit: 'cover'
 };

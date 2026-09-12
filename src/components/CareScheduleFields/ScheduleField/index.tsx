@@ -30,7 +30,7 @@ const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value,
     return (
         <div className={classes} {...props}>
             <label htmlFor={id}>
-                <Icon size={14} />
+                <Icon size="0.875rem" />
                 {label}
             </label>
             <select id={id} value={value} onChange={handleChange}>

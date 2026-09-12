@@ -92,7 +92,7 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
     return (
         <div className={classes} {...props}>
             <Link href="/" className={styles.backBtn}>
-                <ArrowLeft size={16} />
+                <ArrowLeft size="1rem" />
                 My Plants
             </Link>
 
@@ -121,7 +121,7 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
                     return (
                         <div key={kind} className={styles.careStat}>
                             <div className={styles.emoji}>
-                                <meta.icon size={22} />
+                                <meta.icon size="1.375rem" />
                             </div>
                             <div className={styles.label}>
                                 {meta.label}

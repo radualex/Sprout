@@ -46,7 +46,7 @@
 .photo {
   @apply
     flex aspect-square w-full items-center justify-center bg-green-100
-    object-cover text-[44px]
+    object-cover text-[2.75rem]
   ;
 }
 

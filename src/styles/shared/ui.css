@@ -7,7 +7,7 @@
 @utility ui-screen {
   @apply px-4 pt-4;
 
-  padding-bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--nav-h) + 1.5rem + env(safe-area-inset-bottom));
   animation: fade-in 0.18s ease;
 }
 
@@ -15,7 +15,7 @@
   @apply flex items-center justify-between pt-2 pb-4;
 
   h1 {
-    @apply m-0 text-[26px] tracking-[-0.5px] text-green-900;
+    @apply m-0 text-[1.625rem] tracking-[-0.0313rem] text-green-900;
   }
 }
 
@@ -27,13 +27,14 @@
   @apply mb-3.5;
 
   label {
-    @apply mb-1.5 flex items-center gap-1.5 text-[13px] font-[650] text-ink;
+    @apply mb-1.5 flex items-center gap-1.5;
+    @apply text-[0.8125rem] font-[650] text-ink;
   }
 
   input,
   select,
   textarea {
-    @apply w-full rounded-xl bg-surface px-3 py-[11px] text-[15px] text-ink;
+    @apply w-full rounded-xl bg-surface px-3 py-2.75 text-[0.9375rem] text-ink;
 
     border: 1.5px solid rgb(28 37 32 / 14%);
 
@@ -104,16 +105,16 @@
 }
 
 @utility ui-sci {
-  @apply text-[13px] text-ink-soft italic;
+  @apply text-[0.8125rem] text-ink-soft italic;
 }
 
 @utility ui-common {
-  @apply text-[15px] font-[650];
+  @apply text-[0.9375rem] font-[650];
 }
 
 @utility ui-notice {
   @apply
-    my-3 rounded-xl bg-surface-2 px-3.5 py-2.5 text-[13px] leading-[1.45]
+    my-3 rounded-xl bg-surface-2 px-3.5 py-2.5 text-[0.8125rem] leading-[1.45]
     text-green-900
   ;
 }
@@ -128,8 +129,8 @@
 
 @utility ui-chip {
   @apply
-    inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-[3px]
-    text-[11px] font-semibold whitespace-nowrap text-green-700
+    inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-[0.1875rem]
+    text-[0.6875rem] font-semibold whitespace-nowrap text-green-700
   ;
 }
 
@@ -145,7 +146,7 @@
   @apply px-6 py-14 text-center text-ink-soft;
 
   h2 {
-    @apply mt-0 mb-1.5 text-[19px] text-ink;
+    @apply mt-0 mb-1.5 text-[1.1875rem] text-ink;
   }
 
   p {
@@ -154,12 +155,12 @@
 }
 
 @utility ui-empty-big {
-  @apply mb-3 text-[56px];
+  @apply mb-3 text-[3.5rem];
 }
 
 @utility ui-section-title {
   @apply
-    mt-[22px] mb-2.5 text-[13px] font-bold tracking-[0.7px] text-ink-soft
+    mt-5.5 mb-2.5 text-[0.8125rem] font-bold tracking-[0.0437rem] text-ink-soft
     uppercase
   ;
 

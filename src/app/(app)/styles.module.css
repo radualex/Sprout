@@ -1,7 +1,7 @@
 @reference "../globals.css";
 
 .root {
-  @apply mx-auto min-h-dvh max-w-[480px];
+  @apply mx-auto min-h-dvh max-w-120;
 
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
 }

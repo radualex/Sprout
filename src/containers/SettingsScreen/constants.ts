@@ -5,6 +5,6 @@ export const NO_MARGIN_STYLE: CSSProperties = {
 };
 
 export const IPHONE_HINT_STYLE: CSSProperties = {
-    marginTop: 12,
+    marginTop: '0.75rem',
     marginBottom: 0
 };

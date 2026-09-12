@@ -1,0 +1,10 @@
+export const PLANTNET_API_URL = 'https://my-api.plantnet.org/v2/identify/all';
+export const PLANTNET_NB_RESULTS = 5;
+export const MAX_API_KEY_LENGTH = 200;
+export const HTTP_BAD_REQUEST = 400;
+export const HTTP_BAD_GATEWAY = 502;
+export const ERROR_NO_IMAGE = 'No image provided.';
+export const ERROR_NO_KEY = 'No PlantNet API key configured. Add one in Settings.';
+export const ERROR_BAD_KEY = 'PlantNet rejected the API key. Check it in Settings.';
+export const ERROR_NOT_RECOGNISED = 'PlantNet couldn\'t recognise the plant. Try a clearer photo.';
+export const ERROR_UNREACHABLE = 'PlantNet is unreachable. Try again later.';

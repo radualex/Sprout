@@ -1,28 +1,31 @@
-'use server';
-
-import { revalidatePath } from 'next/cache';
 import { and, eq } from 'drizzle-orm';
+
+// Services
+import type { UpdatePlantInput } from './schema';
 
 // Database
 import { database } from '@/lib/db';
 import { plants } from '@/lib/db/schema';
-
-// Auth
-import { requireUser } from '@/lib/auth/session';
+import { getPlantPhoto, getPlantsForUser } from '@/lib/db/queries';
 
 // Types
-import { CareKind, type CareSchedule, type PlantInput } from '@/types';
+import { CareKind, type Plant, type PlantInput } from '@/types';
 
-const ALL_PATH = '/';
+export const listPlants = async (userId: string): Promise<Plant[]> => {
+    return getPlantsForUser(userId);
+};
 
-export const createPlant = async (input: PlantInput): Promise<string> => {
-    const session = await requireUser();
+export const readPlantPhoto = async (userId: string, id: string): Promise<Buffer | undefined> => {
+    return getPlantPhoto(userId, id);
+};
+
+export const createPlant = async (userId: string, input: PlantInput): Promise<string> => {
     const now = Date.now();
     const photo = input.photo ? Buffer.from(await input.photo.arrayBuffer()) : undefined;
     const [row] = await database
         .insert(plants)
         .values({
-            userId: session.user.id,
+            userId,
             nickname: input.nickname,
             species: input.species,
             commonName: input.commonName,
@@ -41,32 +44,26 @@ export const createPlant = async (input: PlantInput): Promise<string> => {
             id: plants.id
         });
 
-    revalidatePath(ALL_PATH, 'layout');
-
     return row.id;
 };
 
-export const updatePlant = async (id: string, input: { nickname: string; care: CareSchedule; }): Promise<void> => {
-    const session = await requireUser();
+export const updatePlant = async (userId: string, id: string, input: UpdatePlantInput): Promise<void> => {
     await database
         .update(plants)
         .set({
             nickname: input.nickname,
             care: input.care
         })
-        .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
-
-    revalidatePath(ALL_PATH, 'layout');
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
 };
 
-export const markCareDone = async (id: string, kind: CareKind): Promise<void> => {
-    const session = await requireUser();
+export const markCareDone = async (userId: string, id: string, kind: CareKind): Promise<void> => {
     const rows = await database
         .select({
             lastCare: plants.lastCare
         })
         .from(plants)
-        .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
     const row = rows.at(0);
 
     if (!row) {
@@ -81,19 +78,16 @@ export const markCareDone = async (id: string, kind: CareKind): Promise<void> =>
                 [kind]: Date.now()
             }
         })
-        .where(eq(plants.id, id));
-
-    revalidatePath(ALL_PATH, 'layout');
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
 };
 
-export const recordNotified = async (id: string, kind: CareKind, at: number): Promise<void> => {
-    const session = await requireUser();
+export const recordNotified = async (userId: string, id: string, kind: CareKind, at: number): Promise<void> => {
     const rows = await database
         .select({
             lastNotified: plants.lastNotified
         })
         .from(plants)
-        .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
     const row = rows.at(0);
 
     if (!row) {
@@ -108,14 +102,11 @@ export const recordNotified = async (id: string, kind: CareKind, at: number): Pr
                 [kind]: at
             }
         })
-        .where(eq(plants.id, id));
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
 };
 
-export const deletePlant = async (id: string): Promise<void> => {
-    const session = await requireUser();
+export const deletePlant = async (userId: string, id: string): Promise<void> => {
     await database
         .delete(plants)
-        .where(and(eq(plants.id, id), eq(plants.userId, session.user.id)));
-
-    revalidatePath(ALL_PATH, 'layout');
+        .where(and(eq(plants.id, id), eq(plants.userId, userId)));
 };

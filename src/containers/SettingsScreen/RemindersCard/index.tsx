@@ -37,7 +37,7 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
         return (
             <React.Fragment>
                 <div className={styles.notice}>
-                    <Check size={16} />
+                    <Check size="1rem" />
                     Notifications are enabled.
                 </div>
                 <Button variant={ButtonVariant.Secondary} block onClick={onTest}>
@@ -82,7 +82,7 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
     return (
         <div className={classes}>
             <h3>
-                <Bell size={18} />
+                <Bell size="1.125rem" />
                 Care reminders
             </h3>
             <p>
@@ -91,7 +91,7 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
             </p>
             {renderStatus()}
             <p className={styles.hint} style={IPHONE_HINT_STYLE}>
-                <Lightbulb size={16} />
+                <Lightbulb size="1rem" />
                 <span>
                     On iPhone, open this app in Safari, tap Share →
                     <strong>

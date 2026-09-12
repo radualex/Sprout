@@ -20,7 +20,7 @@ const PlantsEmptyState: React.FunctionComponent<Props> = ({ className, ...props 
     return (
         <div className={classes} {...props}>
             <div className={styles.big}>
-                <Sprout size={48} />
+                <Sprout size="3rem" />
             </div>
             <h2>No plants yet</h2>
             <p>

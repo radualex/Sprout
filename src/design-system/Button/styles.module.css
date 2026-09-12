@@ -3,7 +3,7 @@
 .root {
   @apply
     inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn
-    border-none px-5 py-[13px] ui-common transition-transform duration-50
+    border-none px-5 py-3.25 ui-common transition-transform duration-50
   ;
 
   &:active {
@@ -45,5 +45,5 @@
 }
 
 .sm {
-  @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-[9px] text-[13px];
+  @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-2.25 text-[0.8125rem];
 }

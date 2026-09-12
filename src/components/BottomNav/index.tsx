@@ -39,7 +39,7 @@ const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }) => {
             return (
                 <Link key={tab.id} href={tab.href} className={linkClasses}>
                     <span className={styles.icon}>
-                        <tab.icon size={22} />
+                        <tab.icon size="1.375rem" />
                     </span>
                     {tab.label}
                     {tab.id === 'care' && dueCount > 0 && (

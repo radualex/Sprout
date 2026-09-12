@@ -41,7 +41,7 @@ const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, onDone, 
     return (
         <div className={rootClasses} {...props}>
             <div className={styles.thumb}>
-                <meta.icon size={18} />
+                <meta.icon size="1.125rem" />
             </div>
             <div className={styles.info}>
                 <div className={styles.title}>

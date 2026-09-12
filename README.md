@@ -9,8 +9,8 @@ reminders when each plant needs watering, fertilising or repotting.
   and available across devices.
 - **📷 Camera identification** — snap a leaf or flower; species recognition via the
   [PlantNet API](https://my.plantnet.org) with ranked matches and confidence scores.
-- **🗓 Care engine** — per-plant water / fertilise / repot schedules. Identified species
-  auto-fill sensible defaults (a snake plant waters every 18 days, a fern every 4).
+- **🗓 Care engine** — per-plant water / fertilise / repot schedules, editable per plant. New plants
+  start from a generic default (water every 7 days, fertilise every 30, repot every 18 months).
 - **🔔 Reminders** — notifications when care is due (at most one per task per day), checked on
   app open, on focus, hourly while open, and via periodic background sync on installed
   Chromium/Android PWAs.
@@ -62,8 +62,9 @@ Copy `.env.example` to `.env.local` and set:
 | Data model | `src/types/index.ts` | `Plant` with `care` intervals + `lastCare` timestamps |
 | Database | `src/lib/db/` | Postgres via Drizzle ORM; photos stored as `bytea` |
 | Auth | `src/lib/auth/index.ts` | Better Auth (Google OAuth + email/password) with Drizzle adapter |
-| Care engine | `src/helpers/care/` | Due-date math, species → default schedule lookup |
-| Identification | `src/app/api/identify/` | Server-side PlantNet proxy (key stays out of the browser) |
+| Care engine | `src/helpers/care/` | Due-date math and the default schedule for new plants |
+| Identification | `src/services/server/plantnet/` | Server-only PlantNet client; `/api/identify/` is a thin handler that keeps the key out of the browser |
+| Server services | `src/services/server/plants/` | Validation + plant mutations; thin server actions live in `src/lib/db/actions/` |
 | Notifications | `src/services/notifications/` | Permission, de-duplicated due-task notifications, watcher |
 | Service worker | `public/sw.js` | Cache-first for static assets only; never caches documents |
 | UI | `src/containers/` | My Plants / Identify / Care / Detail / Settings screens |

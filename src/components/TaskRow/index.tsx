@@ -48,7 +48,7 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
                 <div className={styles.info}>
                     <div className={styles.title}>
-                        <meta.icon size={14} />
+                        <meta.icon size="0.875rem" />
                         <span>
                             {meta.label}
                         </span>

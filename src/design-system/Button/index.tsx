@@ -31,7 +31,7 @@ const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Defaul
     const renderContent = () => {
         return (
             <React.Fragment>
-                {Icon && <Icon size={16} />}
+                {Icon && <Icon size="1rem" />}
                 {children}
             </React.Fragment>
         );

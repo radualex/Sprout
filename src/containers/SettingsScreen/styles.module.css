@@ -32,7 +32,7 @@
   }
 
   p {
-    @apply m-0 mb-3 text-[13px] leading-normal text-ink-soft;
+    @apply m-0 mb-3 text-[0.8125rem] leading-normal text-ink-soft;
   }
 
   p a {

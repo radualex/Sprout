@@ -23,7 +23,7 @@
 .detailHero {
   @apply
     flex aspect-4/3 items-center justify-center overflow-hidden rounded-card
-    bg-green-100 text-[72px] shadow-card
+    bg-green-100 text-[4.5rem] shadow-card
   ;
 
   img {
@@ -47,15 +47,17 @@
 }
 
 .emoji {
-  @apply text-[22px];
+  @apply text-[1.375rem];
 }
 
 .label {
-  @apply mt-1 text-[11px] font-bold tracking-[0.5px] text-ink-soft uppercase;
+  @apply
+    mt-1 text-[0.6875rem] font-bold tracking-[0.0313rem] text-ink-soft uppercase
+  ;
 }
 
 .root {
-  @apply mt-[3px] text-[13px] font-[650];
+  @apply mt-0.75 text-[0.8125rem] font-[650];
 }
 
 .root.overdue {

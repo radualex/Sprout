@@ -23,7 +23,7 @@ const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, o
     return (
         <div className={classes}>
             <h3>
-                <Camera size={18} />
+                <Camera size="1.125rem" />
                 Plant recognition
             </h3>
             <p>
@@ -42,7 +42,7 @@ const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, o
             <Button variant={ButtonVariant.Secondary} block onClick={onSaveKey}>
                 {isKeySaved ? (
                     <React.Fragment>
-                        <Check size={14} />
+                        <Check size="0.875rem" />
                         Saved
                     </React.Fragment>
                 ) : 'Save key'}

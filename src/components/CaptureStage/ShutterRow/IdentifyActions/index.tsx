@@ -27,7 +27,7 @@ const IdentifyActions: React.FunctionComponent<Props> = ({ isIdentifying, onRese
             <Button grow onClick={onIdentify} disabled={isIdentifying}>
                 {isIdentifying ? <span className={styles.spinner} /> : (
                     <React.Fragment>
-                        <Search size={16} />
+                        <Search size="1rem" />
                         Identify
                     </React.Fragment>
                 )}

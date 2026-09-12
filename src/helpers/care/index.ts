@@ -5,7 +5,10 @@ import { DAY_MS, DAYS_PER_MONTH } from './constants';
 import { CareKind, type Plant } from '@/types';
 import type { CareTask } from './types';
 
-export { DAYS_PER_MONTH, DAY_MS, CARE_META } from './constants';
+// Constants
+export { DAYS_PER_MONTH, DAY_MS, CARE_META, FALLBACK_CARE } from './constants';
+
+// Types
 export type { CareMeta, CareTask } from './types';
 
 const intervalMs = (plant: Plant, kind: CareKind): number => {
