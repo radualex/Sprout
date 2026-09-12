@@ -1,3 +1,4 @@
 bun run lint
+bun run test:coverage
 bun run build
 bun run test:size
