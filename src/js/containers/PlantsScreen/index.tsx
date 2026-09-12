@@ -27,7 +27,7 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
-    useClock(); // re-render tick; tasks computed against fresh Date.now()
+    useClock();
 
     const classes = classNames(styles.screen, className);
 

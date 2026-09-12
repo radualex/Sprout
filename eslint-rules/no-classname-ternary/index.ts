@@ -8,7 +8,8 @@ const BANNED_TYPES = new Set([
     'ConditionalExpression',
     'TemplateLiteral',
     'LogicalExpression',
-    'CallExpression'
+    'CallExpression',
+    'ArrowFunctionExpression'
 ]);
 
 function isAllowed(node: TSESTree.JSXExpressionContainer): boolean {
@@ -19,7 +20,7 @@ const rule: TSESLint.RuleModule<MessageIds> = {
     meta: {
         type: 'problem',
         docs: {
-            description: 'Require className to be a single styles.x (or a classNames() result); no ternary or concatenated class strings.'
+            description: 'Require className to be a single styles.x (or a classNames() result); no ternary, concatenated class strings, or state functions.'
         },
         schema: [],
         messages: {

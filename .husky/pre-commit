@@ -1,0 +1,2 @@
+bun run build:rules
+bun run lint:staged

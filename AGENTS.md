@@ -20,7 +20,7 @@
   [optional footer(s)]
   ```
 
-- [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/js/lib/auth.ts`, `src/js/lib/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
+- [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/js/lib/auth/index.ts`, `src/js/lib/auth/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
 
 ## Done
 
@@ -60,7 +60,7 @@ Reference for the toolchain. Each entry: what it is, why we chose it, and the go
 | Tool                   | Version                     | Used for                 | Notes                                                                                        |
 | ---------------------- | --------------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
 | Postgres               | 16 (`postgres:16-alpine`) | Data store               | Runs in Docker (`db` compose service).                                                     |
-| Drizzle ORM            | 0.45.x                      | Query builder + types    | Schema in`src/js/lib/db/schema.ts`; queries in `lib/queries/`.                           |
+| Drizzle ORM            | 0.45.x                      | Query builder + types    | Schema in`src/js/lib/db/schema.ts`; queries in `src/js/lib/db/queries.ts`.                           |
 | drizzle-kit            | 0.31.x                      | Migrations + studio      | `db:generate`, `db:migrate`, `db:studio`.                                              |
 | `pg` (node-postgres) | 8.x                         | Postgres driver          | Maps`bytea` ↔ `Buffer` natively. Prod swaps to `@neondatabase/serverless` (ADR-0002). |
 | Neon                   | (planned)                   | Serverless prod Postgres | Not used yet — see roadmap.                                                                 |
@@ -71,9 +71,9 @@ Gotchas: Drizzle's pg driver has **no binary column type** — `schema.ts` defin
 
 | Tool                | Version | Used for              | Notes                                                                                                   |
 | ------------------- | ------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| Better Auth         | 1.6.x   | Auth server + client  | `src/js/lib/auth.ts`; Drizzle adapter.                                                                |
+| Better Auth         | 1.6.x   | Auth server + client  | `src/js/lib/auth/index.ts`; Drizzle adapter.                                                                |
 | @better-auth/cli    | 1.4.x   | Generates auth schema | `bunx @better-auth/cli generate` → `src/js/lib/db/auth-schema.ts` (lint-ignored, don't hand-edit). |
-| better-auth/react   | —      | Client hooks          | `authClient` in `src/js/lib/auth-client.ts` (signIn/signUp/signOut).                                |
+| better-auth/react   | —      | Client hooks          | `authClient` in `src/js/lib/auth/auth-client.ts` (signIn/signUp/signOut).                                |
 | better-auth/cookies | —      | Proxy cookie check    | `getSessionCookie` for the optimistic `src/proxy.ts` check.                                         |
 
 Security model: three layers — `proxy.ts` (cookie-only, no DB), `requireUser()` in every server component/action/route, and per-user `userId` scoping on every query.

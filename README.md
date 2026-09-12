@@ -60,7 +60,7 @@ Copy `.env.example` to `.env.local` and set:
 | Framework | `src/app/` | Next.js 16 App Router (RSC + server actions); pages + API routes in one deployable |
 | Data model | `src/js/types.ts` | `Plant` with `care` intervals + `lastCare` timestamps |
 | Database | `src/js/lib/db/` | Postgres via Drizzle ORM; photos stored as `bytea` |
-| Auth | `src/js/lib/auth.ts` | Better Auth (Google OAuth + email/password) with Drizzle adapter |
+| Auth | `src/js/lib/auth/index.ts` | Better Auth (Google OAuth + email/password) with Drizzle adapter |
 | Care engine | `src/js/helpers/care/` | Due-date math, species → default schedule lookup |
 | Identification | `src/app/api/identify/` | Server-side PlantNet proxy (key stays out of the browser) |
 | Notifications | `src/js/services/notifications/` | Permission, de-duplicated due-task notifications, watcher |
