@@ -7,8 +7,8 @@ import { ArrowRight } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
-import { IdentifyResultCard } from './IdentifyResultCard';
+import Button from '@/design-system/Button';
+import IdentifyResultCard from './IdentifyResultCard';
 
 // Services
 import type { IdentifyResult } from '@/services/identify';
@@ -16,7 +16,7 @@ import type { IdentifyResult } from '@/services/identify';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
     results: IdentifyResult[];
     picked: IdentifyResult | undefined;
     onPick: (result: IdentifyResult) => void;
@@ -24,7 +24,7 @@ interface Props {
     onContinue: () => void;
 }
 
-export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick, onReset, onContinue }) => {
+const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick, onReset, onContinue }) => {
     return (
         <React.Fragment>
             <span className={styles.sectionTitle}>Best matches</span>
@@ -45,3 +45,5 @@ export const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, 
         </React.Fragment>
     );
 };
+
+export default ResultsStage;

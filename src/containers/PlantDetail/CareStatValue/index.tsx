@@ -10,13 +10,13 @@ import styles from '../styles.module.scss';
 // Types
 import type { CareKind, Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
     kind: CareKind;
     now: number;
 }
 
-export const CareStatValue: React.FunctionComponent<Props> = ({ plant, kind, now }) => {
+const CareStatValue: React.FunctionComponent<Props> = ({ plant, kind, now, ...props }) => {
     const due = nextDue(plant, kind);
     const daysUntil = due === undefined ? undefined : Math.ceil((due - now) / DAY_MS);
 
@@ -30,8 +30,10 @@ export const CareStatValue: React.FunctionComponent<Props> = ({ plant, kind, now
     });
 
     return (
-        <div className={valueClasses}>
+        <div className={valueClasses} {...props}>
             {renderValue()}
         </div>
     );
 };
+
+export default CareStatValue;

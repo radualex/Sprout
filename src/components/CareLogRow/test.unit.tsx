@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { makePlant, NOW } from '@test/vitest/data/plant.mock';
 
 // Components
-import { CareLogRow } from './index';
+import CareLogRow from './index';
 
 // Types
 import { CareKind } from '@/types';

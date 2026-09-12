@@ -8,10 +8,10 @@ import { Plus } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
-import { PlantGrid } from './PlantGrid';
-import { PlantsEmptyState } from './PlantsEmptyState';
-import { PlantSubtitle } from './PlantSubtitle';
+import Button from '@/design-system/Button';
+import PlantGrid from './PlantGrid';
+import PlantsEmptyState from './PlantsEmptyState';
+import PlantSubtitle from './PlantSubtitle';
 
 // Hooks
 import { useClock } from '@/hooks';
@@ -22,11 +22,11 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
 }
 
-export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     useClock();
 
     const classes = classNames(styles.screen, className);
@@ -58,3 +58,5 @@ export const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className
         </div>
     );
 };
+
+export default PlantsScreen;

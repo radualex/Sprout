@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import Link from 'next/link';
 
 // Components
-import { PlantPhoto } from '@/components/PlantPhoto';
-import { PlantChips } from '../PlantChips';
+import PlantPhoto from '@/components/PlantPhoto';
+import PlantChips from '../PlantChips';
 
 // Helpers
 import { displayName } from '@/helpers/plant';
@@ -15,11 +15,11 @@ import styles from '../styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
 }
 
-export const PlantGrid: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+const PlantGrid: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     const classes = classNames(styles.plantGrid, className);
 
     return (
@@ -45,3 +45,5 @@ export const PlantGrid: React.FunctionComponent<Props> = ({ plants, className, .
         </div>
     );
 };
+
+export default PlantGrid;

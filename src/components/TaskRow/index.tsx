@@ -10,8 +10,8 @@ import { TASK_ROW_BUTTON_STYLE } from './constants';
 import { ButtonSize, ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
-import { PlantPhoto } from '@/components/PlantPhoto';
+import Button from '@/design-system/Button';
+import PlantPhoto from '@/components/PlantPhoto';
 
 // Helpers
 import { displayName } from '@/helpers/plant';
@@ -20,13 +20,13 @@ import { CARE_META, formatDue, type CareTask } from '@/helpers/care';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
+export interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
     task: CareTask;
     onDone: (t: CareTask) => void;
     onSelect: (id: string) => void;
 }
 
-export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...props }) => {
+const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...props }) => {
     const meta = CARE_META[task.kind];
     const rootClasses = styles.taskRow;
     const classes = classNames(styles.when, {
@@ -65,3 +65,5 @@ export const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect
         </div>
     );
 };
+
+export default TaskRow;

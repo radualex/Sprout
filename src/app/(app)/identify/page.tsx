@@ -1,5 +1,5 @@
 // Components
-import { IdentifyScreen } from '@/containers/IdentifyScreen';
+import IdentifyScreen from '@/containers/IdentifyScreen';
 
 const IdentifyPage = () => {
     return <IdentifyScreen />;

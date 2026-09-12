@@ -3,14 +3,16 @@ import React from 'react';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'span'> {
+export interface Props extends React.ComponentProps<'span'> {
     plant: Plant;
 }
 
-export const PlantCommonNameSuffix: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
+const PlantCommonNameSuffix: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     return (
         <span className={className} {...props}>
             {plant.commonName}
         </span>
     );
 };
+
+export default PlantCommonNameSuffix;

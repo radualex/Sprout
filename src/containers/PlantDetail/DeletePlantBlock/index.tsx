@@ -5,12 +5,12 @@ import { ButtonVariant } from '@/design-system/Button/constants';
 import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE } from '../constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
     plantName: string;
     isConfirming: boolean;
     onKeep: () => void;
@@ -18,7 +18,7 @@ interface Props {
     onStartDelete: () => void;
 }
 
-export const DeletePlantBlock: React.FunctionComponent<Props> = ({ plantName, isConfirming, onKeep, onRemove, onStartDelete }) => {
+const DeletePlantBlock: React.FunctionComponent<Props> = ({ plantName, isConfirming, onKeep, onRemove, onStartDelete }) => {
     const renderConfirm = () => {
         return (
             <div className={styles.shutterRow}>
@@ -50,3 +50,5 @@ export const DeletePlantBlock: React.FunctionComponent<Props> = ({ plantName, is
         </div>
     );
 };
+
+export default DeletePlantBlock;

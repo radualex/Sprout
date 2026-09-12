@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { makePlant, NOW } from '@test/vitest/data/plant.mock';
 
 // Components
-import { CareStatValue } from './index';
+import CareStatValue from './index';
 
 // Helpers
 import { DAY_MS } from '@/helpers/care';

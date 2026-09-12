@@ -6,7 +6,7 @@ import type { LucideIcon } from 'lucide-react';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     id: string;
     label: string;
     icon: LucideIcon;
@@ -18,7 +18,7 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     hint?: string;
 }
 
-export const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value, options, unit, allowNever = false, onChange, hint, ...props }) => {
+const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value, options, unit, allowNever = false, onChange, hint, ...props }) => {
     const Icon = icon;
 
     const classes = styles.field;
@@ -55,3 +55,5 @@ export const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon,
         </div>
     );
 };
+
+export default ScheduleField;

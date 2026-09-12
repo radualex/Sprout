@@ -10,11 +10,11 @@ import styles from '../styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
 }
 
-export const PlantChips: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
+const PlantChips: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     const classes = classNames(styles.chips, className);
     const tasks = allTasks([plant]);
     const urgent = tasks.filter((task) => {
@@ -74,3 +74,5 @@ export const PlantChips: React.FunctionComponent<Props> = ({ plant, className, .
         </div>
     );
 };
+
+export default PlantChips;

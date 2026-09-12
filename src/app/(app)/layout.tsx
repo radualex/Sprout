@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { BottomNav } from '@/components/BottomNav';
+import BottomNav from '@/components/BottomNav';
 
 // Helpers
 import { dueTasks } from '@/helpers/care';

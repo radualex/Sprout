@@ -10,13 +10,13 @@ import { ArrowLeft } from 'lucide-react';
 import { HEADER_STYLE, SUB_STYLE } from './constants';
 
 // Components
-import { PlantPhoto } from '@/components/PlantPhoto';
-import { EditSchedule } from '@/components/EditSchedule';
-import { CareLogRow } from '@/components/CareLogRow';
-import { DeletePlantBlock } from './DeletePlantBlock';
-import { PlantCommonNameSuffix } from './PlantCommonNameSuffix';
-import { CareStatValue } from './CareStatValue';
-import { CareScheduleNotice } from './CareScheduleNotice';
+import PlantPhoto from '@/components/PlantPhoto';
+import EditSchedule from '@/components/EditSchedule';
+import CareLogRow from '@/components/CareLogRow';
+import DeletePlantBlock from './DeletePlantBlock';
+import PlantCommonNameSuffix from './PlantCommonNameSuffix';
+import CareStatValue from './CareStatValue';
+import CareScheduleNotice from './CareScheduleNotice';
 
 // Helpers
 import { CARE_META } from '@/helpers/care';
@@ -34,11 +34,11 @@ import styles from './styles.module.scss';
 // Types
 import { CareKind, type Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
 }
 
-export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
+const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     const classes = classNames(styles.root, styles.screen, className);
 
     const router = useRouter();
@@ -150,3 +150,5 @@ export const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, 
         </div>
     );
 };
+
+export default PlantDetail;

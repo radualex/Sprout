@@ -10,11 +10,11 @@ import styles from '../styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
 }
 
-export const PlantSubtitle: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+const PlantSubtitle: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     const classes = classNames(styles.sub, className);
 
     const renderText = () => {
@@ -27,3 +27,5 @@ export const PlantSubtitle: React.FunctionComponent<Props> = ({ plants, classNam
         </div>
     );
 };
+
+export default PlantSubtitle;

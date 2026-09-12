@@ -11,7 +11,7 @@ import { ButtonSize, ButtonVariant } from './constants';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props extends React.ComponentProps<'button'> {
+export interface Props extends React.ComponentProps<'button'> {
     variant?: ButtonVariant;
     size?: ButtonSize;
     block?: boolean;
@@ -20,7 +20,7 @@ interface Props extends React.ComponentProps<'button'> {
     icon?: LucideIcon;
 }
 
-export const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Default, size = ButtonSize.Md, block = false, grow = false, className, href = '', type = 'button', icon: Icon, children, ...props }) => {
+const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Default, size = ButtonSize.Md, block = false, grow = false, className, href = '', type = 'button', icon: Icon, children, ...props }) => {
     const classes = classNames(styles.root, {
         [styles[variant]]: variant,
         [styles.block]: block,
@@ -51,3 +51,5 @@ export const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant
         </button>
     );
 };
+
+export default Button;

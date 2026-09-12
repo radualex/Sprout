@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 // Components
-import { PlantDetail } from '@/containers/PlantDetail';
+import PlantDetail from '@/containers/PlantDetail';
 
 // Database
 import { getPlantForUser } from '@/lib/db/queries';

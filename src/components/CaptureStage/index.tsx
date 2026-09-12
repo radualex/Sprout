@@ -3,13 +3,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Components
-import { CameraStageView } from './CameraStageView';
-import { ShutterRow } from './ShutterRow';
+import CameraStageView from './CameraStageView';
+import ShutterRow from './ShutterRow';
 
 // Helpers
 import { playVideo } from './helpers';
 
-interface Props {
+export interface Props {
     photoUrl?: string;
     isIdentifying: boolean;
     onPhoto: (photo: Blob) => void;
@@ -18,7 +18,7 @@ interface Props {
     onIdentify: () => void;
 }
 
-export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdentifying, onPhoto, onError, onReset, onIdentify }) => {
+const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdentifying, onPhoto, onError, onReset, onIdentify }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const streamRef = useRef<MediaStream | undefined>(undefined);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -121,3 +121,5 @@ export const CaptureStage: React.FunctionComponent<Props> = ({ photoUrl, isIdent
         </React.Fragment>
     );
 };
+
+export default CaptureStage;

@@ -5,9 +5,9 @@ import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
-import { AddPlantForm } from '@/components/AddPlantForm';
-import { CaptureStage } from '@/components/CaptureStage';
-import { ResultsStage } from '@/components/ResultsStage';
+import AddPlantForm from '@/components/AddPlantForm';
+import CaptureStage from '@/components/CaptureStage';
+import ResultsStage from '@/components/ResultsStage';
 
 // Hooks
 import { useObjectUrl } from '@/hooks';
@@ -25,9 +25,9 @@ import styles from './styles.module.scss';
 import type { PlantInput } from '@/types';
 import type { Phase } from './types';
 
-interface Props extends React.ComponentProps<'div'> {}
+export interface Props extends React.ComponentProps<'div'> {}
 
-export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props }) => {
+const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props }) => {
     const classes = classNames(styles.screen, className);
     const errorNoticeClasses = classNames(styles.notice, styles.error);
     const router = useRouter();
@@ -152,3 +152,5 @@ export const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...p
         </div>
     );
 };
+
+export default IdentifyScreen;

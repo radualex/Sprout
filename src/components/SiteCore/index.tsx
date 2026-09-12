@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 // Services
 import { startCareWatcher } from '@/services/notifications';
 
-interface Props {
+export interface Props {
     children: React.ReactNode;
 }
 
-export const SiteCore: React.FunctionComponent<Props> = ({ children }) => {
+const SiteCore: React.FunctionComponent<Props> = ({ children }) => {
     useEffect(() => {
         if ('serviceWorker' in navigator) {
             void navigator.serviceWorker.register('/sw.js');
@@ -20,3 +20,5 @@ export const SiteCore: React.FunctionComponent<Props> = ({ children }) => {
 
     return children;
 };
+
+export default SiteCore;

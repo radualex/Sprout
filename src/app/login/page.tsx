@@ -1,5 +1,5 @@
 // Components
-import { AuthScreen } from '@/containers/AuthScreen';
+import AuthScreen from '@/containers/AuthScreen';
 
 const LoginPage = () => {
     return <AuthScreen mode="login" />;

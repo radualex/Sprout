@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 
 // Components
-import { SiteCore } from '@/components/SiteCore';
+import SiteCore from '@/components/SiteCore';
 
 // Styles
 import '@/styles/globals.scss';

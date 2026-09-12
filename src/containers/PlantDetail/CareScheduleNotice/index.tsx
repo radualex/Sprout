@@ -4,7 +4,7 @@ import React from 'react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Helpers
 import { CARE_META } from '@/helpers/care';
@@ -15,12 +15,12 @@ import styles from './styles.module.scss';
 // Types
 import { CareKind, type Plant } from '@/types';
 
-interface Props {
+export interface Props {
     plant: Plant;
     onEdit: () => void;
 }
 
-export const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEdit }) => {
+const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEdit }) => {
     const WaterIcon = CARE_META[CareKind.Water].icon;
     const FertilizeIcon = CARE_META[CareKind.Fertilize].icon;
     const RepotIcon = CARE_META[CareKind.Repot].icon;
@@ -47,3 +47,5 @@ export const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEd
         </React.Fragment>
     );
 };
+
+export default CareScheduleNotice;

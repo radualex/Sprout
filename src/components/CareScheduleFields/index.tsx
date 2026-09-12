@@ -7,7 +7,7 @@ import { Droplets, Flower2, Leaf } from 'lucide-react';
 import { FERTILIZE_OPTIONS, REPOT_OPTIONS, WATER_OPTIONS } from './constants';
 
 // Components
-import { ScheduleField } from './ScheduleField';
+import ScheduleField from './ScheduleField';
 
 // Styles
 import styles from './styles.module.scss';
@@ -15,14 +15,14 @@ import styles from './styles.module.scss';
 // Types
 import type { CareSchedule } from '../../types';
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     idPrefix: string;
     value: CareSchedule;
     onChange: (care: CareSchedule) => void;
     hint?: string;
 }
 
-export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
+const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
     const handleWaterChange = useCallback((newValue: number) => {
         onChange({
             ...value,
@@ -80,3 +80,5 @@ export const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, v
         </div>
     );
 };
+
+export default CareScheduleFields;

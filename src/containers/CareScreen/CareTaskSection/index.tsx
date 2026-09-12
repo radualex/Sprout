@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { TaskRow } from '@/components/TaskRow';
+import TaskRow from '@/components/TaskRow';
 
 // Helpers
 import type { CareTask } from '@/helpers/care';
@@ -9,7 +9,7 @@ import type { CareTask } from '@/helpers/care';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
     title: string;
     tasks: CareTask[];
     onDone: (task: CareTask) => void | Promise<void>;
@@ -17,7 +17,7 @@ interface Props {
     emptyNotice?: string;
 }
 
-export const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone, onSelectPlant, emptyNotice }) => {
+const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone, onSelectPlant, emptyNotice }) => {
     const shouldShowTitle = tasks.length > 0 || Boolean(emptyNotice);
 
     const renderTitle = () => {
@@ -63,3 +63,5 @@ export const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, 
         </React.Fragment>
     );
 };
+
+export default CareTaskSection;

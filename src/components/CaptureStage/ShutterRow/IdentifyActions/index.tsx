@@ -7,18 +7,18 @@ import { Search } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Styles
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
     isIdentifying: boolean;
     onReset: () => void;
     onIdentify: () => void;
 }
 
-export const IdentifyActions: React.FunctionComponent<Props> = ({ isIdentifying, onReset, onIdentify }) => {
+const IdentifyActions: React.FunctionComponent<Props> = ({ isIdentifying, onReset, onIdentify }) => {
     return (
         <React.Fragment>
             <Button variant={ButtonVariant.Secondary} grow onClick={onReset} disabled={isIdentifying}>
@@ -35,3 +35,5 @@ export const IdentifyActions: React.FunctionComponent<Props> = ({ isIdentifying,
         </React.Fragment>
     );
 };
+
+export default IdentifyActions;

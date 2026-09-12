@@ -5,19 +5,19 @@ import { Camera, Check } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Styles
 import styles from '../styles.module.scss';
 
-interface Props {
+export interface Props {
     apiKey: string;
     isKeySaved: boolean;
     onKeyChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onSaveKey: () => void;
 }
 
-export const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, onKeyChange, onSaveKey }) => {
+const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, onKeyChange, onSaveKey }) => {
     const classes = styles.settingsCard;
 
     return (
@@ -50,3 +50,5 @@ export const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeyS
         </div>
     );
 };
+
+export default RecognitionCard;

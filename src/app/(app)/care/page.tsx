@@ -1,5 +1,5 @@
 // Components
-import { CareScreen } from '@/containers/CareScreen';
+import CareScreen from '@/containers/CareScreen';
 
 // Database
 import { getPlantsForUser } from '@/lib/db/queries';

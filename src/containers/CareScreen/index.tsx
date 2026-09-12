@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { PartyPopper } from 'lucide-react';
 
 // Components
-import { CareEmptyState } from './CareEmptyState';
-import { CareTaskSection } from './CareTaskSection';
+import CareEmptyState from './CareEmptyState';
+import CareTaskSection from './CareTaskSection';
 
 // Helpers
 import { allTasks, type CareTask } from '@/helpers/care';
@@ -24,11 +24,11 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
 }
 
-export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
+const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...props }) => {
     const classes = classNames(styles.screen, className);
     const router = useRouter();
 
@@ -86,3 +86,5 @@ export const CareScreen: React.FunctionComponent<Props> = ({ plants, className, 
         </div>
     );
 };
+
+export default CareScreen;

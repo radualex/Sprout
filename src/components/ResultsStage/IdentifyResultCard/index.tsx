@@ -9,13 +9,13 @@ import type { IdentifyResult } from '@/services/identify';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
+export interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
     result: IdentifyResult;
     selected: boolean;
     onSelect: (result: IdentifyResult) => void;
 }
 
-export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
+const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
     const classes = classNames({
         [styles.selected]: selected
     });
@@ -44,3 +44,5 @@ export const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, sel
         </button>
     );
 };
+
+export default IdentifyResultCard;

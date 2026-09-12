@@ -1,5 +1,5 @@
 // Components
-import { SettingsScreen } from '@/containers/SettingsScreen';
+import SettingsScreen from '@/containers/SettingsScreen';
 
 // Database
 import { getPlantsForUser } from '@/lib/db/queries';

@@ -7,10 +7,10 @@ import { Aperture, Camera, ImageUp } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { IdentifyActions } from './IdentifyActions';
-import { ShutterActions } from './ShutterActions';
+import IdentifyActions from './IdentifyActions';
+import ShutterActions from './ShutterActions';
 
-interface Props {
+export interface Props {
     photoUrl?: string;
     isStreaming: boolean;
     isIdentifying: boolean;
@@ -22,7 +22,7 @@ interface Props {
     onUpload: () => void;
 }
 
-export const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreaming, isIdentifying, onReset, onIdentify, onStopCamera, onCapture, onStartCamera, onUpload }) => {
+const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreaming, isIdentifying, onReset, onIdentify, onStopCamera, onCapture, onStartCamera, onUpload }) => {
     const renderIdentifyActions = () => {
         return <IdentifyActions isIdentifying={isIdentifying} onReset={onReset} onIdentify={onIdentify} />;
     };
@@ -80,3 +80,5 @@ export const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreami
         </div>
     );
 };
+
+export default ShutterRow;

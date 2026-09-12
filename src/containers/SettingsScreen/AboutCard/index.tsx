@@ -7,11 +7,11 @@ import { NO_MARGIN_STYLE } from '../constants';
 // Styles
 import styles from '../styles.module.scss';
 
-interface Props {
+export interface Props {
     plantCount: number;
 }
 
-export const AboutCard: React.FunctionComponent<Props> = ({ plantCount }) => {
+const AboutCard: React.FunctionComponent<Props> = ({ plantCount }) => {
     const classes = styles.settingsCard;
 
     return (
@@ -26,3 +26,5 @@ export const AboutCard: React.FunctionComponent<Props> = ({ plantCount }) => {
         </div>
     );
 };
+
+export default AboutCard;

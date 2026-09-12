@@ -3,46 +3,22 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useCallback, useMemo } from 'react';
-import { Camera, Droplets, Settings, Sprout, type LucideIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+
+// Constants
+import { TABS } from './constants';
 
 // Styles
 import styles from './styles.module.scss';
 
-interface Tab {
-    id: 'plants' | 'identify' | 'care' | 'settings';
-    label: string;
-    icon: LucideIcon;
-    href: string;
-}
+// Types
+import type { Tab } from './types';
 
-const TABS: Tab[] = [{
-    id: 'plants',
-    label: 'My Plants',
-    icon: Sprout,
-    href: '/'
-}, {
-    id: 'identify',
-    label: 'Identify',
-    icon: Camera,
-    href: '/identify'
-}, {
-    id: 'care',
-    label: 'Care',
-    icon: Droplets,
-    href: '/care'
-}, {
-    id: 'settings',
-    label: 'Settings',
-    icon: Settings,
-    href: '/settings'
-}];
-
-interface Props extends React.ComponentProps<'nav'> {
+export interface Props extends React.ComponentProps<'nav'> {
     dueCount: number;
 }
 
-export const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }) => {
+const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }) => {
     const pathname = usePathname();
 
     const isActive = useCallback((tab: Tab): boolean => {
@@ -82,3 +58,5 @@ export const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }
         </nav>
     );
 };
+
+export default BottomNav;

@@ -9,8 +9,8 @@ import { RESULT_THUMB_STYLE } from './constants';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
-import { CareScheduleFields } from '@/components/CareScheduleFields';
+import Button from '@/design-system/Button';
+import CareScheduleFields from '@/components/CareScheduleFields';
 
 // Hooks
 import { useObjectUrl } from '@/hooks';
@@ -24,14 +24,14 @@ import styles from './styles.module.scss';
 // Types
 import type { CareSchedule, PlantInput } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     photo: Blob;
     result: IdentifyResult;
     onCancel: () => void;
     onSave: (input: PlantInput) => void;
 }
 
-export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, ...props }) => {
+const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, ...props }) => {
     const classes = classNames(styles.resultCard, styles.selected);
 
     const [nickname, setNickname] = useState(result.commonName || result.species);
@@ -92,3 +92,5 @@ export const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, on
         </div>
     );
 };
+
+export default AddPlantForm;

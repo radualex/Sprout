@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 import { ButtonSize, ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Helpers
 import { formatDaysAgo } from './helpers';
@@ -20,14 +20,14 @@ import styles from './styles.module.scss';
 // Types
 import type { CareKind, Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
     kind: CareKind;
     now: number;
     onDone: (kind: CareKind) => void;
 }
 
-export const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, onDone, ...props }) => {
+const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, onDone, ...props }) => {
     const meta = CARE_META[kind];
     const last = plant.lastCare[kind];
     const daysAgo = Math.floor((now - last) / DAY_MS);
@@ -57,3 +57,5 @@ export const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, o
         </div>
     );
 };
+
+export default CareLogRow;

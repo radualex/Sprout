@@ -7,7 +7,7 @@ import { IPHONE_HINT_STYLE } from '../constants';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Services
 import { isNotificationsSupported } from '@/services/notifications';
@@ -15,13 +15,13 @@ import { isNotificationsSupported } from '@/services/notifications';
 // Styles
 import styles from '../styles.module.scss';
 
-interface Props {
+export interface Props {
     perm: NotificationPermission;
     onEnable: () => void;
     onTest: () => void;
 }
 
-export const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest }) => {
+const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest }) => {
     const warnNoticeClasses = classNames(styles.notice, styles.warn);
     const classes = styles.settingsCard;
 
@@ -101,3 +101,5 @@ export const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, 
         </div>
     );
 };
+
+export default RemindersCard;

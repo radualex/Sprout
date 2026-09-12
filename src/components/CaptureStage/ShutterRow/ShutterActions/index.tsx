@@ -1,24 +1,14 @@
 'use client';
 
 import React from 'react';
-import type { LucideIcon } from 'lucide-react';
-
-// Constants
-import type { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
-interface Action {
-    key: string;
-    label: string;
-    icon?: LucideIcon;
-    variant: ButtonVariant;
-    onClick: () => void;
-    disabled?: boolean;
-}
+// Types
+import type { Action } from './types';
 
-interface Props {
+export interface Props {
     actions: Action[];
 }
 
@@ -30,7 +20,7 @@ const renderAction = (action: Action) => {
     );
 };
 
-export const ShutterActions: React.FunctionComponent<Props> = ({ actions }) => {
+const ShutterActions: React.FunctionComponent<Props> = ({ actions }) => {
     return (
         <React.Fragment>
             {actions.map((action) => {
@@ -39,3 +29,5 @@ export const ShutterActions: React.FunctionComponent<Props> = ({ actions }) => {
         </React.Fragment>
     );
 };
+
+export default ShutterActions;

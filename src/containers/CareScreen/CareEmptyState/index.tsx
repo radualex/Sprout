@@ -5,9 +5,9 @@ import { Droplets } from 'lucide-react';
 // Styles
 import styles from './styles.module.scss';
 
-interface Props extends React.ComponentProps<'div'> {}
+export interface Props extends React.ComponentProps<'div'> {}
 
-export const CareEmptyState: React.FunctionComponent<Props> = ({ className, ...props }) => {
+const CareEmptyState: React.FunctionComponent<Props> = ({ className, ...props }) => {
     const classes = classNames(styles.empty, className);
 
     return (
@@ -24,3 +24,5 @@ export const CareEmptyState: React.FunctionComponent<Props> = ({ className, ...p
         </div>
     );
 };
+
+export default CareEmptyState;

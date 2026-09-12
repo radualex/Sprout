@@ -6,8 +6,8 @@ import React, { useCallback, useState } from 'react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
-import { CareScheduleFields } from '@/components/CareScheduleFields';
+import Button from '@/design-system/Button';
+import CareScheduleFields from '@/components/CareScheduleFields';
 
 // Styles
 import styles from './styles.module.scss';
@@ -15,13 +15,13 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plant: Plant;
     onSave: (plant: Plant) => void;
     onCancel: () => void;
 }
 
-export const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel, ...props }) => {
+const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel, ...props }) => {
     const [nickname, setNickname] = useState(plant.nickname);
     const [care, setCare] = useState(plant.care);
 
@@ -57,3 +57,5 @@ export const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, on
         </div>
     );
 };
+
+export default EditSchedule;

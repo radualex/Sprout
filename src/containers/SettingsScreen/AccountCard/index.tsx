@@ -6,12 +6,12 @@ import { NO_MARGIN_STYLE } from '../constants';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Styles
 import styles from '../styles.module.scss';
 
-interface Props {
+export interface Props {
     user: {
         name: string;
         email: string;
@@ -19,7 +19,7 @@ interface Props {
     onSignOut: () => void;
 }
 
-export const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut }) => {
+const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut }) => {
     const classes = styles.settingsCard;
 
     return (
@@ -45,3 +45,5 @@ export const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut })
         </div>
     );
 };
+
+export default AccountCard;

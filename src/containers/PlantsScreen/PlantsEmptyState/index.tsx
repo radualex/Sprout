@@ -7,14 +7,14 @@ import { Camera, Sprout } from 'lucide-react';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
-import { Button } from '@/design-system/Button';
+import Button from '@/design-system/Button';
 
 // Styles
 import styles from '../styles.module.scss';
 
-interface Props extends React.ComponentProps<'div'> {}
+export interface Props extends React.ComponentProps<'div'> {}
 
-export const PlantsEmptyState: React.FunctionComponent<Props> = ({ className, ...props }) => {
+const PlantsEmptyState: React.FunctionComponent<Props> = ({ className, ...props }) => {
     const classes = classNames(styles.empty, className);
 
     return (
@@ -33,3 +33,5 @@ export const PlantsEmptyState: React.FunctionComponent<Props> = ({ className, ..
         </div>
     );
 };
+
+export default PlantsEmptyState;

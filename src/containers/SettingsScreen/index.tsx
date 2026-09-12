@@ -5,10 +5,10 @@ import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
-import { AboutCard } from './AboutCard';
-import { AccountCard } from './AccountCard';
-import { RecognitionCard } from './RecognitionCard';
-import { RemindersCard } from './RemindersCard';
+import AboutCard from './AboutCard';
+import AccountCard from './AccountCard';
+import RecognitionCard from './RecognitionCard';
+import RemindersCard from './RemindersCard';
 
 // Services
 import { getPlantNetKey, setPlantNetKey } from '@/services/identify';
@@ -23,7 +23,7 @@ import styles from './styles.module.scss';
 // Types
 import type { Plant } from '@/types';
 
-interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
     user: {
         name: string;
@@ -39,7 +39,7 @@ const handleTestNotification = async (): Promise<void> => {
     });
 };
 
-export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, className, ...props }) => {
+const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, className, ...props }) => {
     const classes = classNames(styles.screen, className);
 
     const router = useRouter();
@@ -130,3 +130,5 @@ export const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, c
         </div>
     );
 };
+
+export default SettingsScreen;
