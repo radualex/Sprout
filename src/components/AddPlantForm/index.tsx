@@ -19,7 +19,7 @@ import { useObjectUrl } from '@/hooks';
 import type { IdentifyResult } from '@/services/identify';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { CareSchedule, PlantInput } from '@/types';

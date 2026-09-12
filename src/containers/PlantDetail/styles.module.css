@@ -1,0 +1,67 @@
+@reference "../../app/globals.css";
+
+.screen {
+  @apply ui-screen;
+}
+
+.appHeader {
+  @apply ui-app-header;
+}
+
+.sub {
+  @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
+}
+
+.sectionTitle {
+  @apply ui-section-title;
+}
+
+.taskList {
+  @apply ui-task-list;
+}
+
+.detailHero {
+  @apply
+    flex aspect-4/3 items-center justify-center overflow-hidden rounded-card
+    bg-green-100 text-[72px] shadow-card
+  ;
+
+  img {
+    @apply block size-full object-cover;
+  }
+}
+
+.backBtn {
+  @apply
+    inline-flex cursor-pointer items-center gap-1 border-none bg-transparent
+    px-0 pt-0 pb-3 ui-common text-green-700 no-underline
+  ;
+}
+
+.careStats {
+  @apply mt-3.5 grid grid-cols-3 gap-2.5;
+}
+
+.careStat {
+  @apply rounded-btn bg-surface px-2.5 py-3 text-center shadow-card;
+}
+
+.emoji {
+  @apply text-[22px];
+}
+
+.label {
+  @apply mt-1 text-[11px] font-bold tracking-[0.5px] text-ink-soft uppercase;
+}
+
+.root {
+  @apply mt-[3px] text-[13px] font-[650];
+}
+
+.root.overdue {
+  @apply text-red;
+}
+
+.root.due {
+  @apply text-amber;
+}

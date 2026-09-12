@@ -67,6 +67,7 @@ Copy `.env.example` to `.env.local` and set:
 | Notifications | `src/services/notifications/` | Permission, de-duplicated due-task notifications, watcher |
 | Service worker | `public/sw.js` | Cache-first for static assets only; never caches documents |
 | UI | `src/containers/` | My Plants / Identify / Care / Detail / Settings screens |
+| Styling | `src/app/globals.css` + `src/styles/shared/ui.css` + co-located `styles.module.css` | Tailwind v4 (`@theme static` tokens, preflight omitted) + `@utility ui-*` atoms applied via `@apply`; no inline utility strings |
 | Local dev | `docker-compose.yml` | `db` (Postgres) + `app` (Next dev) containers |
 
 Known limitation: this is a serverless PWA, so reminders fire when the app is open, focused, or

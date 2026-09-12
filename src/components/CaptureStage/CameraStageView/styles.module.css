@@ -1,0 +1,25 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply relative aspect-3/4 overflow-hidden rounded-card shadow-card;
+
+  background: #10180f;
+
+  video,
+  img {
+    @apply block size-full object-cover;
+  }
+}
+
+.placeholder {
+  @apply
+    absolute inset-0 ui-task-list items-center justify-center p-6 text-center
+    text-sm
+  ;
+
+  color: #cfe0cb;
+
+  .big {
+    @apply text-[48px];
+  }
+}

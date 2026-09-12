@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { DAY_MS, formatDue, nextDue } from '@/helpers/care';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 // Types
 import type { CareKind, Plant } from '@/types';

@@ -1,0 +1,173 @@
+/* Shared UI patterns for component CSS modules. Referenced (bare, unlayered) from
+   src/app/globals.css; modules `@reference` the entry and `@apply ui-*` these atoms.
+   Never put class-descendant selectors in a shared @utility: CSS-module class names
+   are hashed and the descendant would silently stop matching. Element descendants
+   and `&`-pseudo selectors are fine. */
+
+@utility ui-screen {
+  @apply px-4 pt-4;
+
+  padding-bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom));
+  animation: fade-in 0.18s ease;
+}
+
+@utility ui-app-header {
+  @apply flex items-center justify-between pt-2 pb-4;
+
+  h1 {
+    @apply m-0 text-[26px] tracking-[-0.5px] text-green-900;
+  }
+}
+
+@utility ui-app-sub {
+  @apply mt-0.5 text-sm text-ink-soft;
+}
+
+@utility ui-field {
+  @apply mb-3.5;
+
+  label {
+    @apply mb-1.5 flex items-center gap-1.5 text-[13px] font-[650] text-ink;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply w-full rounded-xl bg-surface px-3 py-[11px] text-[15px] text-ink;
+
+    border: 1.5px solid rgb(28 37 32 / 14%);
+
+    &:focus {
+      @apply border-green-500 outline-none;
+    }
+  }
+}
+
+@utility ui-field-hint {
+  @apply mt-1 text-xs text-ink-soft;
+}
+
+@utility ui-field-row {
+  @apply flex gap-2.5;
+}
+
+@utility ui-task-list {
+  @apply flex flex-col gap-2.5;
+}
+
+@utility ui-task-row {
+  @apply flex items-center gap-3 rounded-card bg-surface p-3 shadow-card;
+}
+
+@utility ui-thumb {
+  @apply
+    flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-100
+    object-cover text-2xl
+  ;
+}
+
+@utility ui-info {
+  @apply min-w-0 flex-1;
+}
+
+@utility ui-title {
+  @apply text-sm font-[650];
+}
+
+@utility ui-when {
+  @apply mt-px text-xs text-ink-soft;
+}
+
+@utility ui-when-overdue {
+  @apply font-semibold text-red;
+}
+
+@utility ui-when-due {
+  @apply font-semibold text-amber;
+}
+
+@utility ui-result-card {
+  @apply
+    mb-2.5 flex w-full items-center gap-3 rounded-card bg-surface p-3.5
+    text-left shadow-card
+  ;
+
+  border: 2px solid transparent;
+}
+
+@utility ui-result-card-selected {
+  @apply border-green-500;
+}
+
+@utility ui-conf {
+  @apply ml-auto shrink-0 text-sm font-bold text-green-700;
+}
+
+@utility ui-sci {
+  @apply text-[13px] text-ink-soft italic;
+}
+
+@utility ui-common {
+  @apply text-[15px] font-[650];
+}
+
+@utility ui-notice {
+  @apply
+    my-3 rounded-xl bg-surface-2 px-3.5 py-2.5 text-[13px] leading-[1.45]
+    text-green-900
+  ;
+}
+
+@utility ui-notice-warn {
+  @apply bg-[#f6ecd9] text-[#7a4d12];
+}
+
+@utility ui-notice-error {
+  @apply ui-chip-overdue;
+}
+
+@utility ui-chip {
+  @apply
+    inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-[3px]
+    text-[11px] font-semibold whitespace-nowrap text-green-700
+  ;
+}
+
+@utility ui-chip-overdue {
+  @apply bg-[#f7e3de] text-red;
+}
+
+@utility ui-chip-due {
+  @apply bg-[#f6ecd9] text-amber;
+}
+
+@utility ui-empty {
+  @apply px-6 py-14 text-center text-ink-soft;
+
+  h2 {
+    @apply mt-0 mb-1.5 text-[19px] text-ink;
+  }
+
+  p {
+    @apply mt-0 mb-5 text-sm/normal;
+  }
+}
+
+@utility ui-empty-big {
+  @apply mb-3 text-[56px];
+}
+
+@utility ui-section-title {
+  @apply
+    mt-[22px] mb-2.5 text-[13px] font-bold tracking-[0.7px] text-ink-soft
+    uppercase
+  ;
+
+  &:first-child {
+    @apply mt-0;
+  }
+}
+
+@utility ui-shutter-row {
+  @apply mt-3.5 flex gap-2.5;
+}

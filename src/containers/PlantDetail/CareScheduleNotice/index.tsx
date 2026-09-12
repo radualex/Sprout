@@ -10,7 +10,7 @@ import Button from '@/design-system/Button';
 import { CARE_META } from '@/helpers/care';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import { CareKind, type Plant } from '@/types';

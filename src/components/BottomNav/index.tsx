@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { TABS } from './constants';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { Tab } from './types';

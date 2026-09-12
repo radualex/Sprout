@@ -10,7 +10,7 @@ import { FERTILIZE_OPTIONS, REPOT_OPTIONS, WATER_OPTIONS } from './constants';
 import ScheduleField from './ScheduleField';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { CareSchedule } from '../../types';

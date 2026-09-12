@@ -9,7 +9,7 @@ import { Sprout } from 'lucide-react';
 import { authClient } from '@/lib/auth/auth-client';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props extends React.ComponentProps<'div'> {
     mode: 'login' | 'signup';

@@ -18,7 +18,7 @@ import { displayName } from '@/helpers/plant';
 import { CARE_META, formatDue, type CareTask } from '@/helpers/care';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props extends Omit<React.ComponentProps<'div'>, 'onSelect'> {
     task: CareTask;
@@ -49,8 +49,12 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
                 <div className={styles.info}>
                     <div className={styles.title}>
                         <meta.icon size={14} />
-                        {meta.label}
-                        {displayName(task.plant)}
+                        <span>
+                            {meta.label}
+                        </span>
+                        <span>
+                            {displayName(task.plant)}
+                        </span>
                     </div>
                     <div className={classes}>
                         {capitalize(formatDue(task.daysUntil))}

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { allTasks, CARE_META, formatDue } from '@/helpers/care';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 // Types
 import type { Plant } from '@/types';

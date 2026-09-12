@@ -1,0 +1,42 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply
+    fixed bottom-0 left-1/2 z-10 flex w-full max-w-[480px] -translate-x-1/2
+    backdrop-blur-md
+  ;
+
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid rgb(28 37 32 / 7%);
+  background: rgb(255 255 255 / 92%);
+
+  a {
+    @apply
+      relative flex flex-1 flex-col items-center justify-center gap-[3px]
+      border-none bg-transparent text-[11px] font-semibold text-ink-soft
+      no-underline
+    ;
+
+    &.active {
+      @apply text-green-700;
+    }
+  }
+}
+
+.icon {
+  @apply text-[22px] leading-none;
+}
+
+.badge {
+  @apply
+    absolute top-[7px] flex h-4 min-w-4 items-center justify-center rounded-full
+    bg-red px-1 text-[10px] font-bold text-white
+  ;
+
+  right: calc(50% - 22px);
+}
+
+.active {
+  @apply text-green-700;
+}

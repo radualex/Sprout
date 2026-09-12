@@ -1,5 +1,8 @@
+import css from '@eslint/css';
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import reactPlugin from 'eslint-plugin-react';
 import configure, { configs } from '@onefinity/eslint-config';
+import { tailwind4 } from 'tailwind-csstree';
 
 import propsInline from './eslint-rules/jsx-props-inline/index.js'; // eslint-disable-line @onefinity/eslint-config/import-grouping
 import componentPropsString from './eslint-rules/use-component-props-string/index.js';
@@ -8,7 +11,18 @@ import noInlineObjectLiteral from './eslint-rules/no-inline-object-literal/index
 import noInlineHandlers from './eslint-rules/no-inline-handlers/index.js';
 import noClassnameTernary from './eslint-rules/no-classname-ternary/index.js';
 
-export default configure([{
+const JS_TS_FILE_PATTERNS = ['**/*.{js,jsx,cjs,mjs,ts,tsx}'];
+
+const isTailwindConfig = (entry) => {
+    const hasTailwindPlugin = Boolean(entry.plugins?.['better-tailwindcss']);
+    const hasTailwindRule = Object.keys(entry.rules ?? {}).some((rule) => {
+        return rule.startsWith('better-tailwindcss/');
+    });
+
+    return hasTailwindPlugin || hasTailwindRule;
+};
+
+const config = configure([{
     ignores: [
         '**/*.d.ts',
         '**/*.js',
@@ -150,4 +164,39 @@ export default configure([{
     rules: {
         'unicorn/prefer-string-raw': 'off'
     }
+}, eslintPluginBetterTailwindcss.configs.recommended, {
+    settings: {
+        'better-tailwindcss': {
+            entryPoint: 'src/app/globals.css'
+        }
+    }
+}, {
+    files: ['**/*.css'],
+    language: 'css/css',
+    languageOptions: {
+        customSyntax: tailwind4,
+        tolerant: true
+    },
+    plugins: {
+        css
+    }
 }]);
+
+// The shared base config enables JavaScript-only rules (e.g. `unicorn/*`) at the
+// top level, which ESLint 10 rejects when the `css/css` language from the block
+// above is active. Scope every un-scoped JS/TS rule set to JS/TS files so the
+// Tailwind/CSS block is the only thing that applies to `*.css`.
+export default config.map((entry) => {
+    if (Array.isArray(entry) || entry.files || entry.ignores || isTailwindConfig(entry)) {
+        return entry;
+    }
+
+    if (entry.rules || entry.languageOptions) {
+        return {
+            ...entry,
+            files: JS_TS_FILE_PATTERNS
+        };
+    }
+
+    return entry;
+});

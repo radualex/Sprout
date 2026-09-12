@@ -8,7 +8,7 @@ import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE } from '../constants';
 import Button from '@/design-system/Button';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props {
     plantName: string;

@@ -1,0 +1,21 @@
+@reference "../../app/globals.css";
+
+.taskRow {
+  @apply ui-task-row;
+}
+
+.thumb {
+  @apply ui-thumb;
+}
+
+.info {
+  @apply ui-info;
+}
+
+.title {
+  @apply ui-title;
+}
+
+.when {
+  @apply ui-when;
+}

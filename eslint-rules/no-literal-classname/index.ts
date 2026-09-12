@@ -12,7 +12,7 @@ const rule: TSESLint.RuleModule<MessageIds> = {
         },
         schema: [],
         messages: {
-            [MESSAGE_ID]: 'Hard-coded className string. Use a class from a *.module.scss stylesheet (styles.x).'
+            [MESSAGE_ID]: 'Hard-coded className string. Use a class from a *.module.css stylesheet (styles.x).'
         }
     },
     create(context) {

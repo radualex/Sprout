@@ -1,0 +1,9 @@
+@reference "../../app/globals.css";
+
+.sectionTitle {
+  @apply ui-section-title;
+}
+
+.shutterRow {
+  @apply ui-shutter-row;
+}

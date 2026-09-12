@@ -13,7 +13,7 @@ import Button from '@/design-system/Button';
 import { isNotificationsSupported } from '@/services/notifications';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 export interface Props {
     perm: NotificationPermission;
@@ -90,13 +90,15 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
                 when the app is open or in the background (installed app on Android/Chrome).
             </p>
             {renderStatus()}
-            <p style={IPHONE_HINT_STYLE}>
+            <p className={styles.hint} style={IPHONE_HINT_STYLE}>
                 <Lightbulb size={16} />
-                On iPhone, open this app in Safari, tap Share →
-                <strong>
-                    Add to Home Screen
-                </strong>
-                , then enable notifications from the installed app (iOS 16.4+).
+                <span>
+                    On iPhone, open this app in Safari, tap Share →
+                    <strong>
+                        Add to Home Screen
+                    </strong>
+                    , then enable notifications from the installed app (iOS 16.4+).
+                </span>
             </p>
         </div>
     );

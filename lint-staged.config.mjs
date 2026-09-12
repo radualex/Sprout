@@ -1,4 +1,4 @@
 export default {
     'src/**/*.{ts,tsx}': 'eslint',
-    'src/**/*.scss': 'stylelint --fix'
+    'src/**/*.css': ['stylelint --fix', 'eslint --fix']
 };

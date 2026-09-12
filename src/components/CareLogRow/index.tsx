@@ -15,7 +15,7 @@ import { formatDaysAgo } from './helpers';
 import { CARE_META, DAY_MS } from '@/helpers/care';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { CareKind, Plant } from '@/types';

@@ -1,0 +1,13 @@
+@reference "../../app/globals.css";
+
+.field {
+  @apply ui-field;
+}
+
+.fieldRow {
+  @apply ui-field-row;
+}
+
+.fieldRow .field {
+  @apply flex-1;
+}

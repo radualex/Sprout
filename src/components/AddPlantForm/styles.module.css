@@ -1,0 +1,29 @@
+@reference "../../app/globals.css";
+
+.field {
+  @apply ui-field;
+}
+
+.resultCard {
+  @apply ui-result-card;
+}
+
+.resultCard.selected {
+  @apply ui-result-card-selected;
+}
+
+.common {
+  @apply ui-common;
+}
+
+.sci {
+  @apply ui-sci;
+}
+
+.sectionTitle {
+  @apply ui-section-title;
+}
+
+.shutterRow {
+  @apply ui-shutter-row;
+}

@@ -5,7 +5,7 @@ import { Info } from 'lucide-react';
 import { NO_MARGIN_STYLE } from '../constants';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 export interface Props {
     plantCount: number;

@@ -19,7 +19,7 @@ import { useClock } from '@/hooks';
 import { markCareDone } from '@/lib/db/actions';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { Plant } from '@/types';

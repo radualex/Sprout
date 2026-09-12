@@ -1,0 +1,9 @@
+@reference "../../app/globals.css";
+
+.field {
+  @apply ui-field;
+}
+
+.shutterRow {
+  @apply ui-shutter-row;
+}

@@ -1,46 +1,49 @@
-@reference '../../app/globals.css';
+@reference "../../app/globals.css";
 
 .root {
-    @apply inline-flex items-center justify-center gap-2 border-none px-5 py-[13px] rounded-btn text-[15px] font-[650] cursor-pointer transition-transform duration-50;
+  @apply
+    inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn
+    border-none px-5 py-[13px] ui-common transition-transform duration-50
+  ;
 
-    &:active {
-        @apply scale-[0.97];
-    }
+  &:active {
+    @apply scale-[0.97];
+  }
 
-    &:disabled {
-        @apply cursor-default opacity-50;
-    }
+  &:disabled {
+    @apply cursor-default opacity-50;
+  }
 }
 
 .default,
 .primary {
-    @apply bg-green-700 text-white;
+  @apply bg-green-700 text-white;
 }
 
 .secondary {
-    @apply bg-surface-2 text-green-900;
+  @apply bg-surface-2 text-green-900;
 }
 
 .danger {
-    @apply bg-transparent text-red;
+  @apply bg-transparent text-red;
 }
 
 .soft {
-    @apply bg-green-100 text-green-900;
+  @apply bg-green-100 text-green-900;
 }
 
 .link {
-    @apply bg-green-700 text-white no-underline;
+  @apply bg-green-700 text-white no-underline;
 }
 
 .block {
-    @apply w-full;
+  @apply w-full;
 }
 
 .grow {
-    @apply flex-1;
+  @apply flex-1;
 }
 
 .sm {
-    @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-[9px] text-[13px];
+  @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-[9px] text-[13px];
 }

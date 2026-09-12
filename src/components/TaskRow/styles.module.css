@@ -1,0 +1,29 @@
+@reference "../../app/globals.css";
+
+.taskRow {
+  @apply ui-task-row;
+}
+
+.thumb {
+  @apply ui-thumb;
+}
+
+.info {
+  @apply ui-info;
+}
+
+.title {
+  @apply flex flex-wrap items-center gap-1 ui-title;
+}
+
+.when {
+  @apply ui-when;
+
+  &.overdue {
+    @apply ui-when-overdue;
+  }
+
+  &.due {
+    @apply ui-when-due;
+  }
+}

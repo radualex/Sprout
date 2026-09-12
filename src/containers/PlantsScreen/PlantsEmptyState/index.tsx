@@ -10,7 +10,7 @@ import { ButtonVariant } from '@/design-system/Button/constants';
 import Button from '@/design-system/Button';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 export interface Props extends React.ComponentProps<'div'> {}
 

@@ -1,0 +1,21 @@
+@reference "../../../app/globals.css";
+
+.resultCard {
+  @apply ui-result-card;
+}
+
+.resultCard.selected {
+  @apply ui-result-card-selected;
+}
+
+.conf {
+  @apply ui-conf;
+}
+
+.sci {
+  @apply ui-sci;
+}
+
+.common {
+  @apply ui-common;
+}

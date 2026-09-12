@@ -1,0 +1,13 @@
+@reference "../../../app/globals.css";
+
+.sectionTitle {
+  @apply ui-section-title;
+}
+
+.notice {
+  @apply ui-notice;
+}
+
+.taskList {
+  @apply ui-task-list;
+}

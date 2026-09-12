@@ -10,7 +10,7 @@ import PlantChips from '../PlantChips';
 import { displayName } from '@/helpers/plant';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 // Types
 import type { Plant } from '@/types';

@@ -19,7 +19,7 @@ import { identifyPlant, type IdentifyResult } from '@/services/identify';
 import { createPlant } from '@/lib/db/actions';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import type { PlantInput } from '@/types';

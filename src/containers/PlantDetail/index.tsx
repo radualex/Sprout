@@ -29,7 +29,7 @@ import { useClock } from '@/hooks';
 import { deletePlant, markCareDone, updatePlant } from '@/lib/db/actions';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 // Types
 import { CareKind, type Plant } from '@/types';
@@ -104,7 +104,9 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
                         {displayName(plant)}
                     </h1>
                     <div className={styles.sub} style={SUB_STYLE}>
-                        {plant.species}
+                        <span>
+                            {plant.species}
+                        </span>
                         {plant.commonName && plant.commonName !== plant.nickname && (
                             <PlantCommonNameSuffix plant={plant} />
                         )}

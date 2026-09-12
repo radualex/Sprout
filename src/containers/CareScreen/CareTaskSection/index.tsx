@@ -7,7 +7,7 @@ import TaskRow from '@/components/TaskRow';
 import type { CareTask } from '@/helpers/care';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props {
     title: string;

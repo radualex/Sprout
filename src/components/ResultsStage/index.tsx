@@ -14,7 +14,7 @@ import IdentifyResultCard from './IdentifyResultCard';
 import type { IdentifyResult } from '@/services/identify';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props {
     results: IdentifyResult[];

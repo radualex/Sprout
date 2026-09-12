@@ -9,7 +9,7 @@ import { ButtonVariant } from '@/design-system/Button/constants';
 import Button from '@/design-system/Button';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 export interface Props {
     user: {
@@ -28,10 +28,8 @@ const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut }) => {
                 <User size={18} />
                 Account
             </h3>
-            <p style={NO_MARGIN_STYLE}>
-                <span>
-                    {`Signed in as `}
-                </span>
+            <p className={styles.accountLine} style={NO_MARGIN_STYLE}>
+                Signed in as
                 <strong>
                     {user.name}
                 </strong>

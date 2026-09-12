@@ -13,7 +13,7 @@ import { getPlantsForUser } from '@/lib/db/queries';
 import { requireUser } from '@/lib/auth/session';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 interface Props extends React.ComponentProps<'div'> {}
 

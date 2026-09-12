@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { EMPTY_COLLECTION_TEXT } from './constants';
 
 // Styles
-import styles from '../styles.module.scss';
+import styles from '../styles.module.css';
 
 // Types
 import type { Plant } from '@/types';

@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     id: string;

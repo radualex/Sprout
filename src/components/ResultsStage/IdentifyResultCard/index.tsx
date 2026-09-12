@@ -7,7 +7,7 @@ import React, { useCallback, useMemo } from 'react';
 import type { IdentifyResult } from '@/services/identify';
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 
 export interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 'onSelect'> {
     result: IdentifyResult;

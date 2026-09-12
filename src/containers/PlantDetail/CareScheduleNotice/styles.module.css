@@ -1,0 +1,5 @@
+@reference "../../../app/globals.css";
+
+.notice {
+  @apply ui-notice flex flex-wrap items-center gap-x-3 gap-y-1;
+}
