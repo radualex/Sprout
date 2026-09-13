@@ -1,40 +1,40 @@
 @reference "../../app/globals.css";
 
 .backdrop {
-  @apply fixed inset-0 z-40 bg-black/40 transition-opacity duration-150;
+    @apply fixed inset-0 z-40 bg-black/40 transition-opacity duration-150;
 }
 
 .backdrop[data-starting-style],
 .backdrop[data-ending-style] {
-  @apply opacity-0;
+    @apply opacity-0;
 }
 
 @supports (-webkit-touch-callout: none) {
-  .backdrop {
-    @apply absolute;
-  }
+    .backdrop {
+        @apply absolute;
+    }
 }
 
 .popup {
-  @apply
-    fixed top-1/2 left-1/2 z-50 w-[calc(100vw-2rem)] max-w-sm -translate-1/2
-    rounded-card bg-surface p-5 shadow-card transition-all duration-150
-  ;
+    @apply
+        fixed top-1/2 left-1/2 z-50 w-[calc(100vw-2rem)] max-w-sm -translate-1/2 rounded-card bg-surface
+        p-5 shadow-card transition-all duration-150
+    ;
 }
 
 .popup[data-starting-style],
 .popup[data-ending-style] {
-  @apply scale-95 opacity-0;
+    @apply scale-95 opacity-0;
 }
 
 .title {
-  @apply m-0 text-lg font-bold text-green-900;
+    @apply m-0 text-lg font-bold text-green-900;
 }
 
 .description {
-  @apply mt-2 mb-5 text-sm/normal text-ink-soft;
+    @apply mt-2 mb-5 text-sm/normal text-ink-soft;
 }
 
 .actions {
-  @apply ui-field-row justify-end;
+    @apply ui-field-row justify-end;
 }

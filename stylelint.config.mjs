@@ -23,6 +23,11 @@ export default {
         }]
     },
     overrides: [{
+        files: ['**/*.css'],
+        rules: {
+            '@stylistic/indentation': 4
+        }
+    }, {
         files: ['**/*.module.css'],
         rules: {
             'selector-class-pattern': ['^[a-z][a-zA-Z0-9]*$', {

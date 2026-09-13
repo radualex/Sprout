@@ -1,78 +1,76 @@
 @reference "../../app/globals.css";
 
 .screen {
-  @apply ui-screen;
+    @apply ui-screen;
 }
 
 .appHeader {
-  @apply ui-app-header;
+    @apply ui-app-header;
 }
 
 .sub {
-  @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
+    @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
 }
 
 .sectionTitle {
-  @apply ui-section-title;
+    @apply ui-section-title;
 }
 
 .taskList {
-  @apply ui-task-list;
+    @apply ui-task-list;
 
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .detailHero {
-  @apply
-    flex aspect-4/3 items-center justify-center overflow-hidden rounded-card
-    bg-green-100 text-[4.5rem] shadow-card
-  ;
+    @apply
+        flex aspect-4/3 items-center justify-center overflow-hidden rounded-card bg-green-100
+        text-[4.5rem] shadow-card
+    ;
 
-  img {
-    @apply block size-full object-cover;
-  }
+    img {
+        @apply block size-full object-cover;
+    }
 }
 
 .backBtn {
-  @apply
-    inline-flex cursor-pointer items-center gap-1 border-none bg-transparent
-    px-0 pt-0 pb-3 ui-common text-green-700 no-underline
-  ;
+    @apply
+        inline-flex cursor-pointer items-center gap-1 border-none bg-transparent px-0 pt-0 pb-3
+        ui-common text-green-700 no-underline
+    ;
 }
 
 .careStats {
-  @apply mt-3.5 grid grid-cols-3 gap-2.5;
+    @apply mt-3.5 grid grid-cols-3 gap-2.5;
 
-  dt,
-  dd {
-    margin: 0;
-  }
+    dt,
+    dd {
+        margin: 0;
+    }
 }
 
 .careStat {
-  @apply rounded-btn bg-surface px-2.5 py-3 text-center shadow-card;
+    @apply rounded-btn bg-surface px-2.5 py-3 text-center shadow-card;
 }
 
 .emoji {
-  @apply text-[1.375rem];
+    @apply text-[1.375rem];
 }
 
 .label {
-  @apply
-    mt-1 text-[0.6875rem] font-bold tracking-[0.0313rem] text-ink-soft uppercase
-  ;
+    @apply mt-1 text-[0.6875rem] font-bold tracking-[0.0313rem] text-ink-soft uppercase;
 }
 
 .root {
-  @apply mt-0.75 text-[0.8125rem] font-[650];
+    @apply mt-0.75 text-[0.8125rem] font-[650];
 }
 
 .root.overdue {
-  @apply text-red;
+    @apply text-red;
 }
 
 .root.due {
-  @apply text-amber;
+    @apply text-amber;
 }

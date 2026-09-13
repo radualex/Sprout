@@ -1,5 +1,5 @@
 @reference "../../../app/globals.css";
 
 .shutterRow {
-  @apply ui-shutter-row;
+    @apply ui-shutter-row;
 }

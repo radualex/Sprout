@@ -1,17 +1,17 @@
 @reference "../../../app/globals.css";
 
 .sectionTitle {
-  @apply ui-section-title;
+    @apply ui-section-title;
 }
 
 .notice {
-  @apply ui-notice;
+    @apply ui-notice;
 }
 
 .taskList {
-  @apply ui-task-list;
+    @apply ui-task-list;
 
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }

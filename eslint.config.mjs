@@ -182,6 +182,12 @@ const config = configure([{
     },
     plugins: {
         css
+    },
+    rules: {
+        'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', {
+            indent: 4,
+            printWidth: 104
+        }]
     }
 }]);
 

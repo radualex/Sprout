@@ -4,90 +4,90 @@
 @import "../styles/shared/ui.css";
 
 @theme static {
-  --color-bg: #f4f1e8;
-  --color-surface: #fff;
-  --color-surface-2: #ecf2ea;
-  --color-ink: #1c2520;
-  --color-ink-soft: #5c6a60;
-  --color-green-900: #1d3b2a;
-  --color-green-700: #2e5d3f;
-  --color-green-500: #4c8f5f;
-  --color-green-100: #ddebd9;
-  --color-amber: #c97b1e;
-  --color-red: #c0452f;
-  --radius-btn: 0.875rem;
-  --radius-btn-sm: 0.75rem;
-  --radius-card: 1.125rem;
-  --shadow-card: 0 0.125rem 0.625rem rgb(28 37 32 / 8%);
-  --font-sans: var(--font-manrope);
+    --color-bg: #f4f1e8;
+    --color-surface: #fff;
+    --color-surface-2: #ecf2ea;
+    --color-ink: #1c2520;
+    --color-ink-soft: #5c6a60;
+    --color-green-900: #1d3b2a;
+    --color-green-700: #2e5d3f;
+    --color-green-500: #4c8f5f;
+    --color-green-100: #ddebd9;
+    --color-amber: #c97b1e;
+    --color-red: #c0452f;
+    --radius-btn: 0.875rem;
+    --radius-btn-sm: 0.75rem;
+    --radius-card: 1.125rem;
+    --shadow-card: 0 0.125rem 0.625rem rgb(28 37 32 / 8%);
+    --font-sans: var(--font-manrope);
 }
 
 :root {
-  --nav-h: 4rem;
+    --nav-h: 4rem;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--color-bg);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  line-height: normal;
-  -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
+    margin: 0;
+    padding: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: normal;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
 }
 
 body {
-  isolation: isolate;
-  position: relative;
+    isolation: isolate;
+    position: relative;
 }
 
 button {
-  font: inherit;
-  cursor: pointer;
+    font: inherit;
+    cursor: pointer;
 }
 
 input,
 select,
 textarea {
-  font: inherit;
+    font: inherit;
 }
 
 :focus-visible {
-  outline: 0.125rem solid var(--color-green-500);
-  outline-offset: 0.125rem;
+    outline: 0.125rem solid var(--color-green-500);
+    outline-offset: 0.125rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 @keyframes fade-in {
-  from {
-    transform: translateY(0.25rem);
-    opacity: 0;
-  }
+    from {
+        transform: translateY(0.25rem);
+        opacity: 0;
+    }
 
-  to {
-    transform: none;
-    opacity: 1;
-  }
+    to {
+        transform: none;
+        opacity: 1;
+    }
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }

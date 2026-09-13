@@ -1,13 +1,13 @@
 @reference "../../app/globals.css";
 
 .screen {
-  @apply ui-screen;
+    @apply ui-screen;
 }
 
 .appHeader {
-  @apply ui-app-header;
+    @apply ui-app-header;
 }
 
 .sub {
-  @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
+    @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
 }

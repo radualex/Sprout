@@ -1,75 +1,74 @@
 @reference "../../app/globals.css";
 
 .screen {
-  @apply ui-screen;
+    @apply ui-screen;
 }
 
 .appHeader {
-  @apply ui-app-header;
+    @apply ui-app-header;
 }
 
 .sub {
-  @apply ui-app-sub;
+    @apply ui-app-sub;
 }
 
 .empty {
-  @apply ui-empty;
+    @apply ui-empty;
 }
 
 .big {
-  @apply ui-empty-big;
+    @apply ui-empty-big;
 }
 
 .chip {
-  @apply ui-chip;
+    @apply ui-chip;
 }
 
 .chip.overdue {
-  @apply ui-chip-overdue;
+    @apply ui-chip-overdue;
 }
 
 .chip.due {
-  @apply ui-chip-due;
+    @apply ui-chip-due;
 }
 
 .plantGrid {
-  @apply grid grid-cols-2 gap-3;
+    @apply grid grid-cols-2 gap-3;
 
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .plantCardItem {
-  @apply grid;
+    @apply grid;
 }
 
 .plantCard {
-  @apply
-    flex cursor-pointer flex-col overflow-hidden rounded-card border-none
-    bg-surface p-0 text-left text-inherit no-underline shadow-card
-  ;
+    @apply
+        flex cursor-pointer flex-col overflow-hidden rounded-card border-none bg-surface p-0 text-left
+        text-inherit no-underline shadow-card
+    ;
 }
 
 .photo {
-  @apply
-    flex aspect-square w-full items-center justify-center bg-green-100
-    object-cover text-[2.75rem]
-  ;
+    @apply
+        flex aspect-square w-full items-center justify-center bg-green-100 object-cover text-[2.75rem]
+    ;
 }
 
 .meta {
-  @apply px-3 pt-2.5 pb-3;
+    @apply px-3 pt-2.5 pb-3;
 }
 
 .name {
-  @apply ui-common;
+    @apply ui-common;
 }
 
 .species {
-  @apply ui-when italic;
+    @apply ui-when italic;
 }
 
 .chips {
-  @apply mt-2 flex flex-wrap gap-1;
+    @apply mt-2 flex flex-wrap gap-1;
 }

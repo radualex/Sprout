@@ -1,19 +1,19 @@
 @reference "../../../../app/globals.css";
 
 .spinner {
-  @apply size-5.5 rounded-full;
+    @apply size-5.5 rounded-full;
 
-  border: 3px solid rgb(255 255 255 / 35%);
-  border-top-color: #fff;
-  animation: spin 0.7s linear infinite;
+    border: 3px solid rgb(255 255 255 / 35%);
+    border-top-color: #fff;
+    animation: spin 0.7s linear infinite;
 }
 
 .srOnly {
-  @apply sr-only;
+    @apply sr-only;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation: none;
-  }
+    .spinner {
+        animation: none;
+    }
 }

@@ -1,94 +1,92 @@
 @reference "../../app/globals.css";
 
 .root {
-  @apply ui-field;
+    @apply ui-field;
 }
 
 .label {
-  @apply mb-1.5 flex items-center gap-1.5 text-[0.8125rem] font-[650] text-ink;
+    @apply mb-1.5 flex items-center gap-1.5 text-[0.8125rem] font-[650] text-ink;
 }
 
 .trigger {
-  @apply
-    flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl
-    bg-surface px-3 py-2.75 text-left text-[0.9375rem] text-ink
-  ;
+    @apply
+        flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl bg-surface px-3 py-2.75
+        text-left text-[0.9375rem] text-ink
+    ;
 
-  border: 1.5px solid rgb(28 37 32 / 14%);
+    border: 1.5px solid rgb(28 37 32 / 14%);
 
-  &:focus-visible {
-    @apply border-green-500 outline-none;
-  }
+    &:focus-visible {
+        @apply border-green-500 outline-none;
+    }
 
-  &[data-pressed] {
-    @apply bg-surface-2;
-  }
+    &[data-pressed] {
+        @apply bg-surface-2;
+    }
 
-  &[data-disabled] {
-    @apply cursor-default opacity-50;
-  }
+    &[data-disabled] {
+        @apply cursor-default opacity-50;
+    }
 }
 
 .value {
-  @apply ui-info truncate;
+    @apply ui-info truncate;
 
-  &[data-placeholder] {
-    @apply text-ink-soft;
-  }
+    &[data-placeholder] {
+        @apply text-ink-soft;
+    }
 }
 
 .icon {
-  @apply
-    flex shrink-0 items-center text-ink-soft transition-transform duration-150
-  ;
+    @apply flex shrink-0 items-center text-ink-soft transition-transform duration-150;
 
-  &[data-popup-open] {
-    @apply rotate-180;
-  }
+    &[data-popup-open] {
+        @apply rotate-180;
+    }
 }
 
 .positioner {
-  @apply z-50;
+    @apply z-50;
 }
 
 .popup {
-  @apply max-h-60 overflow-y-auto rounded-xl bg-surface p-1 shadow-card;
+    @apply max-h-60 overflow-y-auto rounded-xl bg-surface p-1 shadow-card;
 
-  min-width: var(--anchor-width);
-  border: 1.5px solid rgb(28 37 32 / 14%);
+    min-width: var(--anchor-width);
+    border: 1.5px solid rgb(28 37 32 / 14%);
 }
 
 .list {
-  @apply flex flex-col;
+    @apply flex flex-col;
 }
 
 .item {
-  @apply
-    flex cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2
-    text-[0.9375rem] text-ink select-none
-  ;
+    @apply
+        flex cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-[0.9375rem]
+        text-ink select-none
+    ;
 
-  &[data-highlighted] {
-    @apply bg-green-100;
-  }
+    &[data-highlighted] {
+        @apply bg-green-100;
+    }
 
-  &[data-selected] {
-    @apply font-[650];
-  }
+    &[data-selected] {
+        @apply font-[650];
+    }
 
-  &[data-disabled] {
-    @apply cursor-default opacity-50;
-  }
+    &[data-disabled] {
+        @apply cursor-default opacity-50;
+    }
 }
 
 .itemText {
-  @apply ui-info truncate;
+    @apply ui-info truncate;
 }
 
 .itemIndicator {
-  @apply flex shrink-0 items-center text-green-700;
+    @apply flex shrink-0 items-center text-green-700;
 }
 
 .hint {
-  @apply ui-field-hint;
+    @apply ui-field-hint;
 }

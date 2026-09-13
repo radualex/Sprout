@@ -1,74 +1,74 @@
 @reference "../globals.css";
 
 .root {
-  @apply ui-screen;
+    @apply ui-screen;
 }
 
 .srOnly {
-  @apply sr-only;
+    @apply sr-only;
 }
 
 .header {
-  @apply ui-app-header;
+    @apply ui-app-header;
 }
 
 .list {
-  @apply mt-5 ui-task-list;
+    @apply mt-5 ui-task-list;
 }
 
 .row {
-  @apply ui-task-row;
+    @apply ui-task-row;
 }
 
 .thumb {
-  @apply ui-thumb bg-surface-2;
+    @apply ui-thumb bg-surface-2;
 }
 
 .lines {
-  @apply ui-info;
+    @apply ui-info;
 }
 
 .title,
 .subtitle,
 .lineTitle,
 .lineMeta {
-  @apply rounded-full bg-surface-2;
+    @apply rounded-full bg-surface-2;
 
-  animation: skeleton-pulse 1.4s ease-in-out infinite;
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
 .title {
-  @apply h-6 w-28;
+    @apply h-6 w-28;
 }
 
 .subtitle {
-  @apply mt-2 h-3 w-16;
+    @apply mt-2 h-3 w-16;
 }
 
 .lineTitle {
-  @apply h-3 w-24;
+    @apply h-3 w-24;
 }
 
 .lineMeta {
-  @apply mt-2 h-2.5 w-16;
+    @apply mt-2 h-2.5 w-16;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .title,
-  .subtitle,
-  .lineTitle,
-  .lineMeta {
-    animation: none;
-  }
+    .title,
+    .subtitle,
+    .lineTitle,
+    .lineMeta {
+        animation: none;
+    }
 }
 
 @keyframes skeleton-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
+    0%,
+    100% {
+        opacity: 1;
+    }
 
-  50% {
-    opacity: 0.55;
-  }
+    50% {
+        opacity: 0.55;
+    }
 }

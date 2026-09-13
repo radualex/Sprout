@@ -1,21 +1,21 @@
 @reference "../../app/globals.css";
 
 .screen {
-  @apply ui-screen;
+    @apply ui-screen;
 }
 
 .appHeader {
-  @apply ui-app-header;
+    @apply ui-app-header;
 }
 
 .sub {
-  @apply ui-app-sub;
+    @apply ui-app-sub;
 }
 
 .notice {
-  @apply ui-notice;
+    @apply ui-notice;
 }
 
 .notice.error {
-  @apply ui-notice-error;
+    @apply ui-notice-error;
 }

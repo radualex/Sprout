@@ -1,22 +1,21 @@
 @reference "../globals.css";
 
 .root {
-  @apply mx-auto ui-empty max-w-120;
+    @apply mx-auto ui-empty max-w-120;
 }
 
 /* ui-empty styles `h2`; the 404 uses an `h1`, so the title is styled here. */
 .title {
-  @apply mt-0 mb-1.5 text-[1.1875rem] text-ink;
+    @apply mt-0 mb-1.5 text-[1.1875rem] text-ink;
 }
 
 .icon {
-  @apply ui-empty-big;
+    @apply ui-empty-big;
 }
 
 .home {
-  @apply
-    inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn
-    border-none bg-green-700 px-5 py-3.25 ui-common text-white no-underline
-    transition-transform duration-50
-  ;
+    @apply
+        inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn border-none
+        bg-green-700 px-5 py-3.25 ui-common text-white no-underline transition-transform duration-50
+    ;
 }

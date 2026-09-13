@@ -1,9 +1,9 @@
 @reference "../../../app/globals.css";
 
 .empty {
-  @apply ui-empty;
+    @apply ui-empty;
 }
 
 .big {
-  @apply ui-empty-big;
+    @apply ui-empty-big;
 }
