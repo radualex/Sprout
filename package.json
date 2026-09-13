@@ -1,7 +1,6 @@
 {
-  "name": "sprout",
+  "name": "@radulex-dev/sprout",
   "private": true,
-  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "start": "next dev",
