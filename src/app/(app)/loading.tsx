@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 
+// Constants
+import { SKELETON_ROWS } from './constants';
+
 // Styles
 import styles from './loading.module.css';
-
-const ROWS = [0, 1, 2];
 
 interface Props extends React.ComponentProps<'div'> {}
 
@@ -19,7 +20,7 @@ const Loading = ({ className, ...props }: Props) => {
                 </div>
             </header>
             <div className={styles.list}>
-                {ROWS.map((row) => {
+                {SKELETON_ROWS.map((row) => {
                     return (
                         <div key={row} className={styles.row}>
                             <div className={styles.thumb} />

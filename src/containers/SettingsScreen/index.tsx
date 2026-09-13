@@ -21,14 +21,12 @@ import { authClient } from '@/lib/auth/auth-client';
 import styles from './styles.module.css';
 
 // Types
+import type { SettingsUser } from './types';
 import type { Plant } from '@/types';
 
 export interface Props extends React.ComponentProps<'div'> {
     plants: Plant[];
-    user: {
-        name: string;
-        email: string;
-    };
+    user: SettingsUser;
 }
 
 const handleTestNotification = async (): Promise<void> => {

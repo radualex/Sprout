@@ -9,18 +9,7 @@ import { recordNotified } from '@/lib/db/actions';
 
 // Types
 import type { Plant } from '@/types';
-
-interface PeriodicSyncManager {
-    register: (tag: string, options: { minInterval: number; }) => Promise<void>;
-}
-
-interface ServiceWorkerRegistrationWithPeriodicSync extends ServiceWorkerRegistration {
-    periodicSync?: PeriodicSyncManager;
-}
-
-interface CareCheckMessage {
-    type?: string;
-}
+import type { CareCheckMessage, ServiceWorkerRegistrationWithPeriodicSync } from './types';
 
 const fetchPlants = async (): Promise<Plant[]> => {
     try {

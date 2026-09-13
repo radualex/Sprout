@@ -2,7 +2,7 @@
 import { API_KEY_STORAGE } from './constants';
 
 // Types
-import type { IdentifyResult } from './types';
+import type { ApiErrorBody, IdentifyResult } from './types';
 
 export const getPlantNetKey = (): string => {
     if (typeof window === 'undefined') {
@@ -35,9 +35,9 @@ export const identifyPlant = async (photo: Blob): Promise<IdentifyResult[]> => {
     });
 
     if (!response.ok) {
-        let error: { error?: string; } | undefined;
+        let error: ApiErrorBody | undefined;
         try {
-            error = (await response.json()) as { error?: string; };
+            error = (await response.json()) as ApiErrorBody;
         } catch {
             // response body was not JSON
         }

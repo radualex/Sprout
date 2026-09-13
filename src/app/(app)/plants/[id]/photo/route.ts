@@ -4,8 +4,11 @@ import { readPlantPhoto } from '@/services/server/plants';
 // Auth
 import { requireUser } from '@/lib/auth/session';
 
+// Types
+import type { PageParameters } from '../types';
+
 interface Props {
-    params: Promise<{ id: string; }>;
+    params: Promise<PageParameters>;
 }
 
 export const GET = async (_request: Request, { params }: Props) => {

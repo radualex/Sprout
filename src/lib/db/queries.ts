@@ -10,8 +10,7 @@ import { plants } from '@/lib/db/schema';
 
 // Types
 import type { Plant } from '@/types';
-
-type PlantRow = typeof plants.$inferSelect;
+import type { PlantRow } from './types';
 
 const rowToPlant = (row: PlantRow): Plant => {
     return {

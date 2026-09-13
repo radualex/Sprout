@@ -6,10 +6,10 @@ import { user } from './auth-schema';
 
 // Types
 import type { CareKind, CareSchedule } from '@/types';
-import { TableName } from './types';
+import { TableName, type ByteaColumn } from './types';
 
 /** Postgres `bytea` column. node-postgres already maps bytea <-> Buffer. */
-const bytea = customType<{ data: Buffer; driverData: Buffer; }>({
+const bytea = customType<ByteaColumn>({
     dataType: () => { return 'bytea'; },
     toDriver: (value: Buffer): Buffer => { return value; },
     fromDriver: (value: Buffer): Buffer => { return value; }

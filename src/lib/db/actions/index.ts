@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 // Constants
-import { PLANT_ID_SCHEMA } from '@/lib/db/constants';
+import { ALL_PATH, PLANT_ID_SCHEMA } from '@/lib/db/constants';
 
 // Services
 import { createPlant as serviceCreatePlant, deletePlant as serviceDeletePlant, markCareDone as serviceMarkCareDone, recordNotified as serviceRecordNotified, updatePlant as serviceUpdatePlant } from '@/services/server/plants';
@@ -14,8 +14,6 @@ import { requireUser } from '@/lib/auth/session';
 
 // Types
 import type { CareKind, PlantInput } from '@/types';
-
-const ALL_PATH = '/';
 
 export const createPlant = async (input: PlantInput): Promise<string> => {
     const session = await requireUser();

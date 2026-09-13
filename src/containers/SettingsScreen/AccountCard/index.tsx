@@ -11,11 +11,11 @@ import Button from '@/design-system/Button';
 // Styles
 import styles from '../styles.module.css';
 
+// Types
+import type { SettingsUser } from '../types';
+
 export interface Props {
-    user: {
-        name: string;
-        email: string;
-    };
+    user: SettingsUser;
     onSignOut: () => void;
 }
 

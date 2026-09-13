@@ -8,3 +8,7 @@ export interface IdentifyResult {
     /** Recommended care schedule for this species, computed server-side. */
     defaultCare: CareSchedule;
 }
+
+export interface ApiErrorBody {
+    error?: string;
+}
