@@ -2,25 +2,13 @@
 
 ## Roadmap
 
-- [ ] **Add Renovate** to keep dependencies up-to-date.
-- [ ] **Create CI/CD with GitHub Actions** to build/lint/test. Next.js build output is `.next/` (Vercel/deploy later); DB migrations run via `drizzle-kit`.
-- [ ] **Add useMemo/useCallback optimisation pass**: audit components for values that can be memoised with `useMemo` and ensure every computed value / handler is as stable as the conventions already enforce for handlers.
-- [ ] **Move production database to Neon**: swap the `pg` driver for `@neondatabase/serverless` and update `DATABASE_URL` (see ADR-0002 in README).
+- [ ] **Add a `useMemo`/`useCallback` optimisation pass**: audit components for values that can be memoised with `useMemo` and ensure every computed value / handler is as stable as the conventions already enforce for handlers.
+- [ ] **Move the production database to Neon**: swap the `pg` driver for `@neondatabase/serverless` and update `DATABASE_URL` (see ADR-0002 in `README.md`).
 - [ ] **Add Web Push (VAPID)** for reliable reminders while the app is closed (see the README limitation note).
-- [ ] **Accessibility pass**: audit every screen for semantic HTML and ARIA — currently many `div`s are used where a semantic element (button, list, heading) fits, and no `aria-label` exists anywhere. Convert interactive `div`s to proper elements and add `aria-label`s where the meaning is icon-only.
-- [ ] **Unit tests**: add component/helper tests with Vitest + React Testing Library + jsdom. Components are already `React.FunctionComponent<Props>` with testable props — cover `handle*` handlers, `classNames` conditionals, and the care helpers (`nextDue`, `formatDue`, `dueTasks`).
+- [ ] **Expand unit-test coverage**: the Vitest + React Testing Library + jsdom harness is in place (`vitest.config.ts`, `test/vitest/setup.ts`, `test:coverage` in the pre-push hook and CI) with suites under `src/**/test.unit.ts*`; remaining work is broader component coverage (`handle*` handlers, `classNames` conditionals) and ratcheting the coverage thresholds.
 - [ ] **Integration tests**: recommended tool is **Vitest** (single runner shared with unit tests) + **`next-test-api-route-handler`** for `/api/*` route handlers and `lib/db` queries against the Docker Postgres. Run them against a test database to avoid clobbering dev data. (Alternative if a separate HTTP layer is preferred: `supertest` against `bun run start:prod`.)
 - [ ] **E2E tests**: add Playwright (already available via the Playwright MCP server). Cover the critical journey: sign-up → identify (mocked PlantNet response) → add plant → care due → mark done.
-- [ ] **Fix React #418 hydration warning** (pinned 2026-09-12): fires on every authenticated route in the production build, unrelated to the Tailwind styling migration. Likely `useClock`'s `Date.now()` differing between server and client, or a `<div>` nested inside `<button>` (`TaskRow`). Reproduce in a dev build for the component stack.
-- [ ] **Conventional commits**: Let's make sure that wrong formatted commits are caught on pre-commit hook. Add husky first. Commit format according to [docs](https://www.conventionalcommits.org/en/v1.0.0/#specification):
-
-  ```
-  <type>[optional scope]: <description>
-
-  [optional body]
-
-  [optional footer(s)]
-  ```
+- [ ] **Confirm and close the React #418 hydration warning** (pinned 2026-09-12): the `<div>`-inside-`<button>` nesting in `TaskRow` is fixed and the production build showed no console errors on the authenticated routes exercised during Phase 9 QA. The remaining suspect is `useClock`'s `Date.now()` differing between server and client — reproduce in a dev build for the component stack.
 - [ ] **Migrate Better Auth → Keycloak**: replace Better Auth (ADR-0003) with Keycloak as the authentication/authorization layer, per the global `frontend-code-conventions` skill. Needs a superseding ADR (ADR-0003 is immutable) and touches `src/lib/auth/index.ts`, `src/lib/auth/auth-client.ts`, `src/proxy.ts`, the generated auth schema, and the sign-in/sign-up UI.
 
 ## Done
@@ -30,6 +18,11 @@
 - [X] **Dockerized local dev** — `docker compose up -d db` + `bun run start`, or `docker compose up -d --build` for both containers.
 - [X] **Handlers & style conventions enforced by lint** — all event handlers are `handle*` arrow functions wrapped in `useCallback` (no inline handlers), all class names come from `*.module.css` via `styles.x`, no single-line object literals, blank line before every `return`, curly braces on all blocks. Enforced by custom rules in `eslint-rules/` (`no-literal-classname`, `no-inline-object-literal`, `no-inline-handlers`) + `@stylistic/padding-line-between-statements` + `curly`.
 - [X] **React conventions** — every component is `React.FunctionComponent<Props>` with `Props extends React.ComponentProps<'element'>` (or `Omit`), destructures and spreads `{...props}` on its root element. One component per `index.tsx` (own folder each); style/style constants live in sibling `constants.ts` files. Enums over magic strings (`CareKind.Water` not `'water'`). `lodash-es` over hand-rolled utils. `classNames` for every multi-class/conditional class via `const X = classNames(styles.root, { [styles.x]: cond })` at the top of the component above the `useState` calls (never inline in JSX, object-map form for conditionals, single class stays inline). All icons are `lucide-react` components (`CARE_META` holds `icon: LucideIcon`, not emoji strings). These are codified globally in the `react-conventions` opencode skill (`~/.config/opencode/skills/react-conventions`). See the Tools table below.
+- [X] **Dependency updates** — `renovate.json` (`config:recommended`) keeps dependencies current.
+- [X] **CI with GitHub Actions** — `.github/workflows/ci.yml` runs `build:rules` → `lint` → `test:coverage` → `build` → `test:size` on pushes to `master` and on pull requests.
+- [X] **Accessibility pass** — layout-owned `<main>` + skip link, accessible names on icon-only controls, `:focus-visible` styling, reduced-motion support, and browser zoom across every screen. See the Phase 8 entry in `.omo/plans/plant-app-normalization.md`.
+- [X] **Conventional commits enforced** — Husky hooks (`pre-commit` → `lint:staged`, `commit-msg` → commitlint, `pre-push` → lint + `test:coverage` + build + `test:size`) with `@commitlint/config-conventional`.
+- [X] **Design-system blocks** — `Button` (union button/anchor; `Default`/`Primary`/`Secondary`/`Danger`/`Soft`/`Outline`/`Bare`), plus Base UI-backed `Select` and `AlertDialog`, all in `src/design-system/`. See ADR-0011 in `README.md`.
 
 ## Notes
 

@@ -68,6 +68,7 @@ Copy `.env.example` to `.env.local` and set:
 | Notifications | `src/services/notifications/` | Permission, de-duplicated due-task notifications, watcher |
 | Service worker | `public/sw.js` | Cache-first for static assets only; never caches documents |
 | UI | `src/containers/` | My Plants / Identify / Care / Detail / Settings screens |
+| Design system | `src/design-system/` | Owned building blocks: `Button` (union button/anchor) plus Base UI-backed `Select` and `AlertDialog` — feature code imports these, never a Base UI primitive directly (ADR-0011) |
 | Styling | `src/app/globals.css` + `src/styles/shared/ui.css` + co-located `styles.module.css` | Tailwind v4 (`@theme static` tokens, preflight omitted) + `@utility ui-*` atoms applied via `@apply`; no inline utility strings |
 | Font | `src/app/layout.tsx` + `src/app/globals.css` | Manrope (variable, latin) self-hosted via `next/font/local`; exposed as `--font-manrope` and wired to `--font-sans` in the `@theme static` block. No runtime request to a Google font host. |
 | Boundaries | `src/app/{error,not-found,global-error}.tsx`; `src/app/(app)/{error,not-found,loading}.tsx` | Root and shell-preserving error / not-found boundaries; `global-error` covers root-layout failures. The model's gaps are noted under the architecture table. |
