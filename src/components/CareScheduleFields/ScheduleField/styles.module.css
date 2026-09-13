@@ -1,9 +1,0 @@
-@reference "../../../app/globals.css";
-
-.field {
-  @apply ui-field;
-}
-
-.hint {
-  @apply ui-field-hint;
-}

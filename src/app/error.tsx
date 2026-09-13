@@ -2,19 +2,21 @@
 
 import React, { useCallback } from 'react';
 
+// Components
+import Button from '@/design-system/Button';
+
 // Styles
 import styles from './error.module.css';
 
 export interface Props {
     error: Error & { digest?: string; };
     reset: () => void;
-    retry: () => void;
 }
 
-const RootError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) => {
-    const handleRetry = useCallback(() => {
-        retry();
-    }, [retry]);
+const RootError: React.FunctionComponent<Pick<Props, 'reset'>> = ({ reset }) => {
+    const handleReset = useCallback(() => {
+        reset();
+    }, [reset]);
 
     return (
         <main className={styles.root}>
@@ -22,9 +24,9 @@ const RootError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) => 
             <p className={styles.message}>
                 An unexpected error interrupted this screen. Try again to reload it.
             </p>
-            <button type="button" className={styles.retry} onClick={handleRetry}>
+            <Button onClick={handleReset}>
                 Try again
-            </button>
+            </Button>
         </main>
     );
 };

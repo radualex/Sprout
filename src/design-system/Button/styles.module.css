@@ -34,6 +34,18 @@
   @apply bg-green-100 text-green-900;
 }
 
+.outline {
+  @apply border border-ink-soft/20 bg-surface text-ink;
+}
+
+.bare {
+  @apply gap-0 rounded-none border-none bg-transparent p-0 text-left;
+
+  &:active {
+    @apply scale-100;
+  }
+}
+
 .block {
   @apply w-full;
 }

@@ -13,9 +13,9 @@
 }
 
 .sci {
-  @apply ui-sci;
+  @apply block ui-sci;
 }
 
 .common {
-  @apply ui-common;
+  @apply block ui-common;
 }

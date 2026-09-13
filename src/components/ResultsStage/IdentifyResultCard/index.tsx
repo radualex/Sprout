@@ -3,6 +3,12 @@
 import classNames from 'classnames';
 import React, { useCallback, useMemo } from 'react';
 
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
+
+// Components
+import Button from '@/design-system/Button';
+
 // Services
 import type { IdentifyResult } from '@/services/identify';
 
@@ -16,7 +22,7 @@ export interface Props extends Omit<React.ComponentProps<'button'>, 'onClick' | 
 }
 
 const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, onSelect, ...props }) => {
-    const classes = classNames({
+    const classes = classNames(styles.resultCard, {
         [styles.selected]: selected
     });
 
@@ -29,19 +35,19 @@ const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, 
     }, [onSelect, result]);
 
     return (
-        <button type="button" className={classes} onClick={handleSelect} {...props}>
-            <div>
-                <div className={styles.common}>
+        <Button variant={ButtonVariant.Bare} className={classes} onClick={handleSelect} {...props}>
+            <span>
+                <span className={styles.common}>
                     {result.commonName || result.species}
-                </div>
-                <div className={styles.sci}>
+                </span>
+                <span className={styles.sci}>
                     {result.species}
-                </div>
-            </div>
-            <div className={styles.conf}>
+                </span>
+            </span>
+            <span className={styles.conf}>
                 <span>{confidence}%</span>
-            </div>
-        </button>
+            </span>
+        </Button>
     );
 };
 

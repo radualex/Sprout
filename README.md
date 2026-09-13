@@ -328,8 +328,8 @@ from the skill's image default.
   `requireUser()`-gated image therefore comes back unauthenticated, so the optimizer can never read
   the bytes. Next's own docs say to use the `unoptimized` property for authenticated sources.
 - *`unoptimized`* — Next's documented answer for this case, but it only disables optimization while
-  still pulling the `next/image` client component into the bundle. With only ~3.8 kB of headroom
-  under the 200 kB size budget, that buys client JS for zero optimization gain.
+  still pulling the `next/image` client component into the bundle. That buys client JS for zero
+  optimization gain.
 - *Custom authenticated loader (`loaderFile`) plus a resize route* — would give real optimization,
   at the cost of a new resize path or service (for example `sharp`) and its runtime footprint; out
   of scope under this phase's "no new runtime dependency" rule.
@@ -347,3 +347,51 @@ served only by the authenticated `/plants/[id]/photo` route, which remains the s
 truth for those bytes. Capture previews stay as `<img>` with `blob:` URLs. The deviation is durable
 through this record; if photos later move to object storage with signed URLs (ADR-0004 leaves that
 door open), `next/image` becomes viable and a superseding record would capture the change.
+
+### ADR-0011 — Base UI primitives
+
+**Status:** Accepted
+
+**Context:** The `frontend-code-conventions` skill makes Base UI (`@base-ui/react`) the primitive
+layer: headless, unstyled components wrapped by owned, styled building blocks, never used raw in
+feature code. Before this record the repo had exactly one design-system block (`Button`, in
+`src/design-system/`) and every other control was native — one `<select>` (the care-interval field),
+one inline delete-confirm, and eight `<button>`s outside the design system.
+
+**Decision:** Adopt `@base-ui/react` and own wrappers in `src/design-system/` (the repo's location,
+not the skill's `src/components/ui/`):
+
+- `Select` — a string-only wrapper over `@base-ui/react/select`; its `items` map is derived
+  internally so feature code never sees Base UI types. Adopted by the care-interval `ScheduleField`
+  (number↔string conversion at the boundary).
+- `AlertDialog` — a controlled wrapper over `@base-ui/react/alert-dialog` (which supplies
+  `role="alertdialog"`, focus trap and labelling). Adopted by the plant delete confirm.
+- `Button` gains `Outline` and `Bare` variants so the eight native `<button>` sites (error retries,
+  auth submit/Google, task row, identify result card) move onto the design system; this also removes
+  the `<div>`-inside-`<button>` nesting behind the React #418 hydration warning.
+
+Blocks are built only where a real call site exists: **no** Menu, Popover, Tooltip, Toast, Tabs or
+Input/Field are added, because the app has zero call sites for them.
+
+**Rationale & alternatives considered:**
+
+- *Keep native controls* — rejected for the headline control (owning the primitive is the point),
+  but the native `<select>` stays a legitimate fallback: it is the platform picker on mobile and
+  costs nothing.
+- *Build hypothetical blocks (Menu/Tooltip/Toast/…)* — rejected; a primitive with no call site is
+  dead client JS.
+- *Hand-roll the dialog* — rejected; Base UI supplies the focus trap, ARIA wiring and Escape
+  handling that are easy to get wrong.
+- *Drop `Select`* — rejected; the project chose to keep the primitive and accept its added client JS
+  rather than ship native-only.
+- *`@base-ui-components/react`* — the old package name; `@base-ui/react` is current (1.8.0).
+
+**Consequences:** Client JS grows with the Base UI runtime and the two new client blocks.
+`src/app/globals.css` gains `isolation: isolate` and `position: relative` on `body` so portaled
+popups get a stable stacking context (and iOS 26 Safari a positioned body). Every block is a client
+component, but no route became client-only — `Select`'s consumer (`ScheduleField`) and the
+`AlertDialog`'s (`DeletePlantBlock`) were already in the client graph. The custom ESLint rules stay
+in force with **zero** exemptions: Base UI state is styled through `[data-*]` selectors, never a
+`className` function (which `sprout/no-classname-ternary` bans). Base UI's close-reason strings are
+hyphenated (`'escape-key'`, not `'escapeKey'`) — the `AlertDialog` wrapper matches that literal to
+treat Escape as a cancel.

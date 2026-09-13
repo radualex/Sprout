@@ -12,7 +12,3 @@ export const DELETE_ROW_STYLE: CSSProperties = {
     marginTop: '1.5rem',
     textAlign: 'center'
 };
-
-export const DELETE_BUTTON_STYLE: CSSProperties = {
-    background: 'var(--color-red)'
-};

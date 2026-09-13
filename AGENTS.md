@@ -106,7 +106,7 @@ Gotcha: `eslint --fix` will happily mangle files — prefer targeted edits, then
 | `@utility ui-*` atoms | Shared, repeated patterns      | `src/styles/shared/ui.css`, bare-imported (no `layer()`) by `globals.css`; component modules `@apply` them. **Never put class-descendant selectors in a shared `@utility`** — CSS-module hashing makes them silently stop matching.                                                 |
 | CSS Modules           | Component-scoped styles        | Co-located `styles.module.css` with `@reference "<relative>/app/globals.css";` at the top and `@apply` for every rule. No inline utility strings in JSX (enforced by `sprout/no-literal-classname`).                                                                               |
 
-SCSS is fully retired: no `sass`, no `.module.scss`, no `src/styles/shared/*` partials and no `globals.scss`. Atomic components (Button) live in `src/design-system/`.
+SCSS is fully retired: no `sass`, no `.module.scss`, no `src/styles/shared/*` partials and no `globals.scss`. Owned design-system blocks live in `src/design-system/` (`Button`, `Select`, `AlertDialog`); `@base-ui/react` is the headless primitive layer those blocks wrap — never import a Base UI primitive directly in feature code.
 
 Use relative units — prefer `rem`, so the UI stays responsive when the viewport is resized. `px` is the exception, for what genuinely must not scale (e.g. `1px` hairline borders); never hardcode `px` for spacing, type, widths or radii, and avoid arbitrary `px` utilities like `p-[16px]` (use the Tailwind scale or a `rem` value). React numeric style values are pixels — use relative strings (`{ gap: '0.75rem' }`) and pass relative strings to `lucide-react`'s `size` prop (`size="1rem"`); only `0` stays a bare number.
 

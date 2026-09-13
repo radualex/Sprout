@@ -45,22 +45,6 @@
   }
 }
 
-.primary {
-  @apply
-    rounded-card border-none bg-green-700 p-3.25 text-base font-bold text-white
-  ;
-
-  &:disabled {
-    @apply cursor-default opacity-60;
-  }
-}
-
-.google {
-  @apply rounded-card bg-surface p-3.25 text-[0.9375rem] font-semibold text-ink;
-
-  border: 1px solid rgb(28 37 32 / 15%);
-}
-
 .divider {
   @apply flex items-center gap-3 text-[0.8125rem] text-ink-soft;
 

@@ -2,6 +2,9 @@
 
 import React, { useCallback } from 'react';
 
+// Components
+import Button from '@/design-system/Button';
+
 // Styles
 import './globals.css';
 import styles from './global-error.module.css';
@@ -9,13 +12,12 @@ import styles from './global-error.module.css';
 export interface Props {
     error: Error & { digest?: string; };
     reset: () => void;
-    retry: () => void;
 }
 
-const GlobalError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) => {
-    const handleRetry = useCallback(() => {
-        retry();
-    }, [retry]);
+const GlobalError: React.FunctionComponent<Pick<Props, 'reset'>> = ({ reset }) => {
+    const handleReset = useCallback(() => {
+        reset();
+    }, [reset]);
 
     return (
         <html lang="en">
@@ -25,9 +27,9 @@ const GlobalError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) =
                     <p className={styles.message}>
                         Sprout hit an unexpected error while loading. Try again to reload the app.
                     </p>
-                    <button type="button" className={styles.retry} onClick={handleRetry}>
+                    <Button onClick={handleReset}>
                         Try again
-                    </button>
+                    </Button>
                 </main>
             </body>
         </html>

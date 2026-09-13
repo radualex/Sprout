@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useId, useState } from 'react';
 import { Sprout } from 'lucide-react';
 
+// Constants
+import { ButtonVariant } from '@/design-system/Button/constants';
+
+// Components
+import Button from '@/design-system/Button';
+
 // Auth
 import { authClient } from '@/lib/auth/auth-client';
 
@@ -121,9 +127,9 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
                     </p>
                 )}
 
-                <button className={styles.primary} type="submit" disabled={isSubmitting}>
+                <Button variant={ButtonVariant.Primary} block type="submit" disabled={isSubmitting}>
                     {isSubmitting ? 'One moment…' : (isSignup ? 'Create account' : 'Sign in')}
-                </button>
+                </Button>
             </form>
 
             <div className={styles.divider}>
@@ -132,9 +138,9 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
                 </span>
             </div>
 
-            <button className={styles.google} type="button" onClick={handleGoogle}>
+            <Button variant={ButtonVariant.Outline} block onClick={handleGoogle}>
                 Continue with Google
-            </button>
+            </Button>
 
             <p className={styles.switch}>
                 {`${isSignup ? 'Already have an account?' : 'New to Sprout?'} `}

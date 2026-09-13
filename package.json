@@ -28,6 +28,7 @@
     "docker:build:prod": "docker build --target prod -t sprout ."
   },
   "dependencies": {
+    "@base-ui/react": "^1.8.0",
     "better-auth": "^1.6.29",
     "classnames": "^2.5.1",
     "drizzle-orm": "^0.45.2",

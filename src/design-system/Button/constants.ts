@@ -3,7 +3,9 @@ export enum ButtonVariant {
     Primary = 'primary',
     Secondary = 'secondary',
     Danger = 'danger',
-    Soft = 'soft'
+    Soft = 'soft',
+    Outline = 'outline',
+    Bare = 'bare'
 }
 
 export enum ButtonSize {

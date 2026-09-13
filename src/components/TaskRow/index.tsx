@@ -6,7 +6,6 @@ import { capitalize } from 'lodash-es';
 import { Check } from 'lucide-react';
 
 // Constants
-import { TASK_ROW_BUTTON_STYLE } from './constants';
 import { ButtonSize, ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
@@ -44,10 +43,10 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
 
     return (
         <div className={rootClasses} {...props}>
-            <button type="button" style={TASK_ROW_BUTTON_STYLE} onClick={handleSelect}>
+            <Button variant={ButtonVariant.Bare} className={styles.select} onClick={handleSelect}>
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
                 <span className={styles.info}>
-                    <div className={styles.title}>
+                    <span className={styles.title}>
                         <meta.icon size="0.875rem" aria-hidden />
                         <span>
                             {meta.label}
@@ -55,12 +54,12 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
                         <span>
                             {displayName(task.plant)}
                         </span>
-                    </div>
-                    <div className={classes}>
+                    </span>
+                    <span className={classes}>
                         {capitalize(formatDue(task.daysUntil))}
-                    </div>
+                    </span>
                 </span>
-            </button>
+            </Button>
             {task.daysUntil <= 0 && (
                 <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>
                     Done

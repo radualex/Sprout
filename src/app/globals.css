@@ -42,6 +42,11 @@ body {
   overscroll-behavior-y: none;
 }
 
+body {
+  isolation: isolate;
+  position: relative;
+}
+
 button {
   font: inherit;
   cursor: pointer;

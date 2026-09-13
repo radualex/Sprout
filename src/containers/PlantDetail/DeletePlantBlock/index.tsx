@@ -1,14 +1,14 @@
+'use client';
+
 import React from 'react';
 
 // Constants
 import { ButtonVariant } from '@/design-system/Button/constants';
-import { DELETE_BUTTON_STYLE, DELETE_ROW_STYLE } from '../constants';
+import { DELETE_ROW_STYLE } from '../constants';
 
 // Components
+import AlertDialog from '@/design-system/AlertDialog';
 import Button from '@/design-system/Button';
-
-// Styles
-import styles from './styles.module.css';
 
 export interface Props {
     plantName: string;
@@ -19,34 +19,12 @@ export interface Props {
 }
 
 const DeletePlantBlock: React.FunctionComponent<Props> = ({ plantName, isConfirming, onKeep, onRemove, onStartDelete }) => {
-    const renderConfirm = () => {
-        return (
-            <div className={styles.shutterRow}>
-                <Button variant={ButtonVariant.Secondary} grow onClick={onKeep}>
-                    Keep plant
-                </Button>
-                <Button variant={ButtonVariant.Primary} grow style={DELETE_BUTTON_STYLE} onClick={onRemove}>
-                    Delete forever
-                </Button>
-            </div>
-        );
-    };
-
-    const renderRemove = () => {
-        return (
+    return (
+        <div style={DELETE_ROW_STYLE}>
             <Button variant={ButtonVariant.Danger} block onClick={onStartDelete}>
                 {`Remove ${plantName}`}
             </Button>
-        );
-    };
-
-    const renderContent = () => {
-        return isConfirming ? renderConfirm() : renderRemove();
-    };
-
-    return (
-        <div style={DELETE_ROW_STYLE}>
-            {renderContent()}
+            <AlertDialog isOpen={isConfirming} title={`Delete ${plantName}?`} description="This plant and its care history will be permanently removed." confirmLabel="Delete forever" onConfirm={onRemove} onCancel={onKeep} />
         </div>
     );
 };
