@@ -1,12 +1,10 @@
 import * as z from 'zod';
 
+// Constants
+import { MAX_DAYS, MAX_MONTHS, MAX_PHOTO_BYTES, MAX_TEXT_LENGTH } from './constants';
+
 // Types
 import { CareKind, type PlantInput } from '@/types';
-
-const MAX_TEXT_LENGTH = 200;
-const MAX_PHOTO_BYTES = 5 * 1024 * 1024; // keep in sync with next.config.ts bodySizeLimit '5mb'
-const MAX_DAYS = 3650;
-const MAX_MONTHS = 600;
 
 export const CareKindSchema = z.enum(CareKind);
 
@@ -15,8 +13,6 @@ export const CareScheduleSchema = z.object({
     fertilizeEveryDays: z.int().min(0).max(MAX_DAYS),
     repotEveryMonths: z.int().min(0).max(MAX_MONTHS)
 });
-
-export const PlantIdSchema = z.uuid();
 
 // Realm-agnostic: survives React Flight/Next serialization (File is a Blob).
 const photoSchema = z.custom<Blob>((value) => {

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 // Components
 import SettingsScreen from '@/containers/SettingsScreen';
 
@@ -6,6 +8,11 @@ import { getPlantsForUser } from '@/lib/db/queries';
 
 // Auth
 import { requireUser } from '@/lib/auth/session';
+
+export const metadata: Metadata = {
+    title: 'Settings',
+    description: 'Manage your account, plant recognition key, and care reminders.'
+};
 
 const SettingsPage = async () => {
     const session = await requireUser();

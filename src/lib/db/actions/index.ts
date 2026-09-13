@@ -2,9 +2,12 @@
 
 import { revalidatePath } from 'next/cache';
 
+// Constants
+import { PLANT_ID_SCHEMA } from '@/lib/db/constants';
+
 // Services
 import { createPlant as serviceCreatePlant, deletePlant as serviceDeletePlant, markCareDone as serviceMarkCareDone, recordNotified as serviceRecordNotified, updatePlant as serviceUpdatePlant } from '@/services/server/plants';
-import { CareKindSchema, NotifiedAtSchema, parsePlantInput, PlantIdSchema, UpdatePlantSchema, type UpdatePlantInput } from '@/services/server/plants/schema';
+import { CareKindSchema, NotifiedAtSchema, parsePlantInput, UpdatePlantSchema, type UpdatePlantInput } from '@/services/server/plants/schema';
 
 // Auth
 import { requireUser } from '@/lib/auth/session';
@@ -26,7 +29,7 @@ export const createPlant = async (input: PlantInput): Promise<string> => {
 
 export const updatePlant = async (id: string, input: UpdatePlantInput): Promise<void> => {
     const session = await requireUser();
-    const parsedId = PlantIdSchema.parse(id);
+    const parsedId = PLANT_ID_SCHEMA.parse(id);
 
     const parsedInput = UpdatePlantSchema.parse(input);
 
@@ -37,7 +40,7 @@ export const updatePlant = async (id: string, input: UpdatePlantInput): Promise<
 
 export const markCareDone = async (id: string, kind: CareKind): Promise<void> => {
     const session = await requireUser();
-    const parsedId = PlantIdSchema.parse(id);
+    const parsedId = PLANT_ID_SCHEMA.parse(id);
     const parsedKind = CareKindSchema.parse(kind);
 
     await serviceMarkCareDone(session.user.id, parsedId, parsedKind);
@@ -47,7 +50,7 @@ export const markCareDone = async (id: string, kind: CareKind): Promise<void> =>
 
 export const recordNotified = async (id: string, kind: CareKind, at: number): Promise<void> => {
     const session = await requireUser();
-    const parsedId = PlantIdSchema.parse(id);
+    const parsedId = PLANT_ID_SCHEMA.parse(id);
     const parsedKind = CareKindSchema.parse(kind);
     const parsedAt = NotifiedAtSchema.parse(at);
 
@@ -58,7 +61,7 @@ export const recordNotified = async (id: string, kind: CareKind, at: number): Pr
 
 export const deletePlant = async (id: string): Promise<void> => {
     const session = await requireUser();
-    const parsedId = PlantIdSchema.parse(id);
+    const parsedId = PLANT_ID_SCHEMA.parse(id);
 
     await serviceDeletePlant(session.user.id, parsedId);
 

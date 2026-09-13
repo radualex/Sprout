@@ -19,6 +19,7 @@
   --radius-btn-sm: 0.75rem;
   --radius-card: 1.125rem;
   --shadow-card: 0 0.125rem 0.625rem rgb(28 37 32 / 8%);
+  --font-sans: var(--font-manrope);
 }
 
 :root {
@@ -35,7 +36,7 @@ body {
   padding: 0;
   background: var(--color-bg);
   color: var(--color-ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
   line-height: normal;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;

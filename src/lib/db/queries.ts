@@ -1,4 +1,8 @@
 import { and, desc, eq } from 'drizzle-orm';
+import { cache } from 'react';
+
+// Constants
+import { PLANT_ID_SCHEMA } from './constants';
 
 // Database
 import { database } from '@/lib/db';
@@ -24,7 +28,7 @@ const rowToPlant = (row: PlantRow): Plant => {
     };
 };
 
-export const getPlantsForUser = async (userId: string): Promise<Plant[]> => {
+export const getPlantsForUser = cache(async (userId: string): Promise<Plant[]> => {
     const rows = await database
         .select()
         .from(plants)
@@ -34,9 +38,13 @@ export const getPlantsForUser = async (userId: string): Promise<Plant[]> => {
     return rows.map((row) => {
         return rowToPlant(row);
     });
-};
+});
 
-export const getPlantForUser = async (userId: string, id: string): Promise<Plant | undefined> => {
+export const getPlantForUser = cache(async (userId: string, id: string): Promise<Plant | undefined> => {
+    if (!PLANT_ID_SCHEMA.safeParse(id).success) {
+        return undefined;
+    }
+
     const rows = await database
         .select()
         .from(plants)
@@ -44,9 +52,13 @@ export const getPlantForUser = async (userId: string, id: string): Promise<Plant
     const row = rows.at(0);
 
     return row ? rowToPlant(row) : undefined;
-};
+});
 
 export const getPlantPhoto = async (userId: string, id: string): Promise<Buffer | undefined> => {
+    if (!PLANT_ID_SCHEMA.safeParse(id).success) {
+        return undefined;
+    }
+
     const rows = await database
         .select({
             photo: plants.photo

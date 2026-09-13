@@ -1,0 +1,27 @@
+@reference "./globals.css";
+
+.root {
+  @apply
+    flex min-h-dvh flex-col items-center justify-center gap-3 px-6 text-center
+  ;
+}
+
+.retry {
+  @apply
+    inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn
+    border-none bg-green-700 px-5 py-3.25 ui-common text-white
+    transition-transform duration-50
+  ;
+
+  &:active {
+    @apply scale-[0.97];
+  }
+}
+
+.title {
+  @apply m-0 text-[1.1875rem] text-ink;
+}
+
+.message {
+  @apply m-0 max-w-xs text-sm/normal text-ink-soft;
+}

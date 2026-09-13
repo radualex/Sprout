@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+// Constants
+import { PLANT_ID_SCHEMA } from '@/lib/db/constants';
+
 // Services
-import { CareKindSchema, CareScheduleSchema, NotifiedAtSchema, PlantIdSchema, PlantInputSchema, UpdatePlantSchema } from './schema';
+import { CareKindSchema, CareScheduleSchema, NotifiedAtSchema, PlantInputSchema, UpdatePlantSchema } from './schema';
 
 // Types
 import { CareKind } from '@/types';
@@ -173,14 +176,14 @@ describe('PlantInputSchema', () => {
     });
 });
 
-describe('PlantIdSchema', () => {
+describe('PLANT_ID_SCHEMA', () => {
     it('accepts a UUID', () => {
-        expect(PlantIdSchema.parse(VALID_ID)).toBe(VALID_ID);
+        expect(PLANT_ID_SCHEMA.parse(VALID_ID)).toBe(VALID_ID);
     });
 
     it('rejects a non-UUID id', () => {
         expect(() => {
-            return PlantIdSchema.parse('plant-1');
+            return PLANT_ID_SCHEMA.parse('plant-1');
         }).toThrow();
     });
 });

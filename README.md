@@ -69,12 +69,23 @@ Copy `.env.example` to `.env.local` and set:
 | Service worker | `public/sw.js` | Cache-first for static assets only; never caches documents |
 | UI | `src/containers/` | My Plants / Identify / Care / Detail / Settings screens |
 | Styling | `src/app/globals.css` + `src/styles/shared/ui.css` + co-located `styles.module.css` | Tailwind v4 (`@theme static` tokens, preflight omitted) + `@utility ui-*` atoms applied via `@apply`; no inline utility strings |
+| Font | `src/app/layout.tsx` + `src/app/globals.css` | Manrope (variable, latin) self-hosted via `next/font/local`; exposed as `--font-manrope` and wired to `--font-sans` in the `@theme static` block. No runtime request to a Google font host. |
+| Boundaries | `src/app/{error,not-found,global-error}.tsx`; `src/app/(app)/{error,not-found,loading}.tsx` | Root and shell-preserving error / not-found boundaries; `global-error` covers root-layout failures. The model's gaps are noted under the architecture table. |
+| Images | plain `<img>` in `src/components/` | Deliberately no `next/image`: the auth-gated photo route cannot be optimized, and previews use `blob:` URLs (ADR-0010). |
 | Local dev | `docker-compose.yml` | `db` (Postgres) + `app` (Next dev) containers |
 
 Known limitation: this is a serverless PWA, so reminders fire when the app is open, focused, or
 (on Chromium/Android installed PWAs) via periodic background sync. Fully reliable push while the
 app is closed — especially on iOS — would need Web Push/VAPID; the service worker is already
 structured to accept that.
+
+Known limitation, error/loading boundaries: `(app)/error.tsx` catches errors thrown by the page and
+nested segments, but **not** by `(app)/layout.tsx` itself — those bubble to the root
+`src/app/error.tsx`, and `src/app/global-error.tsx` covers failures in the root layout.
+`(app)/loading.tsx` covers the page's own data fetch, but **not** the auth gate: `requireUser()`
+reads `headers()`, so Next blocks navigation before the loading boundary can paint the skeleton. The
+shell's due-count is streamed behind its own `Suspense` fallback and degrades to a `0` badge on a
+query failure instead of blanking the shell.
 
 ---
 
@@ -295,3 +306,44 @@ from the App Router (`loading.tsx`, `error.tsx`, `Suspense`) rather than `useQue
 `isLoading`/`isError`. This ADR does not ban TanStack Query outright: if the app later needs genuine
 client-owned server state — interactive polling, offline refetching — TanStack Query becomes the
 right tool for that specific concern, and a superseding record would capture it.
+
+### ADR-0010 — Authenticated photo bytes: no `next/image` optimization
+
+**Status:** Accepted
+
+**Context:** Each plant's photo is stored as Postgres `bytea` (ADR-0004) and served through the
+authenticated route `/plants/[id]/photo`, which calls `requireUser()` before returning the bytes and
+marks the response `Cache-Control: private`. The global `frontend-code-conventions` skill prefers
+`next/image` for images. Adopting it here would route the photo through Next's Image Optimizer at
+`/_next/image`.
+
+**Decision:** Do **not** adopt `next/image` for plant photos. Keep the plain `<img>` element in
+`PlantPhoto` (`src/components/PlantPhoto/index.tsx`). This is a deliberate, documented deviation
+from the skill's image default.
+
+**Rationale & alternatives considered:**
+- *Default `next/image`* — the Image Optimizer does not forward request headers or cookies when it
+  fetches the source. Internally (`fetchInternalImage`) it re-fetches the `src` server-side with a
+  header-less mocked request (hardened in PR #82114 / GHSA-g5qg-72qw-gw5v, CVE-2025-57752). A
+  `requireUser()`-gated image therefore comes back unauthenticated, so the optimizer can never read
+  the bytes. Next's own docs say to use the `unoptimized` property for authenticated sources.
+- *`unoptimized`* — Next's documented answer for this case, but it only disables optimization while
+  still pulling the `next/image` client component into the bundle. With only ~3.8 kB of headroom
+  under the 200 kB size budget, that buys client JS for zero optimization gain.
+- *Custom authenticated loader (`loaderFile`) plus a resize route* — would give real optimization,
+  at the cost of a new resize path or service (for example `sharp`) and its runtime footprint; out
+  of scope under this phase's "no new runtime dependency" rule.
+- *Signed or public URLs* — let the optimizer read the bytes, but conflict with the private
+  `Cache-Control` the photo route sets and widen who can fetch a user's photos.
+- *Plain `<img>` (chosen)* — the photo route stays the single authenticated source; no optimizer,
+  no client component, no added bytes.
+
+The other two `<img>` sites, `AddPlantForm` and `CameraStageView`, render `blob:` object URLs for
+on-device capture previews. `next/image` does not support `blob:` sources, so they also stay plain
+`<img>`.
+
+**Consequences:** No `next/image` import or component is used anywhere in the app. Plant photos are
+served only by the authenticated `/plants/[id]/photo` route, which remains the single source of
+truth for those bytes. Capture previews stay as `<img>` with `blob:` URLs. The deviation is durable
+through this record; if photos later move to object storage with signed URLs (ADR-0004 leaves that
+door open), `next/image` becomes viable and a superseding record would capture the change.
