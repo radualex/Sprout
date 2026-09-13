@@ -1,1 +1,6 @@
-bunx commitlint --edit "$1"
+if ! bunx commitlint --edit "$1"; then
+  printf '\nCommit message must follow Conventional Commits, e.g.:\n\n'
+  printf 'Format: <type>(<optional scope>): <subject>\n'
+  printf 'Types:  build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test\n\n'
+  exit 1
+fi
