@@ -24,10 +24,15 @@ const IdentifyActions: React.FunctionComponent<Props> = ({ isIdentifying, onRese
             <Button variant={ButtonVariant.Secondary} grow onClick={onReset} disabled={isIdentifying}>
                 Retake
             </Button>
-            <Button grow onClick={onIdentify} disabled={isIdentifying}>
-                {isIdentifying ? <span className={styles.spinner} /> : (
+            <Button grow onClick={onIdentify} disabled={isIdentifying} aria-label="Identify plant" aria-busy={isIdentifying}>
+                {isIdentifying ? (
                     <React.Fragment>
-                        <Search size="1rem" />
+                        <span className={styles.spinner} aria-hidden />
+                        <span className={styles.srOnly}>Identifying…</span>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                        <Search size="1rem" aria-hidden />
                         Identify
                     </React.Fragment>
                 )}

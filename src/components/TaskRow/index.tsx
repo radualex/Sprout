@@ -46,9 +46,9 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
         <div className={rootClasses} {...props}>
             <button type="button" style={TASK_ROW_BUTTON_STYLE} onClick={handleSelect}>
                 <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
-                <div className={styles.info}>
+                <span className={styles.info}>
                     <div className={styles.title}>
-                        <meta.icon size="0.875rem" />
+                        <meta.icon size="0.875rem" aria-hidden />
                         <span>
                             {meta.label}
                         </span>
@@ -59,7 +59,7 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
                     <div className={classes}>
                         {capitalize(formatDue(task.daysUntil))}
                     </div>
-                </div>
+                </span>
             </button>
             {task.daysUntil <= 0 && (
                 <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>

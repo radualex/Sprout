@@ -1,7 +1,7 @@
 'use client';
 
 import classNames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 import { Sprout } from 'lucide-react';
 
 // Constants
@@ -39,6 +39,7 @@ const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel,
         return result.defaultCare;
     });
     const photoUrl = useObjectUrl(photo);
+    const nicknameId = useId();
 
     const handleNicknameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(event.target.value);
@@ -70,16 +71,16 @@ const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel,
             </div>
 
             <div className={styles.field}>
-                <label htmlFor="apf-nickname">
+                <label htmlFor={nicknameId}>
                     Nickname
                 </label>
-                <input id="apf-nickname" value={nickname} onChange={handleNicknameChange} placeholder="e.g. Kitchen monstera" />
+                <input id={nicknameId} value={nickname} onChange={handleNicknameChange} placeholder="e.g. Kitchen monstera" />
             </div>
 
-            <div className={styles.sectionTitle}>
+            <h2 className={styles.sectionTitle}>
                 Care schedule
-            </div>
-            <CareScheduleFields idPrefix="apf" value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
+            </h2>
+            <CareScheduleFields value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
 
             <div className={styles.shutterRow}>
                 <Button variant={ButtonVariant.Secondary} grow onClick={onCancel}>

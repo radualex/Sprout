@@ -12,7 +12,8 @@ const Loading = ({ className, ...props }: Props) => {
     const classes = classNames(className, styles.root);
 
     return (
-        <div aria-busy="true" {...props} className={classes}>
+        <div aria-busy="true" role="status" {...props} className={classes}>
+            <span className={styles.srOnly}>Loading…</span>
             <header className={styles.header}>
                 <div>
                     <div className={styles.title} />

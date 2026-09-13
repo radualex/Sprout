@@ -3,8 +3,7 @@ export enum ButtonVariant {
     Primary = 'primary',
     Secondary = 'secondary',
     Danger = 'danger',
-    Soft = 'soft',
-    Link = 'link'
+    Soft = 'soft'
 }
 
 export enum ButtonSize {

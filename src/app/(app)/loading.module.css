@@ -4,6 +4,10 @@
   @apply ui-screen;
 }
 
+.srOnly {
+  @apply sr-only;
+}
+
 .header {
   @apply ui-app-header;
 }

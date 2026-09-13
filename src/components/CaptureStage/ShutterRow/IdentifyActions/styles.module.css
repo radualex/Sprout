@@ -7,3 +7,13 @@
   border-top-color: #fff;
   animation: spin 0.7s linear infinite;
 }
+
+.srOnly {
+  @apply sr-only;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 
 // Constants
 import { ButtonVariant } from '@/design-system/Button/constants';
@@ -24,6 +24,7 @@ export interface Props extends React.ComponentProps<'div'> {
 const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel, ...props }) => {
     const [nickname, setNickname] = useState(plant.nickname);
     const [care, setCare] = useState(plant.care);
+    const nicknameId = useId();
 
     const handleNicknameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setNickname(event.target.value);
@@ -40,12 +41,12 @@ const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel,
     return (
         <div {...props}>
             <div className={styles.field}>
-                <label htmlFor="es-nickname">
+                <label htmlFor={nicknameId}>
                     Nickname
                 </label>
-                <input id="es-nickname" value={nickname} onChange={handleNicknameChange} />
+                <input id={nicknameId} value={nickname} onChange={handleNicknameChange} />
             </div>
-            <CareScheduleFields idPrefix="es" value={care} onChange={setCare} />
+            <CareScheduleFields value={care} onChange={setCare} />
             <div className={styles.shutterRow}>
                 <Button variant={ButtonVariant.Secondary} grow onClick={onCancel}>
                     Cancel

@@ -68,7 +68,7 @@ const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...prop
                         {due.length === 0 ? (
                             <React.Fragment>
                                 All plants are happy
-                                <PartyPopper size="0.875rem" />
+                                <PartyPopper size="0.875rem" aria-hidden />
                             </React.Fragment>
                         ) : `${due.length} task${due.length === 1 ? ' needs' : 's need'} attention`}
                     </div>

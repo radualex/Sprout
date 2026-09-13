@@ -6,6 +6,8 @@
     border-none px-5 py-3.25 ui-common transition-transform duration-50
   ;
 
+  text-decoration: none;
+
   &:active {
     @apply scale-[0.97];
   }
@@ -32,10 +34,6 @@
   @apply bg-green-100 text-green-900;
 }
 
-.link {
-  @apply bg-green-700 text-white no-underline;
-}
-
 .block {
   @apply w-full;
 }
@@ -46,4 +44,14 @@
 
 .sm {
   @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-2.25 text-[0.8125rem];
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    @apply transition-none;
+
+    &:active {
+      @apply scale-100;
+    }
+  }
 }

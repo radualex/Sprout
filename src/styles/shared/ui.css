@@ -9,6 +9,10 @@
 
   padding-bottom: calc(var(--nav-h) + 1.5rem + env(safe-area-inset-bottom));
   animation: fade-in 0.18s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 @utility ui-app-header {
@@ -40,6 +44,11 @@
 
     &:focus {
       @apply border-green-500 outline-none;
+    }
+
+    &:focus-visible {
+      outline: 0.125rem solid var(--color-green-500);
+      outline-offset: 0.125rem;
     }
   }
 }

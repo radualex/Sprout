@@ -27,7 +27,7 @@
 .settingsCard {
   @apply mb-3.5 rounded-card bg-surface p-4 shadow-card;
 
-  h3 {
+  h2 {
     @apply m-0 mb-1.5 flex items-center gap-1.5 text-base;
   }
 

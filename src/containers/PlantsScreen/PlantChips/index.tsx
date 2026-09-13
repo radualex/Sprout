@@ -33,7 +33,7 @@ const PlantChips: React.FunctionComponent<Props> = ({ plant, className, ...props
 
             return (
                 <span key={task.kind} className={chipClasses}>
-                    <TaskIcon size="0.75rem" />
+                    <TaskIcon size="0.75rem" aria-hidden />
                     <span>
                         {formatDue(task.daysUntil)}
                     </span>
@@ -49,7 +49,7 @@ const PlantChips: React.FunctionComponent<Props> = ({ plant, className, ...props
 
         return (
             <span className={styles.chip}>
-                <NextMeta.icon size="0.75rem" />
+                <NextMeta.icon size="0.75rem" aria-hidden />
                 <span>
                     {NextMeta.label}
                 </span>

@@ -18,6 +18,10 @@
 
 .taskList {
   @apply ui-task-list;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .detailHero {
@@ -40,6 +44,11 @@
 
 .careStats {
   @apply mt-3.5 grid grid-cols-3 gap-2.5;
+
+  dt,
+  dd {
+    margin: 0;
+  }
 }
 
 .careStat {

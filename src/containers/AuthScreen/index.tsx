@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useId, useState } from 'react';
 import { Sprout } from 'lucide-react';
 
 // Auth
@@ -11,7 +11,7 @@ import { authClient } from '@/lib/auth/auth-client';
 // Styles
 import styles from './styles.module.css';
 
-export interface Props extends React.ComponentProps<'div'> {
+export interface Props extends React.ComponentProps<'main'> {
     mode: 'login' | 'signup';
 }
 
@@ -22,6 +22,7 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const errorId = useId();
 
     const isSignup = mode === 'signup';
 
@@ -83,10 +84,10 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
     }, []);
 
     return (
-        <div className={styles.root} {...props}>
+        <main className={styles.root} {...props}>
             <div className={styles.hero}>
                 <div className={styles.logo}>
-                    <Sprout size="2.75rem" />
+                    <Sprout size="2.75rem" aria-hidden />
                 </div>
                 <h1>
                     Sprout
@@ -100,22 +101,22 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
                 {isSignup && (
                     <label className={styles.field}>
                         Name
-                        <input value={name} onChange={handleNameChange} placeholder="Ada Lovelace" autoComplete="name" />
+                        <input value={name} onChange={handleNameChange} placeholder="Ada Lovelace" autoComplete="name" required />
                     </label>
                 )}
 
                 <label className={styles.field}>
                     Email
-                    <input type="email" value={email} onChange={handleEmailChange} placeholder="you@example.com" autoComplete="email" required />
+                    <input type="email" value={email} onChange={handleEmailChange} placeholder="you@example.com" autoComplete="email" aria-describedby={error ? errorId : undefined} required />
                 </label>
 
                 <label className={styles.field}>
                     Password
-                    <input type="password" value={password} onChange={handlePasswordChange} placeholder="••••••••" autoComplete={isSignup ? 'new-password' : 'current-password'} required />
+                    <input type="password" value={password} onChange={handlePasswordChange} placeholder="••••••••" autoComplete={isSignup ? 'new-password' : 'current-password'} aria-describedby={error ? errorId : undefined} required />
                 </label>
 
                 {error && (
-                    <p className={styles.error}>
+                    <p className={styles.error} role="alert" id={errorId}>
                         {error}
                     </p>
                 )}
@@ -141,7 +142,7 @@ const AuthScreen: React.FunctionComponent<Props> = ({ mode, ...props }) => {
                     {isSignup ? 'Sign in' : 'Create account'}
                 </Link>
             </p>
-        </div>
+        </main>
     );
 };
 

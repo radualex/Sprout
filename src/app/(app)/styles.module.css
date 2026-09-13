@@ -5,3 +5,16 @@
 
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
 }
+
+.skipLink {
+  @apply
+    absolute left-4 z-50 rounded-btn bg-green-700 px-4 py-2 text-sm
+    font-semibold text-white no-underline
+  ;
+
+  top: -100%;
+
+  &:focus {
+    top: 1rem;
+  }
+}

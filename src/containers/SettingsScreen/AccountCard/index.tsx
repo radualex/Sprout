@@ -24,10 +24,10 @@ const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut }) => {
 
     return (
         <div className={classes}>
-            <h3>
-                <User size="1.125rem" />
+            <h2>
+                <User size="1.125rem" aria-hidden />
                 Account
-            </h3>
+            </h2>
             <p className={styles.accountLine} style={NO_MARGIN_STYLE}>
                 Signed in as
                 <strong>

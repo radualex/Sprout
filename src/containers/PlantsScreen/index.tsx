@@ -4,9 +4,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Plus } from 'lucide-react';
 
-// Constants
-import { ButtonVariant } from '@/design-system/Button/constants';
-
 // Components
 import Button from '@/design-system/Button';
 import PlantGrid from './PlantGrid';
@@ -50,8 +47,8 @@ const PlantsScreen: React.FunctionComponent<Props> = ({ plants, className, ...pr
                         <PlantSubtitle plants={plants} />
                     </div>
                 </div>
-                <Button variant={ButtonVariant.Link} href="/identify" icon={Plus}>
-                    Add
+                <Button href="/identify" icon={Plus}>
+                    Add a plant
                 </Button>
             </header>
             {renderContent()}

@@ -16,13 +16,12 @@ import styles from './styles.module.css';
 import type { CareSchedule } from '../../types';
 
 export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
-    idPrefix: string;
     value: CareSchedule;
     onChange: (care: CareSchedule) => void;
     hint?: string;
 }
 
-const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, onChange, hint, ...props }) => {
+const CareScheduleFields: React.FunctionComponent<Props> = ({ value, onChange, hint, ...props }) => {
     const handleWaterChange = useCallback((newValue: number) => {
         onChange({
             ...value,
@@ -46,19 +45,19 @@ const CareScheduleFields: React.FunctionComponent<Props> = ({ idPrefix, value, o
 
     const renderWaterField = () => {
         return (
-            <ScheduleField id={`${idPrefix}-water`} label="Water" icon={Droplets} value={value.waterEveryDays} options={WATER_OPTIONS} unit="days" onChange={handleWaterChange} />
+            <ScheduleField label="Water" icon={Droplets} value={value.waterEveryDays} options={WATER_OPTIONS} unit="days" onChange={handleWaterChange} />
         );
     };
 
     const renderFertilizeField = () => {
         return (
-            <ScheduleField id={`${idPrefix}-fertilize`} label="Fertilise" icon={Leaf} value={value.fertilizeEveryDays} options={FERTILIZE_OPTIONS} unit="days" allowNever onChange={handleFertilizeChange} />
+            <ScheduleField label="Fertilise" icon={Leaf} value={value.fertilizeEveryDays} options={FERTILIZE_OPTIONS} unit="days" allowNever onChange={handleFertilizeChange} />
         );
     };
 
     const renderRepotField = () => {
         return (
-            <ScheduleField id={`${idPrefix}-repot`} label="Repot" icon={Flower2} value={value.repotEveryMonths} options={REPOT_OPTIONS} unit="months" allowNever onChange={handleRepotChange} hint={hint} />
+            <ScheduleField label="Repot" icon={Flower2} value={value.repotEveryMonths} options={REPOT_OPTIONS} unit="months" allowNever onChange={handleRepotChange} hint={hint} />
         );
     };
 

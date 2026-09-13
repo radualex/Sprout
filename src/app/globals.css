@@ -53,6 +53,22 @@ textarea {
   font: inherit;
 }
 
+:focus-visible {
+  outline: 0.125rem solid var(--color-green-500);
+  outline-offset: 0.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @keyframes fade-in {
   from {
     transform: translateY(0.25rem);

@@ -24,6 +24,18 @@
   }
 }
 
+.list {
+  @apply flex w-full;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  @apply flex flex-1;
+}
+
 .icon {
   @apply text-[1.375rem] leading-none;
 }

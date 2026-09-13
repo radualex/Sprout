@@ -28,15 +28,15 @@ const CareScheduleNotice: React.FunctionComponent<Props> = ({ plant, onEdit }) =
     return (
         <React.Fragment>
             <div className={styles.notice}>
-                <WaterIcon size="0.875rem" />
+                <WaterIcon size="0.875rem" aria-hidden />
                 <span>
                     {`every ${plant.care.waterEveryDays} days`}
                 </span>
-                <FertilizeIcon size="0.875rem" />
+                <FertilizeIcon size="0.875rem" aria-hidden />
                 <span>
                     {plant.care.fertilizeEveryDays ? `every ${plant.care.fertilizeEveryDays} days` : 'never'}
                 </span>
-                <RepotIcon size="0.875rem" />
+                <RepotIcon size="0.875rem" aria-hidden />
                 <span>
                     {plant.care.repotEveryMonths ? `every ${plant.care.repotEveryMonths} months` : 'never'}
                 </span>

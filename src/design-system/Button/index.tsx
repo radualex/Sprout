@@ -3,7 +3,6 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import type { LucideIcon } from 'lucide-react';
 
 // Constants
 import { ButtonSize, ButtonVariant } from './constants';
@@ -11,16 +10,12 @@ import { ButtonSize, ButtonVariant } from './constants';
 // Styles
 import styles from './styles.module.css';
 
-export interface Props extends React.ComponentProps<'button'> {
-    variant?: ButtonVariant;
-    size?: ButtonSize;
-    block?: boolean;
-    grow?: boolean;
-    href?: string;
-    icon?: LucideIcon;
-}
+// Types
+import type { AnchorProps, ButtonProps } from './types';
 
-const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Default, size = ButtonSize.Md, block = false, grow = false, className, href = '', type = 'button', icon: Icon, children, ...props }) => {
+export type Props = ButtonProps | AnchorProps;
+
+const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Default, size = ButtonSize.Md, block = false, grow = false, className, icon: Icon, children, ...props }) => {
     const classes = classNames(styles.root, {
         [styles[variant]]: variant,
         [styles.block]: block,
@@ -31,22 +26,22 @@ const Button: React.FunctionComponent<Props> = ({ variant = ButtonVariant.Defaul
     const renderContent = () => {
         return (
             <React.Fragment>
-                {Icon && <Icon size="1rem" />}
+                {Icon && <Icon size="1rem" aria-hidden />}
                 {children}
             </React.Fragment>
         );
     };
 
-    if (variant === ButtonVariant.Link) {
+    if (props.href !== undefined) {
         return (
-            <Link href={href} className={classes}>
+            <Link className={classes} {...props}>
                 {renderContent()}
             </Link>
         );
     }
 
     return (
-        <button type={type} className={classes} {...props}>
+        <button {...props} type={props.type ?? 'button'} className={classes}>
             {renderContent()}
         </button>
     );

@@ -37,24 +37,28 @@ const BottomNav: React.FunctionComponent<Props> = ({ dueCount, ...props }) => {
             });
 
             return (
-                <Link key={tab.id} href={tab.href} className={linkClasses}>
-                    <span className={styles.icon}>
-                        <tab.icon size="1.375rem" />
-                    </span>
-                    {tab.label}
-                    {tab.id === 'care' && dueCount > 0 && (
-                        <span className={styles.badge}>
-                            {dueCount}
+                <li key={tab.id} className={styles.item}>
+                    <Link href={tab.href} className={linkClasses} aria-current={isTabActive ? 'page' : undefined}>
+                        <span className={styles.icon}>
+                            <tab.icon size="1.375rem" aria-hidden />
                         </span>
-                    )}
-                </Link>
+                        {tab.label}
+                        {tab.id === 'care' && dueCount > 0 && (
+                            <span className={styles.badge}>
+                                {dueCount}
+                            </span>
+                        )}
+                    </Link>
+                </li>
             );
         });
     }, [isActive, dueCount]);
 
     return (
-        <nav className={styles.root} {...props}>
-            {navLinks}
+        <nav className={styles.root} aria-label="Primary" {...props}>
+            <ul className={styles.list}>
+                {navLinks}
+            </ul>
         </nav>
     );
 };

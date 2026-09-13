@@ -27,19 +27,23 @@ export interface Props {
 const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick, onReset, onContinue }) => {
     return (
         <React.Fragment>
-            <span className={styles.sectionTitle}>Best matches</span>
-            {results.map((result) => {
-                return (
-                    <IdentifyResultCard key={result.species} result={result} selected={picked?.species === result.species} onSelect={onPick} />
-                );
-            })}
+            <h2 className={styles.sectionTitle}>Best matches</h2>
+            <ul className={styles.resultsList}>
+                {results.map((result) => {
+                    return (
+                        <li key={result.species}>
+                            <IdentifyResultCard result={result} selected={picked?.species === result.species} onSelect={onPick} />
+                        </li>
+                    );
+                })}
+            </ul>
             <div className={styles.shutterRow}>
                 <Button variant={ButtonVariant.Secondary} grow onClick={onReset}>
                     Retake
                 </Button>
                 <Button grow onClick={onContinue} disabled={!picked}>
                     Continue
-                    <ArrowRight size="1rem" />
+                    <ArrowRight size="1rem" aria-hidden />
                 </Button>
             </div>
         </React.Fragment>

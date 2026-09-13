@@ -10,9 +10,12 @@ import AccountCard from './AccountCard';
 import RecognitionCard from './RecognitionCard';
 import RemindersCard from './RemindersCard';
 
+// Hooks
+import { useNotifications } from '@/hooks/useNotifications';
+import { usePlantNetKey } from '@/hooks/usePlantNetKey';
+
 // Services
-import { getPlantNetKey, setPlantNetKey } from '@/services/identify';
-import { checkAndNotify, isNotificationsSupported, requestNotificationPermission } from '@/services/notifications';
+import { checkAndNotify } from '@/services/notifications';
 
 // Auth
 import { authClient } from '@/lib/auth/auth-client';
@@ -41,12 +44,8 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
     const classes = classNames(styles.screen, className);
 
     const router = useRouter();
-    const [perm, setPerm] = useState<NotificationPermission>(() => {
-        return isNotificationsSupported() ? Notification.permission : 'denied';
-    });
-    const [key, setKey] = useState(() => {
-        return getPlantNetKey();
-    });
+    const { isSupported, permission, requestPermission } = useNotifications();
+    const { key, setKey, saveKey } = usePlantNetKey();
     const [isKeySaved, setIsKeySaved] = useState(false);
 
     const handleSignOut = useCallback(async () => {
@@ -57,24 +56,22 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
     }, [router]);
 
     const handleEnableNotifications = useCallback(async () => {
-        const permission = await requestNotificationPermission();
+        const granted = await requestPermission();
 
-        setPerm(permission);
-
-        if (permission === 'granted') {
+        if (granted === 'granted') {
             await checkAndNotify();
         }
-    }, []);
+    }, [requestPermission]);
 
     const handleKeyChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setKey(event.target.value);
         setIsKeySaved(false);
-    }, []);
+    }, [setKey]);
 
     const handleSaveKey = useCallback(() => {
-        setPlantNetKey(key);
+        saveKey();
         setIsKeySaved(true);
-    }, [key]);
+    }, [saveKey]);
 
     const renderAccountCard = () => {
         return (
@@ -84,7 +81,7 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
 
     const renderRemindersCard = () => {
         return (
-            <RemindersCard perm={perm} onEnable={handleEnableNotifications} onTest={handleTestNotification} />
+            <RemindersCard isSupported={isSupported} perm={permission} onEnable={handleEnableNotifications} onTest={handleTestNotification} />
         );
     };
 

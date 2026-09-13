@@ -17,7 +17,7 @@ const AppError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) => {
     }, [retry]);
 
     return (
-        <main className={styles.root}>
+        <div className={styles.root}>
             <h1 className={styles.title}>Something went wrong</h1>
             <p className={styles.message}>
                 This screen hit an unexpected error. Try again to reload it.
@@ -25,7 +25,7 @@ const AppError: React.FunctionComponent<Pick<Props, 'retry'>> = ({ retry }) => {
             <button type="button" className={styles.retry} onClick={handleRetry}>
                 Try again
             </button>
-        </main>
+        </div>
     );
 };
 

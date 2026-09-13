@@ -22,9 +22,9 @@ const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone,
 
     const renderTitle = () => {
         return (
-            <div className={styles.sectionTitle}>
+            <h2 className={styles.sectionTitle}>
                 {title}
-            </div>
+            </h2>
         );
     };
 
@@ -38,13 +38,15 @@ const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone,
 
     const renderTaskList = () => {
         return (
-            <div className={styles.taskList}>
+            <ul className={styles.taskList}>
                 {tasks.map((task) => {
                     return (
-                        <TaskRow key={`${task.plant.id}-${task.kind}`} task={task} onDone={onDone} onSelect={onSelectPlant} />
+                        <li key={`${task.plant.id}-${task.kind}`}>
+                            <TaskRow task={task} onDone={onDone} onSelect={onSelectPlant} />
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
         );
     };
 

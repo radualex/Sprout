@@ -14,7 +14,7 @@ export interface Props extends React.ComponentProps<'div'> {
 
 const CameraStageView: React.FunctionComponent<Props> = ({ photoUrl, isStreaming, videoRef, ...props }) => {
     const renderPlantImage = () => {
-        return <img src={photoUrl} alt="Captured plant" />;
+        return <img src={photoUrl} alt="Preview of the photo you just captured" />;
     };
 
     const renderVideo = () => {
@@ -25,7 +25,7 @@ const CameraStageView: React.FunctionComponent<Props> = ({ photoUrl, isStreaming
         return (
             <div className={styles.placeholder}>
                 <div className={styles.big}>
-                    <Leaf size="3rem" />
+                    <Leaf size="3rem" aria-hidden />
                 </div>
                 Use the camera or upload a photo of the plant you want to identify.
             </div>

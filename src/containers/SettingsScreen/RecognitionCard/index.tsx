@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Camera, Check } from 'lucide-react';
 
 // Constants
@@ -19,13 +19,14 @@ export interface Props {
 
 const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, onKeyChange, onSaveKey }) => {
     const classes = styles.settingsCard;
+    const keyId = useId();
 
     return (
         <div className={classes}>
-            <h3>
-                <Camera size="1.125rem" />
+            <h2>
+                <Camera size="1.125rem" aria-hidden />
                 Plant recognition
-            </h3>
+            </h2>
             <p>
                 Identification uses the free
                 <a href="https://my.plantnet.org" target="_blank" rel="noreferrer">
@@ -34,15 +35,15 @@ const RecognitionCard: React.FunctionComponent<Props> = ({ apiKey, isKeySaved, o
                 . Create an account, copy your API key, and paste it here to enable recognition.
             </p>
             <div className={styles.field}>
-                <label htmlFor="settings-plantnet-key">
+                <label htmlFor={keyId}>
                     PlantNet API key
                 </label>
-                <input id="settings-plantnet-key" value={apiKey} onChange={onKeyChange} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" />
+                <input id={keyId} value={apiKey} onChange={onKeyChange} placeholder="2b10…" autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck={false} />
             </div>
             <Button variant={ButtonVariant.Secondary} block onClick={onSaveKey}>
                 {isKeySaved ? (
                     <React.Fragment>
-                        <Check size="0.875rem" />
+                        <Check size="0.875rem" aria-hidden />
                         Saved
                     </React.Fragment>
                 ) : 'Save key'}

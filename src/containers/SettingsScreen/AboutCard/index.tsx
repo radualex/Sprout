@@ -16,10 +16,10 @@ const AboutCard: React.FunctionComponent<Props> = ({ plantCount }) => {
 
     return (
         <div className={classes}>
-            <h3>
-                <Info size="1.125rem" />
+            <h2>
+                <Info size="1.125rem" aria-hidden />
                 About
-            </h3>
+            </h2>
             <p style={NO_MARGIN_STYLE}>
                 {`Sprout — ${plantCount} plant${plantCount === 1 ? '' : 's'} tracked. Your plants are synced to your account and available on any device. Install via your browser's "Add to Home Screen" for the full app experience.`}
             </p>

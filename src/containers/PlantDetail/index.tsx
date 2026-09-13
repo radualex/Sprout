@@ -92,7 +92,7 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
     return (
         <div className={classes} {...props}>
             <Link href="/" className={styles.backBtn}>
-                <ArrowLeft size="1rem" />
+                <ArrowLeft size="1rem" aria-hidden />
                 My Plants
             </Link>
 
@@ -114,38 +114,42 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
                 </div>
             </header>
 
-            <div className={styles.careStats}>
+            <dl className={styles.careStats}>
                 {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
                     const meta = CARE_META[kind];
 
                     return (
                         <div key={kind} className={styles.careStat}>
                             <div className={styles.emoji}>
-                                <meta.icon size="1.375rem" />
+                                <meta.icon size="1.375rem" aria-hidden />
                             </div>
-                            <div className={styles.label}>
+                            <dt className={styles.label}>
                                 {meta.label}
-                            </div>
-                            <CareStatValue plant={plant} kind={kind} now={now} />
+                            </dt>
+                            <dd>
+                                <CareStatValue plant={plant} kind={kind} now={now} />
+                            </dd>
                         </div>
                     );
                 })}
-            </div>
+            </dl>
 
-            <div className={styles.sectionTitle}>
+            <h2 className={styles.sectionTitle}>
                 Log care
-            </div>
-            <div className={styles.taskList}>
+            </h2>
+            <ul className={styles.taskList}>
                 {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
                     return (
-                        <CareLogRow key={kind} plant={plant} kind={kind} now={now} onDone={handleMarkDone} />
+                        <li key={kind}>
+                            <CareLogRow plant={plant} kind={kind} now={now} onDone={handleMarkDone} />
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
 
-            <div className={styles.sectionTitle}>
+            <h2 className={styles.sectionTitle}>
                 Schedule
-            </div>
+            </h2>
             {renderSchedule()}
 
             <DeletePlantBlock plantName={displayName(plant)} isConfirming={isConfirmDelete} onKeep={handleKeepPlant} onRemove={handleRemove} onStartDelete={handleStartDelete} />

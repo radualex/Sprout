@@ -144,7 +144,7 @@ const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props })
             </header>
 
             {error && (
-                <div className={errorNoticeClasses}>
+                <div className={errorNoticeClasses} role="status">
                     {error}
                 </div>
             )}

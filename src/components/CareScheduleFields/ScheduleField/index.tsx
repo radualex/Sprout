@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useId } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 // Styles
 import styles from './styles.module.css';
 
-export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
-    id: string;
+export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange' | 'id'> {
     label: string;
     icon: LucideIcon;
     value: number;
@@ -18,10 +17,12 @@ export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     hint?: string;
 }
 
-const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value, options, unit, allowNever = false, onChange, hint, ...props }) => {
+const ScheduleField: React.FunctionComponent<Props> = ({ label, icon, value, options, unit, allowNever = false, onChange, hint, ...props }) => {
     const Icon = icon;
 
     const classes = styles.field;
+    const fieldId = useId();
+    const hintId = useId();
 
     const handleChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         onChange(+event.target.value);
@@ -29,11 +30,11 @@ const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value,
 
     return (
         <div className={classes} {...props}>
-            <label htmlFor={id}>
-                <Icon size="0.875rem" />
+            <label htmlFor={fieldId}>
+                <Icon size="0.875rem" aria-hidden />
                 {label}
             </label>
-            <select id={id} value={value} onChange={handleChange}>
+            <select id={fieldId} value={value} onChange={handleChange} aria-describedby={hint ? hintId : undefined}>
                 {allowNever && (
                     <option value={0}>
                         never
@@ -48,7 +49,7 @@ const ScheduleField: React.FunctionComponent<Props> = ({ id, label, icon, value,
                 })}
             </select>
             {hint && (
-                <div className={styles.hint}>
+                <div id={hintId} className={styles.hint}>
                     {hint}
                 </div>
             )}

@@ -44,7 +44,8 @@ const AppLayout = async ({ children, className, ...props }: Props) => {
 
     return (
         <div {...props} className={classes}>
-            {children}
+            <a href="#main" className={styles.skipLink}>Skip to content</a>
+            <main id="main">{children}</main>
             <Suspense fallback={<BottomNav dueCount={0} />}>
                 <DueCountNav />
             </Suspense>

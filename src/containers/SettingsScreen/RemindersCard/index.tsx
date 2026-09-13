@@ -9,19 +9,17 @@ import { ButtonVariant } from '@/design-system/Button/constants';
 // Components
 import Button from '@/design-system/Button';
 
-// Services
-import { isNotificationsSupported } from '@/services/notifications';
-
 // Styles
 import styles from '../styles.module.css';
 
 export interface Props {
+    isSupported: boolean | undefined;
     perm: NotificationPermission;
     onEnable: () => void;
     onTest: () => void;
 }
 
-const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest }) => {
+const RemindersCard: React.FunctionComponent<Props> = ({ isSupported, perm, onEnable, onTest }) => {
     const warnNoticeClasses = classNames(styles.notice, styles.warn);
     const classes = styles.settingsCard;
 
@@ -37,7 +35,7 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
         return (
             <React.Fragment>
                 <div className={styles.notice}>
-                    <Check size="1rem" />
+                    <Check size="1rem" aria-hidden />
                     Notifications are enabled.
                 </div>
                 <Button variant={ButtonVariant.Secondary} block onClick={onTest}>
@@ -64,7 +62,11 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
     };
 
     const renderStatus = () => {
-        if (!isNotificationsSupported()) {
+        if (isSupported === undefined) {
+            return;
+        }
+
+        if (!isSupported) {
             return renderUnsupported();
         }
 
@@ -72,7 +74,7 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
             return renderEnabled();
         }
 
-        if (perm === 'denied' && Notification.permission === 'denied') {
+        if (perm === 'denied') {
             return renderBlocked();
         }
 
@@ -81,17 +83,17 @@ const RemindersCard: React.FunctionComponent<Props> = ({ perm, onEnable, onTest 
 
     return (
         <div className={classes}>
-            <h3>
-                <Bell size="1.125rem" />
+            <h2>
+                <Bell size="1.125rem" aria-hidden />
                 Care reminders
-            </h3>
+            </h2>
             <p>
                 Get a notification when a plant is due for watering, fertilising or repotting. Checks run
                 when the app is open or in the background (installed app on Android/Chrome).
             </p>
             {renderStatus()}
             <p className={styles.hint} style={IPHONE_HINT_STYLE}>
-                <Lightbulb size="1rem" />
+                <Lightbulb size="1rem" aria-hidden />
                 <span>
                     On iPhone, open this app in Safari, tap Share →
                     <strong>
