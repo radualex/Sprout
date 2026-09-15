@@ -1,6 +1,10 @@
-export interface PlantNetRawResult {
+export interface PlantNetSpecies {
     scientificNameWithoutAuthor?: string | null;
     commonNames?: string[] | null;
+}
+
+export interface PlantNetRawResult {
+    species?: PlantNetSpecies | null;
     score?: number | null;
 }
 

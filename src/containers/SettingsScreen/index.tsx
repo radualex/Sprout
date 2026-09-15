@@ -1,18 +1,16 @@
 'use client';
 
 import classNames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Components
 import AboutCard from './AboutCard';
 import AccountCard from './AccountCard';
-import RecognitionCard from './RecognitionCard';
 import RemindersCard from './RemindersCard';
 
 // Hooks
 import { useNotifications } from '@/hooks/useNotifications';
-import { usePlantNetKey } from '@/hooks/usePlantNetKey';
 
 // Services
 import { checkAndNotify } from '@/services/notifications';
@@ -45,8 +43,6 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
 
     const router = useRouter();
     const { isSupported, permission, requestPermission } = useNotifications();
-    const { key, setKey, saveKey } = usePlantNetKey();
-    const [isKeySaved, setIsKeySaved] = useState(false);
 
     const handleSignOut = useCallback(async () => {
         await authClient.signOut();
@@ -63,16 +59,6 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
         }
     }, [requestPermission]);
 
-    const handleKeyChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setKey(event.target.value);
-        setIsKeySaved(false);
-    }, [setKey]);
-
-    const handleSaveKey = useCallback(() => {
-        saveKey();
-        setIsKeySaved(true);
-    }, [saveKey]);
-
     const renderAccountCard = () => {
         return (
             <AccountCard user={user} onSignOut={handleSignOut} />
@@ -82,12 +68,6 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
     const renderRemindersCard = () => {
         return (
             <RemindersCard isSupported={isSupported} perm={permission} onEnable={handleEnableNotifications} onTest={handleTestNotification} />
-        );
-    };
-
-    const renderRecognitionCard = () => {
-        return (
-            <RecognitionCard apiKey={key} isKeySaved={isKeySaved} onKeyChange={handleKeyChange} onSaveKey={handleSaveKey} />
         );
     };
 
@@ -102,7 +82,6 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
             <React.Fragment>
                 {renderAccountCard()}
                 {renderRemindersCard()}
-                {renderRecognitionCard()}
                 {renderAboutCard()}
             </React.Fragment>
         );
@@ -116,7 +95,7 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
                         Settings
                     </h1>
                     <div className={styles.sub}>
-                        Notifications, recognition & data
+                        Notifications & data
                     </div>
                 </div>
             </header>

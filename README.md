@@ -47,10 +47,10 @@ Copy `.env.example` to `.env.local` and set:
 | `BETTER_AUTH_SECRET` | Signs session cookies. Generate with `openssl rand -base64 32`. |
 | `BETTER_AUTH_URL` | Base URL (`http://localhost:3000` in dev). |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth ([console.cloud.google.com](https://console.cloud.google.com/apis/credentials)). Redirect URI: `http://localhost:3000/api/auth/callback/google`. |
-| `PLANTNET_API_KEY` | Optional shared key for plant recognition. If empty, each user adds their own key in **Settings → Plant recognition**. |
+| `PLANTNET_API_KEY` | Shared PlantNet key for plant recognition. Required for the Identify screen. |
 
-- **Real plant recognition**: create a free account at [my.plantnet.org](https://my.plantnet.org),
-  copy your API key, paste it in **Settings → Plant recognition**.
+- **Real plant recognition**: the app uses one shared key (created at
+  [my.plantnet.org](https://my.plantnet.org)).
 - **Notifications**: enable in **Settings → Care reminders**. On iOS (16.4+) you must install the
   app to the home screen first; web push in Safari only works from installed web apps.
 

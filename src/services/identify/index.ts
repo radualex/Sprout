@@ -1,33 +1,9 @@
-// Constants
-import { API_KEY_STORAGE } from './constants';
-
 // Types
 import type { ApiErrorBody, IdentifyResult } from './types';
-
-export const getPlantNetKey = (): string => {
-    if (typeof window === 'undefined') {
-        return '';
-    }
-
-    return localStorage.getItem(API_KEY_STORAGE) ?? '';
-};
-
-export const setPlantNetKey = (key: string): void => {
-    if (typeof window === 'undefined') {
-        return;
-    }
-
-    localStorage.setItem(API_KEY_STORAGE, key);
-};
 
 export const identifyPlant = async (photo: Blob): Promise<IdentifyResult[]> => {
     const form = new FormData();
     form.append('images', photo, 'plant.jpg');
-
-    const userKey = getPlantNetKey();
-    if (userKey) {
-        form.append('apiKey', userKey);
-    }
 
     const response = await fetch('/api/identify', {
         method: 'POST',

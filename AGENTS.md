@@ -124,7 +124,7 @@ Gotchas: inside compose the DB hostname is `db`, not `localhost` (`DATABASE_URL=
 
 | Service      | Used for             | Notes                                                                                                                        |
 | ------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| PlantNet API | Plant identification | Proxied server-side by`src/app/api/identify/route.ts`; key from `PLANTNET_API_KEY` env or per-user localStorage key.     |
+| PlantNet API | Plant identification | Proxied server-side by`src/app/api/identify/route.ts`; key from `PLANTNET_API_KEY` env.     |
 | Google OAuth | Sign-in              | Better Auth social provider; needs`GOOGLE_CLIENT_ID/SECRET` + redirect `http://localhost:3000/api/auth/callback/google`. |
 
 ### Scripts (`package.json`)

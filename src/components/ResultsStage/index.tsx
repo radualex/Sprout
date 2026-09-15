@@ -29,9 +29,9 @@ const ResultsStage: React.FunctionComponent<Props> = ({ results, picked, onPick,
         <React.Fragment>
             <h2 className={styles.sectionTitle}>Best matches</h2>
             <ul className={styles.resultsList}>
-                {results.map((result) => {
+                {results.map((result, index) => {
                     return (
-                        <li key={result.species}>
+                        <li key={`${result.commonName}-${index}`}>
                             <IdentifyResultCard result={result} selected={picked?.species === result.species} onSelect={onPick} />
                         </li>
                     );

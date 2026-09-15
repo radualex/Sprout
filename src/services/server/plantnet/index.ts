@@ -1,5 +1,5 @@
 // Constants
-import { ERROR_BAD_KEY, ERROR_NO_IMAGE, ERROR_NO_KEY, ERROR_NOT_RECOGNISED, ERROR_UNREACHABLE, HTTP_BAD_GATEWAY, HTTP_BAD_REQUEST, MAX_API_KEY_LENGTH, PLANTNET_API_URL, PLANTNET_NB_RESULTS } from './constants';
+import { ERROR_BAD_KEY, ERROR_NO_IMAGE, ERROR_NO_KEY, ERROR_NOT_RECOGNISED, ERROR_UNREACHABLE, HTTP_BAD_GATEWAY, HTTP_BAD_REQUEST, PLANTNET_API_URL, PLANTNET_NB_RESULTS } from './constants';
 
 // Helpers
 import { FALLBACK_CARE } from '@/helpers/care';
@@ -20,33 +20,13 @@ export class PlantNetError extends Error {
     }
 }
 
-/** Prefer the shared env key; otherwise accept a trimmed client key of sane length. */
-const resolveApiKey = (form: FormData): string => {
-    const environmentKey = process.env.PLANTNET_API_KEY;
-    if (environmentKey) {
-        return environmentKey;
-    }
-
-    const rawKey = form.get('apiKey');
-    if (typeof rawKey !== 'string') {
-        return '';
-    }
-
-    const trimmedKey = rawKey.trim();
-    if (!trimmedKey || trimmedKey.length > MAX_API_KEY_LENGTH) {
-        return '';
-    }
-
-    return trimmedKey;
-};
-
 export const identifySpecies = async (form: FormData): Promise<IdentifyResult[]> => {
     const image = form.get('images');
     if (!(image instanceof File)) {
         throw new PlantNetError(ERROR_NO_IMAGE, HTTP_BAD_REQUEST);
     }
 
-    const apiKey = resolveApiKey(form);
+    const apiKey = process.env.PLANTNET_API_KEY ?? '';
     if (!apiKey) {
         throw new PlantNetError(ERROR_NO_KEY, HTTP_BAD_REQUEST);
     }
@@ -84,8 +64,8 @@ export const identifySpecies = async (form: FormData): Promise<IdentifyResult[]>
     const data = (await response.json()) as PlantNetResponse;
 
     return (data.results ?? []).map((result) => {
-        const species = result.scientificNameWithoutAuthor ?? 'Unknown species';
-        const commonName = result.commonNames?.at(0) ?? '';
+        const species = result.species?.scientificNameWithoutAuthor ?? 'Unknown species';
+        const commonName = result.species?.commonNames?.at(0) ?? '';
 
         return {
             species,
