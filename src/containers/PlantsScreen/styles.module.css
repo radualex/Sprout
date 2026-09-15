@@ -1,7 +1,10 @@
 @reference "../../app/globals.css";
 
 .screen {
-    @apply ui-screen;
+    @apply
+        ui-screen
+        lg:flex lg:min-h-[calc(100dvh-3.625rem)] lg:flex-col
+    ;
 }
 
 .appHeader {
@@ -13,7 +16,10 @@
 }
 
 .empty {
-    @apply ui-empty;
+    @apply
+        ui-empty
+        lg:my-auto
+    ;
 }
 
 .big {
@@ -33,7 +39,11 @@
 }
 
 .plantGrid {
-    @apply grid grid-cols-2 gap-3;
+    @apply
+        grid grid-cols-2 gap-3
+        md:grid-cols-3 md:gap-4
+        lg:grid-cols-4
+    ;
 
     list-style: none;
     margin: 0;
@@ -49,12 +59,22 @@
         flex cursor-pointer flex-col overflow-hidden rounded-card border-none bg-surface p-0 text-left
         text-inherit no-underline shadow-card
     ;
+
+    transition:
+        transform var(--dur-base) var(--ease-out),
+        box-shadow var(--dur-base) var(--ease-out);
+}
+
+.photoFrame {
+    @apply aspect-square w-full overflow-hidden;
 }
 
 .photo {
     @apply
         flex aspect-square w-full items-center justify-center bg-green-100 object-cover text-[2.75rem]
     ;
+
+    transition: transform var(--dur-base) var(--ease-out);
 }
 
 .meta {
@@ -71,4 +91,15 @@
 
 .chips {
     @apply mt-2 flex flex-wrap gap-1;
+}
+
+@media (hover: hover) and (width >= 48rem) {
+    .plantCard:hover {
+        transform: translateY(-0.125rem);
+        box-shadow: var(--shadow-card-hover);
+    }
+
+    .plantCard:hover .photo {
+        transform: scale(1.03);
+    }
 }

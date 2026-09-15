@@ -44,24 +44,26 @@ const TaskRow: React.FunctionComponent<Props> = ({ task, onDone, onSelect, ...pr
     return (
         <div className={rootClasses} {...props}>
             <Button variant={ButtonVariant.Bare} className={styles.select} onClick={handleSelect}>
-                <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
-                <span className={styles.info}>
-                    <span className={styles.title}>
-                        <meta.icon size="0.875rem" aria-hidden />
-                        <span>
-                            {meta.label}
+                <span className={styles.content}>
+                    <PlantPhoto photo={task.plant.photo} alt={displayName(task.plant)} className={styles.thumb} />
+                    <span className={styles.info}>
+                        <span className={styles.title}>
+                            <meta.icon size="0.875rem" aria-hidden />
+                            <span>
+                                {meta.label}
+                            </span>
+                            <span>
+                                {displayName(task.plant)}
+                            </span>
                         </span>
-                        <span>
-                            {displayName(task.plant)}
+                        <span className={classes}>
+                            {capitalize(formatDue(task.daysUntil))}
                         </span>
-                    </span>
-                    <span className={classes}>
-                        {capitalize(formatDue(task.daysUntil))}
                     </span>
                 </span>
             </Button>
             {task.daysUntil <= 0 && (
-                <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>
+                <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check} className={styles.done}>
                     Done
                 </Button>
             )}

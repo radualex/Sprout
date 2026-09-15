@@ -113,7 +113,9 @@ const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props })
         }
 
         return (
-            <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />
+            <div className={styles.captureColumn}>
+                <CaptureStage photoUrl={photoUrl} isIdentifying={phase === 'identifying'} onPhoto={handlePhoto} onError={handleIdentifyError} onReset={handleReset} onIdentify={handleIdentify} />
+            </div>
         );
     };
 

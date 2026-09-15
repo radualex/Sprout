@@ -20,6 +20,10 @@ export interface Props {
 const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone, onSelectPlant, emptyNotice }) => {
     const shouldShowTitle = tasks.length > 0 || Boolean(emptyNotice);
 
+    if (!shouldShowTitle) {
+        return;
+    }
+
     const renderTitle = () => {
         return (
             <h2 className={styles.sectionTitle}>
@@ -59,10 +63,10 @@ const CareTaskSection: React.FunctionComponent<Props> = ({ title, tasks, onDone,
     };
 
     return (
-        <React.Fragment>
-            {shouldShowTitle && renderTitle()}
+        <div className={styles.section}>
+            {renderTitle()}
             {renderContent()}
-        </React.Fragment>
+        </div>
     );
 };
 

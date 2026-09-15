@@ -3,10 +3,16 @@
 .root {
     @apply
         inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn border-none px-5
-        py-3.25 ui-common transition-transform duration-50
+        py-3.25 ui-common
     ;
 
     text-decoration: none;
+    transition:
+        transform var(--dur-base) var(--ease-out),
+        background-color var(--dur-base) var(--ease-out),
+        border-color var(--dur-base) var(--ease-out),
+        color var(--dur-base) var(--ease-out),
+        opacity var(--dur-base) var(--ease-out);
 
     &:active {
         @apply scale-[0.97];
@@ -55,7 +61,30 @@
 }
 
 .sm {
-    @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-2.25 text-[0.8125rem];
+    @apply shrink-0 gap-1.5 rounded-btn-sm px-3.5 py-2.25 text-note;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .default:hover,
+    .primary:hover {
+        @apply bg-green-900;
+    }
+
+    .secondary:hover {
+        @apply bg-green-100;
+    }
+
+    .soft:hover {
+        background-color: color-mix(in oklab, var(--color-green-100) 78%, var(--color-green-700));
+    }
+
+    .outline:hover {
+        @apply bg-surface-2;
+    }
+
+    .danger:hover {
+        background-color: color-mix(in oklab, var(--color-red) 6%, transparent);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

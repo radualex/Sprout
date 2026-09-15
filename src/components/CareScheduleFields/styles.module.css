@@ -1,13 +1,13 @@
 @reference "../../app/globals.css";
 
-.field {
-    @apply ui-field;
+.root {
+    @apply min-w-0;
 }
 
 .fieldRow {
-    @apply ui-field-row;
+    @apply flex flex-col;
 }
 
-.fieldRow .field {
-    @apply flex-1;
+.hint {
+    @apply ui-field-hint;
 }

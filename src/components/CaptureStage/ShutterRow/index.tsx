@@ -10,6 +10,9 @@ import { ButtonVariant } from '@/design-system/Button/constants';
 import IdentifyActions from './IdentifyActions';
 import ShutterActions from './ShutterActions';
 
+// Styles
+import styles from './styles.module.css';
+
 export interface Props {
     photoUrl?: string;
     isStreaming: boolean;
@@ -75,7 +78,7 @@ const ShutterRow: React.FunctionComponent<Props> = ({ photoUrl, isStreaming, isI
     };
 
     return (
-        <div>
+        <div className={styles.shutterRow}>
             {renderContent()}
         </div>
     );

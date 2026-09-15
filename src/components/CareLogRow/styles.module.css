@@ -19,3 +19,7 @@
 .when {
     @apply ui-when;
 }
+
+.done {
+    @apply flex-none;
+}

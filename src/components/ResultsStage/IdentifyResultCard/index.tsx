@@ -35,17 +35,19 @@ const IdentifyResultCard: React.FunctionComponent<Props> = ({ result, selected, 
     }, [onSelect, result]);
 
     return (
-        <Button variant={ButtonVariant.Bare} className={classes} onClick={handleSelect} {...props}>
-            <span>
-                <span className={styles.common}>
-                    {result.commonName || result.species}
+        <Button variant={ButtonVariant.Bare} className={styles.select} onClick={handleSelect} {...props}>
+            <span className={classes}>
+                <span>
+                    <span className={styles.common}>
+                        {result.commonName || result.species}
+                    </span>
+                    <span className={styles.sci}>
+                        {result.species}
+                    </span>
                 </span>
-                <span className={styles.sci}>
-                    {result.species}
+                <span className={styles.conf}>
+                    <span>{confidence}%</span>
                 </span>
-            </span>
-            <span className={styles.conf}>
-                <span>{confidence}%</span>
             </span>
         </Button>
     );

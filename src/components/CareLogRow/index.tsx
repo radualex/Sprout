@@ -51,7 +51,7 @@ const CareLogRow: React.FunctionComponent<Props> = ({ plant, kind, now, onDone, 
                     {`Last ${meta.verb} ${formatDaysAgo(daysAgo)}`}
                 </div>
             </div>
-            <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check}>
+            <Button variant={ButtonVariant.Soft} size={ButtonSize.Sm} onClick={handleDone} icon={Check} className={styles.done}>
                 {`${capitalize(meta.verb)} today`}
             </Button>
         </div>

@@ -19,3 +19,10 @@
 .notice.error {
     @apply ui-notice-error;
 }
+
+.captureColumn {
+    @media (width >= 64rem) {
+        width: min(100%, 32rem, calc((100dvh - 14rem) * 0.75));
+        margin-inline: auto;
+    }
+}

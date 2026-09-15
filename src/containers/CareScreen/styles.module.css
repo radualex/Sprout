@@ -1,7 +1,10 @@
 @reference "../../app/globals.css";
 
 .screen {
-    @apply ui-screen;
+    @apply
+        ui-screen
+        lg:flex lg:min-h-[calc(100dvh-3.625rem)] lg:flex-col
+    ;
 }
 
 .appHeader {
@@ -10,4 +13,8 @@
 
 .sub {
     @apply ui-app-sub flex flex-wrap items-center gap-x-1.5;
+}
+
+.sections {
+    @apply lg:grid lg:grid-cols-2 lg:items-start lg:gap-8;
 }

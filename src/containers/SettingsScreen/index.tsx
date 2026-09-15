@@ -79,11 +79,11 @@ const SettingsScreen: React.FunctionComponent<Props> = ({ plants, user, classNam
 
     const renderContent = () => {
         return (
-            <React.Fragment>
+            <div className={styles.cards}>
                 {renderAccountCard()}
                 {renderRemindersCard()}
                 {renderAboutCard()}
-            </React.Fragment>
+            </div>
         );
     };
 

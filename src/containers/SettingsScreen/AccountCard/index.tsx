@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { User } from 'lucide-react';
 
@@ -20,7 +21,7 @@ export interface Props {
 }
 
 const AccountCard: React.FunctionComponent<Props> = ({ user, onSignOut }) => {
-    const classes = styles.settingsCard;
+    const classes = classNames(styles.settingsCard, styles.accountCard);
 
     return (
         <div className={classes}>

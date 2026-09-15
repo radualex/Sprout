@@ -48,3 +48,53 @@
 .active {
     @apply text-green-700;
 }
+
+@media (width >= 48rem) {
+    .root {
+        max-width: 42rem;
+    }
+}
+
+@media (width >= 64rem) {
+    .root {
+        position: sticky;
+        top: 0;
+        bottom: auto;
+        left: auto;
+        width: 100%;
+        max-width: none;
+        height: auto;
+        padding-block: 0.5rem;
+        padding-inline: 2rem;
+        translate: none;
+        border-top: none;
+        border-bottom: 1px solid rgb(28 37 32 / 7%);
+    }
+
+    .root a {
+        flex: none;
+        flex-direction: row;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--radius-btn-sm);
+        font-size: var(--text-note);
+    }
+
+    .root a.active {
+        background: var(--color-green-100);
+    }
+
+    .list {
+        justify-content: flex-end;
+        gap: 0.25rem;
+    }
+
+    .item {
+        flex: none;
+    }
+
+    .badge {
+        position: static;
+        margin-inline-start: 0.25rem;
+    }
+}

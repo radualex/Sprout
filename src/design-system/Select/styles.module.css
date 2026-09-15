@@ -5,7 +5,7 @@
 }
 
 .label {
-    @apply mb-1.5 flex items-center gap-1.5 text-[0.8125rem] font-[650] text-ink;
+    @apply mb-1.5 flex items-center gap-1.5 text-note font-[650] text-ink;
 }
 
 .trigger {

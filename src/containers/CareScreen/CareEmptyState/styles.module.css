@@ -1,7 +1,10 @@
 @reference "../../../app/globals.css";
 
 .empty {
-    @apply ui-empty;
+    @apply
+        ui-empty
+        lg:my-auto
+    ;
 }
 
 .big {

@@ -24,9 +24,7 @@ const CameraStageView: React.FunctionComponent<Props> = ({ photoUrl, isStreaming
     const renderPlaceholder = () => {
         return (
             <div className={styles.placeholder}>
-                <div className={styles.big}>
-                    <Leaf size="3rem" aria-hidden />
-                </div>
+                <Leaf className={styles.leaf} aria-hidden />
                 Use the camera or upload a photo of the plant you want to identify.
             </div>
         );

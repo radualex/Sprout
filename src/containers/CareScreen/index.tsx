@@ -78,10 +78,10 @@ const CareScreen: React.FunctionComponent<Props> = ({ plants, className, ...prop
             {plants.length === 0 ? (
                 <CareEmptyState />
             ) : (
-                <React.Fragment>
+                <div className={styles.sections}>
                     <CareTaskSection title="Needs attention" tasks={due} onDone={handleDone} onSelectPlant={handleSelect} />
                     <CareTaskSection title="Coming up" tasks={upcoming} onDone={handleDone} onSelectPlant={handleSelect} emptyNotice="Nothing due in the next two weeks." />
-                </React.Fragment>
+                </div>
             )}
         </div>
     );

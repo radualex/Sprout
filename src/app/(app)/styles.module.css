@@ -1,9 +1,17 @@
 @reference "../globals.css";
 
 .root {
-    @apply mx-auto min-h-dvh max-w-120;
+    @apply
+        mx-auto min-h-dvh max-w-120
+        md:max-w-2xl
+        lg:max-w-4xl
+    ;
 
     padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom));
+
+    @media (width >= 64rem) {
+        padding-bottom: 0;
+    }
 }
 
 .skipLink {

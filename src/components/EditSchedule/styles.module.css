@@ -1,7 +1,15 @@
 @reference "../../app/globals.css";
 
+.root {
+    @apply mt-5.5;
+}
+
 .field {
     @apply ui-field;
+}
+
+.sectionTitle {
+    @apply ui-section-title;
 }
 
 .shutterRow {

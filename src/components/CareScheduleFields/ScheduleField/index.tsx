@@ -25,7 +25,7 @@ const ScheduleField: React.FunctionComponent<Props> = ({ label, icon, value, opt
         const mapped = options.map((amount) => {
             return {
                 value: String(amount),
-                label: `every ${amount} ${unit}`
+                label: `${amount} ${unit}`
             };
         });
 

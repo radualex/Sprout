@@ -1,8 +1,10 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback, useId, useState } from 'react';
 
 // Constants
+import { FREQUENCY_TITLE } from '@/components/CareScheduleFields/constants';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
@@ -21,7 +23,9 @@ export interface Props extends React.ComponentProps<'div'> {
     onCancel: () => void;
 }
 
-const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel, ...props }) => {
+const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel, className, ...props }) => {
+    const classes = classNames(styles.root, className);
+
     const [nickname, setNickname] = useState(plant.nickname);
     const [care, setCare] = useState(plant.care);
     const nicknameId = useId();
@@ -39,13 +43,16 @@ const EditSchedule: React.FunctionComponent<Props> = ({ plant, onSave, onCancel,
     }, [plant, onSave, nickname, care]);
 
     return (
-        <div {...props}>
+        <div className={classes} {...props}>
             <div className={styles.field}>
                 <label htmlFor={nicknameId}>
                     Nickname
                 </label>
                 <input id={nicknameId} value={nickname} onChange={handleNicknameChange} />
             </div>
+            <h2 className={styles.sectionTitle}>
+                {FREQUENCY_TITLE}
+            </h2>
             <CareScheduleFields value={care} onChange={setCare} />
             <div className={styles.shutterRow}>
                 <Button variant={ButtonVariant.Secondary} grow onClick={onCancel}>

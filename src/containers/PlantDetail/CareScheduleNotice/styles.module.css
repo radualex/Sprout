@@ -1,5 +1,9 @@
 @reference "../../../app/globals.css";
 
 .notice {
-    @apply ui-notice flex flex-wrap items-center gap-x-3 gap-y-1;
+    @apply ui-notice flex flex-col items-start gap-1;
+}
+
+.row {
+    @apply flex items-center gap-1.5;
 }

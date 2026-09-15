@@ -5,7 +5,8 @@ import React, { useCallback, useId, useState } from 'react';
 import { Sprout } from 'lucide-react';
 
 // Constants
-import { RESULT_THUMB_STYLE } from './constants';
+import { NICKNAME_LABEL, NICKNAME_PLACEHOLDER } from './constants';
+import { FREQUENCY_TITLE } from '@/components/CareScheduleFields/constants';
 import { ButtonVariant } from '@/design-system/Button/constants';
 
 // Components
@@ -31,8 +32,9 @@ export interface Props extends React.ComponentProps<'div'> {
     onSave: (input: PlantInput) => void;
 }
 
-const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, ...props }) => {
-    const classes = classNames(styles.resultCard, styles.selected);
+const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel, onSave, className, ...props }) => {
+    const classes = classNames(styles.form, className);
+    const resultCardClasses = classNames(styles.resultCard, styles.selected);
 
     const [nickname, setNickname] = useState(result.commonName || result.species);
     const [care, setCare] = useState<CareSchedule>(() => {
@@ -57,38 +59,42 @@ const AddPlantForm: React.FunctionComponent<Props> = ({ photo, result, onCancel,
     }, [nickname, result, photo, care, onSave]);
 
     return (
-        <div {...props}>
-            <div className={classes}>
-                {photoUrl && <img src={photoUrl} alt="" style={RESULT_THUMB_STYLE} />}
-                <div>
-                    <div className={styles.common}>
-                        {result.commonName || result.species}
-                    </div>
-                    <div className={styles.sci}>
-                        {result.species}
+        <div className={classes} {...props}>
+            <div className={styles.previewPane}>
+                <div className={resultCardClasses}>
+                    {photoUrl && <img src={photoUrl} alt="" className={styles.thumb} />}
+                    <div>
+                        <div className={styles.common}>
+                            {result.commonName || result.species}
+                        </div>
+                        <div className={styles.sci}>
+                            {result.species}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className={styles.field}>
-                <label htmlFor={nicknameId}>
-                    Nickname
-                </label>
-                <input id={nicknameId} value={nickname} onChange={handleNicknameChange} placeholder="e.g. Kitchen monstera" />
-            </div>
+            <div className={styles.formPane}>
+                <div className={styles.field}>
+                    <label htmlFor={nicknameId}>
+                        {NICKNAME_LABEL}
+                    </label>
+                    <input id={nicknameId} value={nickname} onChange={handleNicknameChange} placeholder={NICKNAME_PLACEHOLDER} />
+                </div>
 
-            <h2 className={styles.sectionTitle}>
-                Care schedule
-            </h2>
-            <CareScheduleFields value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
+                <h2 className={styles.sectionTitle}>
+                    {FREQUENCY_TITLE}
+                </h2>
+                <CareScheduleFields value={care} onChange={setCare} hint="Suggested defaults are based on the identified species — tweak as needed." />
 
-            <div className={styles.shutterRow}>
-                <Button variant={ButtonVariant.Secondary} grow onClick={onCancel}>
-                    Back
-                </Button>
-                <Button grow onClick={handleSave} icon={Sprout}>
-                    Add to my plants
-                </Button>
+                <div className={styles.shutterRow}>
+                    <Button variant={ButtonVariant.Secondary} grow onClick={onCancel}>
+                        Back
+                    </Button>
+                    <Button grow onClick={handleSave} icon={Sprout}>
+                        Add to my plants
+                    </Button>
+                </div>
             </div>
         </div>
     );

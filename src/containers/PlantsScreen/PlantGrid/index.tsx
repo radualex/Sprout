@@ -28,7 +28,9 @@ const PlantGrid: React.FunctionComponent<Props> = ({ plants, className, ...props
                 return (
                     <li key={plant.id} className={styles.plantCardItem}>
                         <Link href={`/plants/${plant.id}`} className={styles.plantCard}>
-                            <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
+                            <div className={styles.photoFrame}>
+                                <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.photo} />
+                            </div>
                             <div className={styles.meta}>
                                 <div className={styles.name}>
                                     {displayName(plant)}

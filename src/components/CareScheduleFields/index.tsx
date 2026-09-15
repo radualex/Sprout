@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { Droplets, Flower2, Leaf } from 'lucide-react';
 
@@ -21,7 +22,9 @@ export interface Props extends Omit<React.ComponentProps<'div'>, 'onChange'> {
     hint?: string;
 }
 
-const CareScheduleFields: React.FunctionComponent<Props> = ({ value, onChange, hint, ...props }) => {
+const CareScheduleFields: React.FunctionComponent<Props> = ({ value, onChange, hint, className, ...props }) => {
+    const classes = classNames(styles.root, className);
+
     const handleWaterChange = useCallback((newValue: number) => {
         onChange({
             ...value,
@@ -57,7 +60,19 @@ const CareScheduleFields: React.FunctionComponent<Props> = ({ value, onChange, h
 
     const renderRepotField = () => {
         return (
-            <ScheduleField label="Repot" icon={Flower2} value={value.repotEveryMonths} options={REPOT_OPTIONS} unit="months" allowNever onChange={handleRepotChange} hint={hint} />
+            <ScheduleField label="Repot" icon={Flower2} value={value.repotEveryMonths} options={REPOT_OPTIONS} unit="months" allowNever onChange={handleRepotChange} />
+        );
+    };
+
+    const renderHint = () => {
+        if (!hint) {
+            return;
+        }
+
+        return (
+            <div className={styles.hint}>
+                {hint}
+            </div>
         );
     };
 
@@ -67,14 +82,15 @@ const CareScheduleFields: React.FunctionComponent<Props> = ({ value, onChange, h
                 <div className={styles.fieldRow}>
                     {renderWaterField()}
                     {renderFertilizeField()}
+                    {renderRepotField()}
                 </div>
-                {renderRepotField()}
+                {renderHint()}
             </React.Fragment>
         );
     };
 
     return (
-        <div {...props}>
+        <div className={classes} {...props}>
             {renderContent()}
         </div>
     );

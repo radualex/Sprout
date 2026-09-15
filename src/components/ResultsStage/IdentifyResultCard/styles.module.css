@@ -1,5 +1,9 @@
 @reference "../../../app/globals.css";
 
+.select {
+    @apply flex w-full text-left;
+}
+
 .resultCard {
     @apply ui-result-card;
 }

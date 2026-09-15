@@ -13,11 +13,19 @@
 }
 
 .select {
-    @apply flex ui-info items-center gap-3 text-left;
+    @apply flex ui-info text-left;
+}
+
+.content {
+    @apply flex w-full min-w-0 items-center gap-3;
 }
 
 .title {
     @apply flex flex-wrap items-center gap-1 ui-title;
+}
+
+.done {
+    @apply flex-none;
 }
 
 .when {

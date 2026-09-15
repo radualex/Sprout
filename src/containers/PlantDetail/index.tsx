@@ -8,6 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 
 // Constants
 import { HEADER_STYLE, SUB_STYLE } from './constants';
+import { FREQUENCY_TITLE } from '@/components/CareScheduleFields/constants';
 
 // Components
 import PlantPhoto from '@/components/PlantPhoto';
@@ -116,69 +117,74 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
                 My Plants
             </Link>
 
-            <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.detailHero} />
-
-            <header className={styles.appHeader} style={HEADER_STYLE}>
+            <div className={styles.layout}>
+                <PlantPhoto photo={plant.photo} alt={displayName(plant)} className={styles.detailHero} />
                 <div>
-                    <h1>
-                        {displayName(plant)}
-                    </h1>
-                    <div className={styles.sub} style={SUB_STYLE}>
-                        <span>
-                            {plant.species}
-                        </span>
-                        {plant.commonName && plant.commonName !== plant.nickname && (
-                            <PlantCommonNameSuffix plant={plant} />
-                        )}
-                    </div>
-                </div>
-            </header>
-
-            {error && (
-                <div className={errorNoticeClasses} role="status">
-                    {error}
-                </div>
-            )}
-
-            <dl className={styles.careStats}>
-                {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
-                    const meta = CARE_META[kind];
-
-                    return (
-                        <div key={kind} className={styles.careStat}>
-                            <div className={styles.emoji}>
-                                <meta.icon size="1.375rem" aria-hidden />
+                    <header className={styles.appHeader} style={HEADER_STYLE}>
+                        <div>
+                            <h1>
+                                {displayName(plant)}
+                            </h1>
+                            <div className={styles.sub} style={SUB_STYLE}>
+                                <span>
+                                    {plant.species}
+                                </span>
+                                {plant.commonName && plant.commonName !== plant.nickname && (
+                                    <PlantCommonNameSuffix plant={plant} />
+                                )}
                             </div>
-                            <dt className={styles.label}>
-                                {meta.label}
-                            </dt>
-                            <dd>
-                                <CareStatValue plant={plant} kind={kind} now={now} />
-                            </dd>
                         </div>
-                    );
-                })}
-            </dl>
+                    </header>
 
-            <h2 className={styles.sectionTitle}>
-                Log care
-            </h2>
-            <ul className={styles.taskList}>
-                {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
-                    return (
-                        <li key={kind}>
-                            <CareLogRow plant={plant} kind={kind} now={now} onDone={handleMarkDone} />
-                        </li>
-                    );
-                })}
-            </ul>
+                    {error && (
+                        <div className={errorNoticeClasses} role="status">
+                            {error}
+                        </div>
+                    )}
 
-            <h2 className={styles.sectionTitle}>
-                Schedule
-            </h2>
-            {renderSchedule()}
+                    <dl className={styles.careStats}>
+                        {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
+                            const meta = CARE_META[kind];
 
-            <DeletePlantBlock plantName={displayName(plant)} isConfirming={isConfirmDelete} onKeep={handleKeepPlant} onRemove={handleRemove} onStartDelete={handleStartDelete} />
+                            return (
+                                <div key={kind} className={styles.careStat}>
+                                    <div className={styles.emoji}>
+                                        <meta.icon size="1.375rem" aria-hidden />
+                                    </div>
+                                    <dt className={styles.label}>
+                                        {meta.label}
+                                    </dt>
+                                    <dd>
+                                        <CareStatValue plant={plant} kind={kind} now={now} />
+                                    </dd>
+                                </div>
+                            );
+                        })}
+                    </dl>
+
+                    <h2 className={styles.sectionTitle}>
+                        Log care
+                    </h2>
+                    <ul className={styles.taskList}>
+                        {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {
+                            return (
+                                <li key={kind}>
+                                    <CareLogRow plant={plant} kind={kind} now={now} onDone={handleMarkDone} />
+                                </li>
+                            );
+                        })}
+                    </ul>
+
+                    {!isEditing && (
+                        <h2 className={styles.sectionTitle}>
+                            {FREQUENCY_TITLE}
+                        </h2>
+                    )}
+                    {renderSchedule()}
+
+                    <DeletePlantBlock plantName={displayName(plant)} isConfirming={isConfirmDelete} onKeep={handleKeepPlant} onRemove={handleRemove} onStartDelete={handleStartDelete} />
+                </div>
+            </div>
         </div>
     );
 };

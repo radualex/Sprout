@@ -1,7 +1,7 @@
 @reference "../../../app/globals.css";
 
 .root {
-    @apply relative aspect-3/4 overflow-hidden rounded-card shadow-card;
+    @apply relative aspect-3/4 w-full overflow-hidden rounded-card shadow-card;
 
     background: #10180f;
 
@@ -16,7 +16,20 @@
 
     color: #cfe0cb;
 
-    .big {
-        @apply text-[3rem];
+    @media (width >= 64rem) {
+        @apply gap-3 p-10 text-base;
+    }
+}
+
+.leaf {
+    @apply
+        size-12
+        lg:size-16
+    ;
+}
+
+@media (width >= 64rem) {
+    .root {
+        max-height: calc(100dvh - 14rem);
     }
 }

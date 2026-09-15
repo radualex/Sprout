@@ -14,16 +14,21 @@
     --color-green-500: #4c8f5f;
     --color-green-100: #ddebd9;
     --color-amber: #c97b1e;
+    --color-amber-ink: #8a5300;
     --color-red: #c0452f;
+    --color-red-ink: #a8381f;
+    --text-note: 0.8125rem;
+    --text-h1: 1.625rem;
     --radius-btn: 0.875rem;
     --radius-btn-sm: 0.75rem;
     --radius-card: 1.125rem;
     --shadow-card: 0 0.125rem 0.625rem rgb(28 37 32 / 8%);
-    --font-sans: var(--font-manrope);
-}
-
-:root {
+    --shadow-card-hover: 0 0.25rem 0.875rem rgb(28 37 32 / 12%);
+    --dur-fast: 120ms;
+    --dur-base: 180ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     --nav-h: 4rem;
+    --font-sans: var(--font-manrope);
 }
 
 * {
