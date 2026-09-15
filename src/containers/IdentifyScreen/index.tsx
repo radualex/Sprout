@@ -9,6 +9,9 @@ import AddPlantForm from '@/components/AddPlantForm';
 import CaptureStage from '@/components/CaptureStage';
 import ResultsStage from '@/components/ResultsStage';
 
+// Helpers
+import { compressPhoto, ERROR_UNREADABLE_IMAGE } from '@/helpers/image';
+
 // Hooks
 import { useObjectUrl } from '@/hooks';
 
@@ -39,9 +42,15 @@ const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props })
 
     const photoUrl = useObjectUrl(photo);
 
-    const handlePhoto = useCallback((nextPhoto: Blob) => {
-        setPhoto(nextPhoto);
+    const handlePhoto = useCallback(async (nextPhoto: Blob) => {
         setError(undefined);
+
+        try {
+            setPhoto(await compressPhoto(nextPhoto));
+        } catch (reason) {
+            console.error('Failed to process photo', reason);
+            setError(ERROR_UNREADABLE_IMAGE);
+        }
     }, []);
 
     const handleIdentifyError = useCallback((message: string) => {
@@ -85,9 +94,17 @@ const IdentifyScreen: React.FunctionComponent<Props> = ({ className, ...props })
     }, []);
 
     const handleSave = useCallback(async (input: PlantInput) => {
-        const id = await createPlant(input);
-        router.push(`/plants/${id}`);
-        router.refresh();
+        setError(undefined);
+
+        try {
+            const id = await createPlant(input);
+
+            router.push(`/plants/${id}`);
+            router.refresh();
+        } catch (reason) {
+            console.error('Failed to add plant', reason);
+            setError('Couldn\'t add your plant. Please try again.');
+        }
     }, [router]);
 
     const renderCaptureStage = () => {

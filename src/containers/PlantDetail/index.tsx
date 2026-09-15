@@ -40,33 +40,53 @@ export interface Props extends React.ComponentProps<'div'> {
 
 const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...props }) => {
     const classes = classNames(styles.root, styles.screen, className);
+    const errorNoticeClasses = classNames(styles.notice, styles.error);
 
     const router = useRouter();
     const now = useClock();
     const [isEditing, setIsEditing] = useState(false);
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const handleMarkDone = useCallback(async (kind: CareKind) => {
-        await markCareDone(plant.id, kind);
+        setError(undefined);
+        try {
+            await markCareDone(plant.id, kind);
 
-        router.refresh();
+            router.refresh();
+        } catch (reason) {
+            console.error('Failed to log care', reason);
+            setError('Couldn\'t log that care. Please try again.');
+        }
     }, [plant, router]);
 
     const handleSaveEdited = useCallback(async (edited: Plant) => {
-        await updatePlant(edited.id, {
-            nickname: edited.nickname,
-            care: edited.care
-        });
+        setError(undefined);
+        try {
+            await updatePlant(edited.id, {
+                nickname: edited.nickname,
+                care: edited.care
+            });
 
-        setIsEditing(false);
-        router.refresh();
+            setIsEditing(false);
+            router.refresh();
+        } catch (reason) {
+            console.error('Failed to save schedule', reason);
+            setError('Couldn\'t save the schedule. Please try again.');
+        }
     }, [router]);
 
     const handleRemove = useCallback(async () => {
-        await deletePlant(plant.id);
+        setError(undefined);
+        try {
+            await deletePlant(plant.id);
 
-        router.push('/');
-        router.refresh();
+            router.push('/');
+            router.refresh();
+        } catch (reason) {
+            console.error('Failed to delete plant', reason);
+            setError('Couldn\'t delete this plant. Please try again.');
+        }
     }, [plant, router]);
 
     const handleStartEdit = useCallback(() => {
@@ -113,6 +133,12 @@ const PlantDetail: React.FunctionComponent<Props> = ({ plant, className, ...prop
                     </div>
                 </div>
             </header>
+
+            {error && (
+                <div className={errorNoticeClasses} role="status">
+                    {error}
+                </div>
+            )}
 
             <dl className={styles.careStats}>
                 {[CareKind.Water, CareKind.Fertilize, CareKind.Repot].map((kind) => {

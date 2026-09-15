@@ -11,3 +11,7 @@ export interface PlantNetRawResult {
 export interface PlantNetResponse {
     results?: PlantNetRawResult[];
 }
+
+export interface PlantNetErrorBody {
+    message?: string;
+}

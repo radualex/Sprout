@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Constants
-import { ERROR_BAD_KEY, ERROR_NO_IMAGE, ERROR_NO_KEY, ERROR_NOT_RECOGNISED, ERROR_UNREACHABLE } from './constants';
+import { ERROR_BAD_IMAGE, ERROR_BAD_KEY, ERROR_NO_IMAGE, ERROR_NO_KEY, ERROR_NOT_RECOGNISED, ERROR_UNAVAILABLE, ERROR_UNREACHABLE } from './constants';
 
 // Services
 import { identifySpecies, PlantNetError } from './index';
@@ -54,11 +54,13 @@ describe('identifySpecies', () => {
         fetchMock = vi.fn();
         vi.stubGlobal('fetch', fetchMock);
         vi.stubEnv('PLANTNET_API_KEY', API_KEY);
+        vi.spyOn(console, 'error').mockImplementation(vi.fn());
     });
 
     afterEach(() => {
         vi.unstubAllGlobals();
         vi.unstubAllEnvs();
+        vi.restoreAllMocks();
     });
 
     it('rejects with 400 when no image is provided', async () => {
@@ -103,7 +105,44 @@ describe('identifySpecies', () => {
         const error = await capturePlantNetError(identifySpecies(imageForm()));
 
         expect(error.httpStatus).toBe(502);
-        expect(error.message).toBe('PlantNet failed with HTTP 500.');
+        expect(error.message).toBe(ERROR_UNAVAILABLE);
+    });
+
+    it('logs the upstream message when a 502 has a body', async () => {
+        fetchMock.mockResolvedValue(mockResponse({
+            statusCode: 500,
+            error: 'Internal Server Error',
+            message: 'upstream boom'
+        }, 500));
+
+        const error = await capturePlantNetError(identifySpecies(imageForm()));
+
+        expect(error.httpStatus).toBe(502);
+        expect(error.message).toBe(ERROR_UNAVAILABLE);
+        expect(vi.mocked(console.error)).toHaveBeenCalledWith('PlantNet request failed', 500, 'upstream boom');
+    });
+
+    it('throws friendly copy and logs the PlantNet detail when it rejects the image', async () => {
+        fetchMock.mockResolvedValue(mockResponse({
+            statusCode: 400,
+            error: 'Bad Request',
+            message: 'Unsupported file type for image[0] (jpeg or png)'
+        }, 400));
+
+        const error = await capturePlantNetError(identifySpecies(imageForm()));
+
+        expect(error.httpStatus).toBe(400);
+        expect(error.message).toBe(ERROR_BAD_IMAGE);
+        expect(vi.mocked(console.error)).toHaveBeenCalledWith('PlantNet request failed', 400, 'Unsupported file type for image[0] (jpeg or png)');
+    });
+
+    it('falls back to a generic message when a 400 has no body', async () => {
+        fetchMock.mockResolvedValue(mockResponse({}, 400));
+
+        const error = await capturePlantNetError(identifySpecies(imageForm()));
+
+        expect(error.httpStatus).toBe(400);
+        expect(error.message).toBe(ERROR_BAD_IMAGE);
     });
 
     it('maps a network throw to a 502 unreachable error', async () => {
