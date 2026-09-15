@@ -131,11 +131,11 @@ describe('recordNotified', () => {
         expect(serviceRecordNotified).not.toHaveBeenCalled();
     });
 
-    it('validates, delegates, and revalidates', async () => {
+    it('validates and delegates without revalidating', async () => {
         await recordNotified(VALID_ID, CareKind.Water, 1_700_000_000_000);
 
         expect(serviceRecordNotified).toHaveBeenCalledWith('user-1', VALID_ID, CareKind.Water, 1_700_000_000_000);
-        expect(revalidatePath).toHaveBeenCalledWith('/', 'layout');
+        expect(revalidatePath).not.toHaveBeenCalled();
     });
 });
 

@@ -1,11 +1,15 @@
 /* Sprout service worker.
  *
  * Caching is deliberately minimal: only static shell assets are cached,
- * cache-first. Documents, /api responses and per-user data are NEVER cached —
- * the old cache-everything strategy would leak one user's HTML to another.
+ * cache-first. Documents, /api responses, RSC navigation payloads and other
+ * per-user data are NEVER cached — the old cache-everything strategy would
+ * leak one user's HTML to another. Caching an RSC payload also wedges the
+ * client router: the page segment never arrives and the route-level
+ * loading.tsx boundary resolves to its skeleton forever, with no error.
  */
-const CACHE = 'sprout-v2';
+const CACHE = 'sprout-v3';
 const SHELL = ['/', '/icon.svg', '/icon-192.png', '/icon-512.png', '/manifest.webmanifest'];
+const SHELL_PATHS = new Set(SHELL);
 
 globalThis.addEventListener('install', (e) => {
     e.waitUntil(caches.open(CACHE).then((c) => { return c.addAll(SHELL); }));
@@ -29,8 +33,15 @@ globalThis.addEventListener('activate', (e) => {
 globalThis.addEventListener('fetch', (e) => {
     const url = new URL(e.request.url);
     if (e.request.method !== 'GET' || url.origin !== location.origin) return;
-    // Never cache documents (HTML) or API calls — both are user-specific.
     if (e.request.mode === 'navigate') return;
+    // RSC navigations look like ordinary same-origin GETs but are per-user
+    // flight payloads. Serving a cached one leaves the router's transition
+    // stuck on the route-level loading skeleton, silently and permanently —
+    // dropping this guard reintroduces that bug.
+    if (e.request.headers.get('RSC') === '1') return;
+    if (url.pathname.startsWith('/api/')) return;
+    // Static allowlist only; see ADR-0006.
+    if (!SHELL_PATHS.has(url.pathname) && !url.pathname.startsWith('/_next/static/')) return;
 
     e.respondWith(
         caches.match(e.request).then((hit) => {

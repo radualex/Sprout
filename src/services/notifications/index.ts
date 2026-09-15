@@ -94,20 +94,36 @@ export const checkAndNotify = async (): Promise<number> => {
     return pendingTasks.length;
 };
 
-/** Run care checks: on load, when the tab regains focus, and hourly while open. */
-export const startCareWatcher = async () => {
-    await checkAndNotify();
-    window.addEventListener('focus', () => {
-        return checkAndNotify();
-    });
+/**
+ * Run care checks: on load, when the tab regains focus, and hourly while open.
+ * Returns a cleanup that detaches every listener and interval it created.
+ */
+export const startCareWatcher = (): (() => void) => {
+    void checkAndNotify();
 
-    setInterval(() => {
-        return checkAndNotify();
-    }, CARE_CHECK_INTERVAL_MS);
+    const sw = 'serviceWorker' in navigator ? navigator.serviceWorker : undefined;
 
-    navigator.serviceWorker.addEventListener('message', async (event: MessageEvent<CareCheckMessage>) => {
+    const handleFocus = () => {
+        void checkAndNotify();
+    };
+
+    const handleTick = () => {
+        void checkAndNotify();
+    };
+
+    const handleMessage = (event: MessageEvent<CareCheckMessage>) => {
         if (event.data.type === 'care-check') {
-            await checkAndNotify();
+            void checkAndNotify();
         }
-    });
+    };
+
+    window.addEventListener('focus', handleFocus);
+    sw?.addEventListener('message', handleMessage);
+    const interval = setInterval(handleTick, CARE_CHECK_INTERVAL_MS);
+
+    return () => {
+        window.removeEventListener('focus', handleFocus);
+        sw?.removeEventListener('message', handleMessage);
+        clearInterval(interval);
+    };
 };

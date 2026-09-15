@@ -53,8 +53,6 @@ export const recordNotified = async (id: string, kind: CareKind, at: number): Pr
     const parsedAt = NotifiedAtSchema.parse(at);
 
     await serviceRecordNotified(session.user.id, parsedId, parsedKind, parsedAt);
-
-    revalidatePath(ALL_PATH, 'layout');
 };
 
 export const deletePlant = async (id: string): Promise<void> => {

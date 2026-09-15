@@ -11,11 +11,11 @@ export interface Props {
 
 const SiteCore: React.FunctionComponent<Props> = ({ children }) => {
     useEffect(() => {
-        if ('serviceWorker' in navigator) {
+        if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
             void navigator.serviceWorker.register('/sw.js');
         }
 
-        void startCareWatcher();
+        return startCareWatcher();
     }, []);
 
     return children;
